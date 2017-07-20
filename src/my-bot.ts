@@ -64,6 +64,7 @@ export class MyBot {
         });
         dataPromise
             .then((snapshot) => {
+                console.log(snapshot.val().hitmode);
                 if (snapshot.val().hitmode) {
                     result = this.track(gamestate);
                 }
