@@ -182,7 +182,7 @@ export class MyBot {
     public alreadyHitAt(pos:Position):boolean{
         if(this.hitArray){
             for(let i=0 ; i < this.hitArray.length; i ++){
-                if(this.hitArray[i] == pos) return true;
+                if(this.hitArray[i].Row == pos.Row && this.hitArray[i].Column == pos.Column) return true;
             }
         }
         return false;
@@ -191,7 +191,7 @@ export class MyBot {
     public alreadyMissAt(pos:Position):boolean{
         if(this.missArray){
             for(let i=0 ; i < this.missArray.length; i ++){
-                if(this.missArray[i] == pos) return true;
+                if(this.missArray[i].Row == pos.Row && this.missArray[i].Column == pos.Column) return true;
             }
         }
         return false;
@@ -200,16 +200,16 @@ export class MyBot {
 
     private hitButUnknownDirection(hitPosition:Position):Position{
         console.log(this.missArray.toString());
-        hitPosition.print("orig");
+        hitPosition.print("orig ");
         var nextShot =new Position(this.getUpRow(hitPosition.Row), hitPosition.Column);
-        nextShot.print("pos1");
+        nextShot.print("pos1 ");
         if(this.alreadyMissAt(nextShot) || hitPosition.Row == 'A'){
             nextShot = new Position(hitPosition.Row, this.getRightColumn(hitPosition.Column));
-            hitPosition.print("pos2");
+            hitPosition.print("pos2 ");
 
             if(this.alreadyMissAt(nextShot)){
                 nextShot =new Position(this.getDownRow(hitPosition.Row), hitPosition.Column);
-                hitPosition.print("pos3");
+                hitPosition.print("pos3 ");
                 if(this.alreadyMissAt(nextShot)){
                     nextShot = new Position(hitPosition.Row, this.getLeftColumn(hitPosition.Column));
                 }
