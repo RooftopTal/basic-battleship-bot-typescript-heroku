@@ -16,14 +16,12 @@ export class MyBot {
     private matchId: number;
 
     constructor() {
-        //firebase.initializeApp(this.config);
-        //this.authenticate();
-        //this.database = firebase.database();
-        this.gameNum = 1;
-        this.matchId = Math.floor(Math.random() * 10000) + 1;
-        //let exists: boolean = false;
-        //let counter = 0;
-        /*do {
+        firebase.initializeApp(this.config);
+        this.authenticate();
+        this.database = firebase.database();
+        let exists: boolean = false;
+        let counter = 0;
+        do {
             this.database.ref('matches/' + this.matchId.toString()).once('value').then((snapshot) => {
                 if (snapshot.val()) {
                     exists = true;
@@ -33,12 +31,12 @@ export class MyBot {
             if (counter > 10000) {
                 throw new Error("Infinite loop when constructing bot");
             }
-        } while (exists)*/
-        /*this.database.ref('matches/' + this.matchId.toString()).set({
+        } while (exists)
+        this.database.ref('matches/' + this.matchId.toString()).set({
             started: true
-        });*/
+        });
     }
-
+    
     public getShipPositions() {
         
         return [
@@ -76,13 +74,11 @@ export class MyBot {
         return column % 10 + 1;
     }
 
-    private 
-
-    /*private authenticate(): void {
+    private authenticate(): void {
         firebase.auth().signInWithEmailAndPassword(
             "david.may-miller@softwire.com",
             "securePassword3"
         );
-    }*/
+    }
 }
 
