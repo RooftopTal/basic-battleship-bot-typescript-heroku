@@ -148,7 +148,7 @@ export class MyBot {
 
                 if(!this.stateHitShipButNotSunk){
                     console.log("not sunk");
-                    return this.getNextTarget(gameState, previousShot);
+                    return this.getNextTarget(gameState, previousShot.Position);
                 }
                 else if(!this.stateKnowShipDirection){
                     let hitPosition;
