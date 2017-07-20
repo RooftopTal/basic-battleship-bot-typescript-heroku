@@ -181,7 +181,7 @@ export class MyBot {
 
     public alreadyMissAt(pos:Position):boolean{
         if(this.missArray){
-            for(let i=0 ; i < this.hitArray.length; i ++){
+            for(let i=0 ; i < this.missArray.length; i ++){
                 if(this.missArray[i] == pos) return true;
             }
         }
