@@ -25,7 +25,20 @@ export class Router {
         app.listen(app.get('port'), () => {
             console.log("Node app is running at localhost:" + app.get('port'));
         });
+
+               
+
     }
+
+    private static config = {
+        apiKey: "AIzaSyD6ACQdu7gK-BgtJs-3Hu1Lkczk8fp0Abo",
+        authDomain: "brokenbot-battleships.firebaseapp.com",
+        databaseURL: "https://brokenbot-battleships.firebaseio.com",
+        projectId: "brokenbot-battleships",
+        storageBucket: "brokenbot-battleships.appspot.com",
+        messagingSenderId: "705952561534"
+    };
+
 }
 
 Router.route();
