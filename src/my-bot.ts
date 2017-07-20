@@ -26,6 +26,7 @@ export class MyBot {
             var previousShot = gameState.MyShots[gameState.MyShots.length-1];
             if(previousShot.WasHit)
             {
+                console.log("last shot hit")
                 if(this.hitArray)this.hitArray[this.hitArray.length] = previousShot.position;
                 else this.hitArray = [previousShot.position];
                 if(this.stateHitShipButNotSunk)
@@ -139,11 +140,15 @@ export class MyBot {
             else
             {
                 //not hit
+                console.log("last shot missed")
 
                 if(this.missArray)this.missArray[this.missArray.length] = previousShot;
                 else this.missArray = [previousShot];
 
-                if(!this.stateHitShipButNotSunk)return this.getNextTarget(gameState, previousShot);
+                if(!this.stateHitShipButNotSunk){
+                    console.log("not sunk");
+                    return this.getNextTarget(gameState, previousShot);
+                }
                 else if(!this.stateKnowShipDirection){
                     let hitPosition;
                     for(let i = 2; i <= 5; i ++){
