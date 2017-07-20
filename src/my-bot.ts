@@ -1,4 +1,4 @@
-//import * as firebase from 'firebase';
+import * as firebase from 'firebase';
 import { Position } from './interfaces/position';
 import { ShipPlace } from './interfaces/shipPlace';
 import { Shot } from './interfaces/shot';
@@ -51,14 +51,14 @@ export class MyBot {
     }
 
     public selectTarget(gamestate) {
-        var previousShot = gamestate.MyShots && gamestate.MyShots[gamestate.MyShots.length-1];
+        var previousShot: Shot = gamestate.MyShots && gamestate.MyShots[gamestate.MyShots.length-1];
         if(previousShot) {
             return this.getNextTarget(previousShot.Position);
         }
         return { Row: "A", Column: 1 };  
     }
 
-    private getNextTarget(position) {
+    private getNextTarget(position: Position) {
         var column = this.getNextColumn(position.Column);
         var row = column === 1 ? this.getNextRow(position.Row) : position.Row;
         return { Row: row, Column: column }
