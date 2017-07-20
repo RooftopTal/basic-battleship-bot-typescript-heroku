@@ -70,6 +70,8 @@ export class MyBot {
                                     nextShot = new Position(previousShot.Position.Row, this.getLeftColumn(nextShot.Column));
                                     if(this.alreadyMissAt(nextShot)){
                                         // sunk************
+                                        this.stateHitShipButNotSunk = false;
+                                        this.stateKnowShipDirection =false;
                                     }
                                     else if(!this.alreadyHitAt){
                                         //havent shot at this position before
@@ -81,6 +83,8 @@ export class MyBot {
                                 }
                                 if(noMissLeft){
                                     //sunk ****************
+                                    this.stateHitShipButNotSunk = false;
+                                    this.stateKnowShipDirection =false;
                                 }
                                 else return nextShot;
                             }
@@ -94,6 +98,8 @@ export class MyBot {
                             let nextShot:Position =  new Position(previousShot.Position.Row, this.getLeftColumn(previousShot.Position.column));
                             if(this.alreadyMissAt(nextShot)){
                                 //sunk ***********
+                                this.stateHitShipButNotSunk = false;
+                                this.stateKnowShipDirection =false;
                             }
                             return nextShot;
                         }
@@ -113,6 +119,8 @@ export class MyBot {
                                     nextShot =  new Position(this.getDownRow(nextShot.Row), previousShot.Position.Column);
                                     if(this.alreadyMissAt(nextShot)){
                                         // sunk************
+                                        this.stateHitShipButNotSunk = false;
+                                        this.stateKnowShipDirection =false;
                                     }
                                     else if(!this.alreadyHitAt){
                                         //havent shot at this position before
@@ -124,6 +132,8 @@ export class MyBot {
                                 }
                                 if(noMissDown){
                                     //sunk ****************
+                                    this.stateHitShipButNotSunk = false;
+                                    this.stateKnowShipDirection =false;
                                 }
                                 else return nextShot;
                             }
@@ -137,6 +147,8 @@ export class MyBot {
                             let nextShot:Position =  new Position(this.getDownRow(previousShot.Position.Row), previousShot.Position.Column);
                             if(this.alreadyMissAt(nextShot)){
                                 //sunk ***********
+                                this.stateHitShipButNotSunk = false;
+                                this.stateKnowShipDirection =false;
                             }
                             return nextShot;
                         }
@@ -174,6 +186,16 @@ export class MyBot {
                 else
                 {
                     //end of ship come to *******check other end or sunk
+                    if(!this.stateWalkingPositiveAxis){
+                        //sunk 
+                        this.stateHitShipButNotSunk = false;
+                        this.stateKnowShipDirection =false;
+                    }
+                    else{
+                        this.stateWalkingPositiveAxis = false;
+                        // this is a bad inefficient hack but feeling lazy ***********
+                        return this.selectTarget(gameState);
+                    }
                 }
             }
 
