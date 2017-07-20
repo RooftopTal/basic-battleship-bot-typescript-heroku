@@ -27,8 +27,8 @@ export class MyBot {
             if(previousShot.WasHit)
             {
                 console.log("last shot hit" + previousShot.Position.Column + previousShot.Position.Row)
-                if(this.hitArray)this.hitArray[this.hitArray.length] = previousShot.Position;
-                else this.hitArray = [previousShot.Position];
+                if(this.hitArray)this.hitArray[this.hitArray.length] = new Position(previousShot.Position.Row,previousShot.Position.Column);
+                else this.hitArray = [new Position(previousShot.Position.Row,previousShot.Position.Column)];
 
 
                 if(this.stateHitShipButNotSunk)
@@ -44,7 +44,8 @@ export class MyBot {
                             break; 
                         }
                     }
-                    this.stateHorizontalShip = this.shipHorizontal(previousShot.Position,positionHitBefore);
+                    positionHitBefore.print("last hit at ");
+                    this.stateHorizontalShip = this.shipHorizontal(new Position(previousShot.Position.Row, previousShot.Position.Column),positionHitBefore);
                     this.stateKnowShipDirection = true;
                     this.stateWalkingPositiveAxis = (onShot == 2 || onShot == 3);
                 }
@@ -151,12 +152,12 @@ export class MyBot {
             {
                 //not hit
                 console.log("last shot missed")
-                if(this.missArray)this.missArray[this.missArray.length] = previousShot.Position;
-                else this.missArray = [previousShot.Position];
+                if(this.missArray)this.missArray[this.missArray.length] = new Position(previousShot.Position.Row,previousShot.Position.Column);
+                else this.missArray = [new Position(previousShot.Position.Row,previousShot.Position.Column)];
 
                 if(!this.stateHitShipButNotSunk){
                     console.log("not sunk");
-                    return this.getNextTarget(gameState, previousShot.Position);
+                    return this.getNextTarget(gameState, new Position(previousShot.Position.Row,previousShot.Position.Column));
                 }
                 else if(!this.stateKnowShipDirection){
                     let hitPosition;
@@ -174,7 +175,7 @@ export class MyBot {
                 }
             }
 
-            return this.getNextTarget(gameState,previousShot.Position);
+            return this.getNextTarget(gameState,new Position(previousShot.Position.Row,previousShot.Position.Column));
         }
         return { Row: "A", Column: 1 };  
     }
@@ -222,6 +223,7 @@ export class MyBot {
         if(shot1.Row == shot2.Row){
             return true;
         }
+        console.log("not horizontal = "+ shot1.Row +" = " + shot2.Row)
         return false;
     }
 
@@ -231,7 +233,7 @@ export class MyBot {
     //     if(gameState.MyShots[gameState.length-2].WasHit){
     //         //hit two in a row
     //         var shotBefore = gameState.MyShots[gameState.length-2];
-    //         if(shotBefore.Position.Column == previousShot.Position.Column){
+    //         if(shotBefore.Position.Column == new Position(previousShot.Position.Row,previousShot.Position.Column).Column){
     //             //shots in the same column so ship is verticle so try next;
     //             if(shotBefore.Row.charCodeAt(0) >= previousShot.Row.charCodeAt(0)+1){
     //                 //shot sequence is going down --assume top of boat is found
