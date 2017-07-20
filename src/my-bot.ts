@@ -35,12 +35,12 @@ export class MyBot {
                 {
                     console.log("already shot at ship")
                     //second hit on ship so can find direction
-                    let positionHitBefore;
+                    let positionHitBefore:Position;
                     let onShot;
                     for(let i =2; i <= 5; i++){
                         if(gameState.MyShots[gameState.MyShots.length-i].WasHit){
-                            const therePos = gameState.MyShots[gameState.MyShots.length-i];
-                            positionHitBefore = new Position(therePos.Position.Row, therePos.Position.Column);
+                            const therePos = gameState.MyShots[gameState.MyShots.length-i].Position;
+                            positionHitBefore = new Position(therePos.Row, therePos.Column);
                             onShot = i;
                             break; 
                         }
