@@ -143,7 +143,7 @@ export class MyBot {
                 else{
                     //find the direction by hitting around the hit
                     console.log("calling unknownDirectoin")
-                    return this.hitButUnknownDirection(previousShot.Position);
+                    return this.hitButUnknownDirection(new Position(previousShot.Position.Row, previousShot.Position.Column));
                 }
                 this.stateHitShipButNotSunk = true;
             }
