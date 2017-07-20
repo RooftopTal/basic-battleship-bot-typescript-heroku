@@ -13,6 +13,10 @@ export class MyBot {
         ]
     }
 
+    private walkingPositive(firstPos:Position, secondPos:Position){
+        return firstPos.Row > secondPos.Row || firstPos.Column < secondPos.Column;
+    }
+
     public selectTarget(gameState) {
         console.log("turn "+ (gameState.MyShots.length+1))
         var ispreviousShot = gameState.MyShots && gameState.MyShots[gameState.MyShots.length-1];
@@ -25,7 +29,7 @@ export class MyBot {
                 else this.state.hitArray = [new Position(previousShot.Position.Row,previousShot.Position.Column)];
 
 
-                if(this.state.stateHitShipButNotSunk)
+                if(this.state.stateHitShipButNotSunk  && !this.state.stateKnowShipDirection)
                 {
                     console.log("already shot at ship")
                     //second hit on ship so can find direction
@@ -42,7 +46,7 @@ export class MyBot {
                     positionHitBefore.print("last hit at ");
                     this.state.stateHorizontalShip = this.shipHorizontal(new Position(previousShot.Position.Row, previousShot.Position.Column),positionHitBefore);
                     this.state.stateKnowShipDirection = true;
-                    this.state.stateWalkingPositiveAxis = (onShot == 2 || onShot == 3);
+                    this.state.stateWalkingPositiveAxis = this.walkingPositive(positionHitBefore, new Position(previousShot.Position.Row, previousShot.Position.Column));
                 }
 
                 if(this.state.stateKnowShipDirection){
@@ -138,11 +142,13 @@ export class MyBot {
                         }
                         else{
                             //next guess down
+                            console.log("guessing down")
                             let nextShot:Position =  new Position(this.getDownRow(previousShot.Position.Row), previousShot.Position.Column);
                             if(this.alreadyMissAt(nextShot)){
                                 //sunk ***********
                                 this.state.stateHitShipButNotSunk = false;
                                 this.state.stateKnowShipDirection =false;
+                                return this.getNextTarget(gameState,previousShot);
                             }
                             return nextShot;
                         }
