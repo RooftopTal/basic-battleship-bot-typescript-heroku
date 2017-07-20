@@ -21,9 +21,9 @@ export class MyBot {
 
     public selectTarget(gameState) {
         console.log("turn "+ (gameState.MyShots.length+1))
-        var previousShot = gameState.MyShots && gameState.MyShots[gameState.MyShots.length-1];
-        if(previousShot) {
-
+        var ispreviousShot = gameState.MyShots && gameState.MyShots[gameState.MyShots.length-1];
+        if(ispreviousShot) {
+            var previousShot = gameState.MyShots[gameState.MyShots.length-1];
             if(previousShot.WasHit())
             {
                 if(this.hitArray)this.hitArray[this.hitArray.length] = previousShot.position;
