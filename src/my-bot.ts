@@ -141,6 +141,7 @@ export class MyBot {
             {
                 //not hit
                 console.log("last shot missed")
+                console.log("at pos "+ previousShot + " " +previousShot.Position + "   " +previousShot.Position.Column);
 
                 if(this.missArray)this.missArray[this.missArray.length] = previousShot;
                 else this.missArray = [previousShot];
