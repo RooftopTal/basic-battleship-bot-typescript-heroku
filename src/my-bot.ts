@@ -38,7 +38,8 @@ export class MyBot {
             }
         } while (exists)
         this.database.ref('matches/' + this.matchId.toString()).set({
-            started: true
+            started: true,
+            hitmode: false
         });
         return [
             this.getAirCarrierPlace(),
@@ -51,13 +52,18 @@ export class MyBot {
 
     public selectTarget(gamestate): Position {
         if (gamestate.MyShots.length === 0) {
-            return this.randomShot()
+            return this.randomShot(gamestate)
         }
         var previousShot: Shot = gamestate.MyShots && gamestate.MyShots[gamestate.MyShots.length-1];
-        if(previousShot) {
-            return this.getNextTarget(previousShot.Position);
-        }
-        return { Row: "A", Column: 1 };  
+        this.database.ref('matches/' + this.matchId.toString()).set({
+            hitmode: true
+        });
+        this.database.ref('matches/' + this.matchId.toString()).once('value').then((snapshot) => {
+            if (snapshot.val().hitmode) {
+                return this.track(gamestate);
+            }
+        });
+        return this.getNextTarget(previousShot.Position);
     }
 
     private getNextTarget(position: Position): Position {
@@ -105,10 +111,18 @@ export class MyBot {
         return { StartingSquare: { Row: "I", Column: 1 }, EndingSquare : { Row: "I", Column: 2 } }
     }
 
-    private randomShot(): Position {
-        const row: string = String.fromCharCode(Math.floor(Math.random() * 10) + 65);
-        const column: number = Math.floor(Math.random() * 10);
-        return { Row: row, Column: column }
+    private randomShot(gamestate): Position {
+        let position: Position = { Row: 'A', Column: 1 };
+        do {
+            const row: string = String.fromCharCode(Math.floor(Math.random() * 10) + 65);
+            const column: number = Math.floor(Math.random() * 10);
+            position = { Row: row, Column: column};
+        } while (gamestate.MyShots.contains(position))
+        return position
+    }
+
+    private track(gamestate): Position {
+        return this.randomShot(gamestate);
     }
 }
 
