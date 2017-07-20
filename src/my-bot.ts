@@ -171,15 +171,19 @@ export class MyBot {
     }
 
     public alreadyHitAt(pos:Position):boolean{
-        for(let i=0 ; i < this.hitArray.length; i ++){
-            if(this.hitArray[i] == pos) return true;
+        if(this.hitArray){
+            for(let i=0 ; i < this.hitArray.length; i ++){
+                if(this.hitArray[i] == pos) return true;
+            }
         }
         return false;
     }
 
     public alreadyMissAt(pos:Position):boolean{
-        for(let i=0 ; i < this.hitArray.length; i ++){
-            if(this.missArray[i] == pos) return true;
+        if(this.missArray){
+            for(let i=0 ; i < this.hitArray.length; i ++){
+                if(this.missArray[i] == pos) return true;
+            }
         }
         return false;
     }
