@@ -1,7 +1,7 @@
 {
-  "name": "basicbot",
-  "version": "1.0.0",
-  "description": "basic template for ts battleship challenges",
+  "name": "brokenbot",
+  "version": "-3.0e",
+  "description": "bad ai for playing battleships",
   "main": "router.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
