@@ -24,7 +24,7 @@ export class MyBot {
         var ispreviousShot = gameState.MyShots && gameState.MyShots[gameState.MyShots.length-1];
         if(ispreviousShot) {
             var previousShot = gameState.MyShots[gameState.MyShots.length-1];
-            if(previousShot.WasHit())
+            if(previousShot.WasHit)
             {
                 if(this.hitArray)this.hitArray[this.hitArray.length] = previousShot.position;
                 else this.hitArray = [previousShot.position];
