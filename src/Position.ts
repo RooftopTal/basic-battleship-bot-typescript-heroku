@@ -5,6 +5,6 @@ export class Position
     }
     public print(start:string)
     {
-        console.log(start + "Position = " + this.Column + ", "+ this.Row);
+        console.log(start + "Position = " + this.Column+ this.Row);
     }
 }

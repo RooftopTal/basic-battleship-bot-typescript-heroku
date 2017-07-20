@@ -201,7 +201,7 @@ export class MyBot {
     private hitButUnknownDirection(hitPosition:Position):Position{
         hitPosition.print("orig");
         var nextShot =new Position(this.getUpRow(hitPosition.Row), hitPosition.Column);
-        hitPosition.print("pos1");
+        nextShot.print("pos1");
         if(this.alreadyMissAt(nextShot)){
             nextShot = new Position(hitPosition.Row, this.getRightColumn(hitPosition.Column));
             hitPosition.print("pos2");
