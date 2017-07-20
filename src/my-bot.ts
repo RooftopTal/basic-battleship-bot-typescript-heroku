@@ -26,7 +26,7 @@ export class MyBot {
             var previousShot = gameState.MyShots[gameState.MyShots.length-1];
             if(previousShot.WasHit)
             {
-                console.log("last shot hit")
+                console.log("last shot hit" + previousShot.Position.Column + previousShot.Position.Row)
                 if(this.hitArray)this.hitArray[this.hitArray.length] = previousShot.Position;
                 else this.hitArray = [previousShot.Position];
 
@@ -199,18 +199,17 @@ export class MyBot {
 
 
     private hitButUnknownDirection(hitPosition:Position):Position{
-        console.log(this.missArray.toString());
         hitPosition.print("orig ");
         var nextShot =new Position(this.getUpRow(hitPosition.Row), hitPosition.Column);
         nextShot.print("pos1 ");
-        if(this.alreadyMissAt(nextShot) || hitPosition.Row == 'A'){
+        if(this.alreadyMissAt(nextShot) || this.alreadyHitAt(nextShot) || hitPosition.Row == 'A'){
             nextShot = new Position(hitPosition.Row, this.getRightColumn(hitPosition.Column));
-            hitPosition.print("pos2 ");
+            nextShot.print("pos2 ");
 
-            if(this.alreadyMissAt(nextShot)){
+            if(this.alreadyMissAt(nextShot) || this.alreadyHitAt(nextShot)|| hitPosition.Column == 10){
                 nextShot =new Position(this.getDownRow(hitPosition.Row), hitPosition.Column);
-                hitPosition.print("pos3 ");
-                if(this.alreadyMissAt(nextShot)){
+                nextShot.print("pos3 ");
+                if(this.alreadyMissAt(nextShot) || this.alreadyHitAt(nextShot) || hitPosition.Row == 'J'){
                     nextShot = new Position(hitPosition.Row, this.getLeftColumn(hitPosition.Column));
                 }
             }
