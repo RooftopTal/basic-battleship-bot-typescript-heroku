@@ -251,13 +251,13 @@ export class MyBot {
         return bottomPos;
     }
 
-    private getNextTarget(gameState,position):Position {
+    private getNextTarget(gameState,position:Position):Position {
         console.log("get next Target method");
         var column = this.getRightColumn(position.Column);
         var row = column === 1 ? this.getDownRow(position.Row) : position.Row;
         var nextPos:Position = new Position(row,column);
         console.log("try "  + nextPos);
-        if(!(this.alreadyHitAt(position) || this.alreadyMissAt(position))) return position;
+        if(!(this.alreadyHitAt(position) || this.alreadyMissAt(position))) return nextPos;
         else return this.getNextTarget(gameState,nextPos);
     }
 
