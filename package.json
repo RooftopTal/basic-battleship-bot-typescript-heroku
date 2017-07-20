@@ -5,7 +5,7 @@
   "main": "router.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "tsc -p . && npm uninstall @types/firebase && node router.js"
+    "start": "npm uninstall @types/firebase && tsc -p . && node router.js"
   },
   "author": "tal",
   "license": "ISC",
