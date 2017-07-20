@@ -42,7 +42,9 @@ export class MyBot {
     }
     
     public getShipPositions() {
-        
+        this.database.ref().set({
+            test: true
+        });
         return [
             this.getAirCarrierPlace(),
             this.getBattleshipPlace(),
