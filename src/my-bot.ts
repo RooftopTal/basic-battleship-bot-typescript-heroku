@@ -5,7 +5,6 @@ import { Shot } from './interfaces/shot';
 
 export class MyBot {
 
-    private database;
     private config = {
         apiKey: "AIzaSyD6ACQdu7gK-BgtJs-3Hu1Lkczk8fp0Abo",
         authDomain: "brokenbot-battleships.firebaseapp.com",
@@ -17,7 +16,7 @@ export class MyBot {
     constructor() {
         firebase.initializeApp(this.config);
         this.authenticate();
-        this.database = firebase.database();        
+        firebase.database() = firebase.database();        
     }
     
     public getShipPositions() {
@@ -25,7 +24,7 @@ export class MyBot {
         let counter: number = 0;        
         do {
             this.matchId = Math.floor(Math.random() * 1000) + 1;
-            this.database.ref('matches/' + this.matchId.toString()).once('value').then((snapshot) => {
+            firebase.database().ref('matches/' + this.matchId.toString()).once('value').then((snapshot) => {
                 if (snapshot.val()) {
                     exists = true;
                 } else {
@@ -37,7 +36,7 @@ export class MyBot {
                 throw new Error("Infinite loop when constructing bot");
             }
         } while (exists)
-        this.database.ref('matches/' + this.matchId.toString()).set({
+        firebase.database().ref('matches/' + this.matchId.toString()).set({
             started: true,
             hitmode: false
         });
@@ -55,10 +54,10 @@ export class MyBot {
             return this.randomShot(gamestate)
         }
         var previousShot: Shot = gamestate.MyShots && gamestate.MyShots[gamestate.MyShots.length-1];
-        this.database.ref('matches/' + this.matchId.toString()).set({
+        firebase.database().ref('matches/' + this.matchId.toString()).set({
             hitmode: true
         });
-        this.database.ref('matches/' + this.matchId.toString()).once('value').then((snapshot) => {
+        firebase.database().ref('matches/' + this.matchId.toString()).once('value').then((snapshot) => {
             if (snapshot.val().hitmode) {
                 return this.track(gamestate);
             }
