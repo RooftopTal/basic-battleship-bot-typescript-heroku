@@ -248,12 +248,12 @@ export class MyBot {
     }
 
     private getNextTarget(gameState,position):Position {
+        console.log("get next Target method");
         var column = this.getRightColumn(position.Column);
         var row = column === 1 ? this.getDownRow(position.Row) : position.Row;
         var nextPos = { Row: row, Column: column };
         if(!gameState.MyShots.includes(position)) return position;
-        else this.getNextTarget(gameState,nextPos);
-
+        else return this.getNextTarget(gameState,nextPos);
     }
 
     private getDownRow(row) {
