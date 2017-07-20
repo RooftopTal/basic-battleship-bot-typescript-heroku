@@ -252,7 +252,7 @@ export class MyBot {
     }
 
     private getNextTarget(gameState,position:Position):Position {
-        console.log("get next Target method");
+        console.log("get next Target method " + position.toString() );
         var column = this.getRightColumn(position.Column);
         var row:string = column === 1 ? this.getDownRow(position.Row) : position.Row;
         var nextPos:Position = new Position(row,column);
