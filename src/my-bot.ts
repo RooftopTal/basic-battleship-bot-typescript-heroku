@@ -20,6 +20,7 @@ export class MyBot {
     }
 
     public selectTarget(gameState) {
+        console.log("turn "+ (gameState.MyShots.length+1))
         var previousShot = gameState.MyShots && gameState.MyShots[gameState.MyShots.length-1];
         if(previousShot) {
 
