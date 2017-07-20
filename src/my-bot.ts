@@ -29,8 +29,11 @@ export class MyBot {
                 console.log("last shot hit")
                 if(this.hitArray)this.hitArray[this.hitArray.length] = previousShot.Position;
                 else this.hitArray = [previousShot.Position];
+
+
                 if(this.stateHitShipButNotSunk)
                 {
+                    console.log("already shot at ship")
                     //second hit on ship so can find direction
                     let positionHitBefore;
                     let onShot;
@@ -47,9 +50,13 @@ export class MyBot {
                 }
 
                 if(this.stateKnowShipDirection){
+                    console.log("already shot at ship")
                     //walk along ship in correct direction ********
                     if(this.stateHorizontalShip){
+                        console.log("horizont ship")
                         if(this.stateWalkingPositiveAxis){
+                             console.log("walking positive")
+
                             //next guess to right
                             let nextShot:Position =  new Position(previousShot.Position.Row, this.getRightColumn(previousShot.Position.Column));
                             if(this.alreadyHitAt(nextShot) || this.alreadyMissAt(nextShot) || nextShot.Column == 1){
@@ -90,6 +97,7 @@ export class MyBot {
                         }
                     }
                     else{
+                        console.log("vert ship")
                         //vertical ship
                         if(this.stateWalkingPositiveAxis){
                             //next guess up
@@ -134,8 +142,10 @@ export class MyBot {
                 }
                 else{
                     //find the direction by hitting around the hit
+                    console.log("calling unknownDirectoin")
                     return this.hitButUnknownDirection(previousShot.Position);
                 }
+                this.stateHitShipButNotSunk = true;
             }
             else
             {
@@ -189,13 +199,18 @@ export class MyBot {
 
 
     private hitButUnknownDirection(hitPosition:Position):Position{
-        var nextShot ={Row:this.getUpRow(hitPosition.Row), Column: hitPosition.Column};
+        hitPosition.print("orig");
+        var nextShot =new Position(this.getUpRow(hitPosition.Row), hitPosition.Column);
+        hitPosition.print("pos1");
         if(this.alreadyMissAt(nextShot)){
-            nextShot = {Row:hitPosition.Row, Column: this.getRightColumn(hitPosition.Column)};
+            nextShot = new Position(hitPosition.Row, this.getRightColumn(hitPosition.Column));
+            hitPosition.print("pos2");
+
             if(this.alreadyMissAt(nextShot)){
-                nextShot ={Row:this.getDownRow(hitPosition.Row), Column: hitPosition.Column};
+                nextShot =new Position(this.getDownRow(hitPosition.Row), hitPosition.Column);
+                hitPosition.print("pos3");
                 if(this.alreadyMissAt(nextShot)){
-                    nextShot = {Row:hitPosition.Row, Column: this.getLeftColumn(hitPosition.Column)};
+                    nextShot = new Position(hitPosition.Row, this.getLeftColumn(hitPosition.Column));
                 }
             }
         }
