@@ -12,16 +12,17 @@ export class MyBot {
         databaseURL: "https://brokenbot-battleships.firebaseio.com",
         storageBucket: "brokenbot-battleships.appspot.com"
     };
-    private gameNum: number;
     private matchId: number;
 
     constructor() {
         firebase.initializeApp(this.config);
         this.authenticate();
-        this.database = firebase.database();
+        this.database = firebase.database();        
+    }
+    
+    public getShipPositions() {
         let exists: boolean = false;
-        let counter = 0;
-        this.gameNum = 1;
+        let counter: number = 0;        
         do {
             this.matchId = Math.floor(Math.random() * 1000) + 1;
             this.database.ref('matches/' + this.matchId.toString()).once('value').then((snapshot) => {
@@ -37,13 +38,7 @@ export class MyBot {
             }
         } while (exists)
         this.database.ref('matches/' + this.matchId.toString()).set({
-            started: "Hello"
-        });
-    }
-    
-    public getShipPositions() {
-        this.database.ref().set({
-            test: true
+            started: true
         });
         return [
             this.getAirCarrierPlace(),
@@ -54,7 +49,10 @@ export class MyBot {
         ]
     }
 
-    public selectTarget(gamestate) {
+    public selectTarget(gamestate): Position {
+        if (gamestate.MyShots.length === 0) {
+            return this.randomShot()
+        }
         var previousShot: Shot = gamestate.MyShots && gamestate.MyShots[gamestate.MyShots.length-1];
         if(previousShot) {
             return this.getNextTarget(previousShot.Position);
@@ -62,7 +60,7 @@ export class MyBot {
         return { Row: "A", Column: 1 };  
     }
 
-    private getNextTarget(position: Position) {
+    private getNextTarget(position: Position): Position {
         var column = this.getNextColumn(position.Column);
         var row = column === 1 ? this.getNextRow(position.Row) : position.Row;
         return { Row: row, Column: column }
@@ -105,6 +103,12 @@ export class MyBot {
 
     private getPatrolPlace(): ShipPlace {
         return { StartingSquare: { Row: "I", Column: 1 }, EndingSquare : { Row: "I", Column: 2 } }
+    }
+
+    private randomShot(): Position {
+        const row: string = String.fromCharCode(Math.floor(Math.random() * 10) + 65);
+        const column: number = Math.floor(Math.random() * 10);
+        return { Row: row, Column: column }
     }
 }
 
