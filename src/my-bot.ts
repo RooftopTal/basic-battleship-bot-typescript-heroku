@@ -177,7 +177,7 @@ export class MyBot {
                 else this.state.missArray = [new Position(previousShot.Position.Row,previousShot.Position.Column)];
 
                 if(!this.state.stateHitShipButNotSunk){
-                    console.log("not sunk");
+                    console.log("not sinking");
                     return this.getNextTarget(gameState, new Position(previousShot.Position.Row,previousShot.Position.Column));
                 }
                 else if(!this.state.stateKnowShipDirection){
@@ -202,8 +202,7 @@ export class MyBot {
                     }
                     else{
                         this.state.stateWalkingPositiveAxis = false;
-                        // this is a bad inefficient hack but feeling lazy ***********
-                        return this.selectTarget(gameState);
+                        // TODO this make it check the other end of the ship -- this is called when come to the end of a ship walking up/ right - need to confirm other end not hit see page
                     }
                 }
             }
