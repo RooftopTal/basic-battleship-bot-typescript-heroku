@@ -57,12 +57,21 @@ export class MyBot {
         firebase.database().ref('matches/' + this.matchId.toString()).set({
             hitmode: true
         });
-        firebase.database().ref('matches/' + this.matchId.toString()).once('value').then((snapshot) => {
-            console.log(snapshot.val().hitmode);
-            if (snapshot.val().hitmode) {
-                result = this.track(gamestate);
-            }
+        const dataPromise: Promise<any> = new Promise<any>((resolve, reject) => {
+            firebase.database().ref('matches/' + this.matchId.toString()).once('value').then((snapshot) => {
+                resolve(snapshot);
+            });
         });
+        dataPromise
+            .then((snapshot) => {
+                if (snapshot.val().hitmode) {
+                    result = this.track(gamestate);
+                }
+            })
+            .catch((err) => {
+                console.log(err);
+            });
+            
         return result;
     }
 
