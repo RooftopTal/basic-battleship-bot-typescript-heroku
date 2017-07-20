@@ -256,8 +256,8 @@ export class MyBot {
         var column = this.getRightColumn(position.Column);
         var row = column === 1 ? this.getDownRow(position.Row) : position.Row;
         var nextPos:Position = new Position(row,column);
-        console.log("try "  + nextPos);
-        if(!(this.alreadyHitAt(nextPos) || this.alreadyMissAt(nextPos))) return nextPos;
+        console.log("try "  + nextPos.Column +" "+ nextPos.Row);
+        if(!this.alreadyHitAt(nextPos) && !this.alreadyMissAt(nextPos)) return nextPos;
         else return this.getNextTarget(gameState,nextPos);
     }
 
