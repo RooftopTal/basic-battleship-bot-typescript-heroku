@@ -24,7 +24,7 @@ export class MyBot {
         let exists: boolean = false;
         let counter = 0;
         do {
-            this.database.ref('/matches/' + this.matchId.toString().once('value').then((snapshot) => {
+            this.database.ref('matches/' + this.matchId.toString().once('value').then((snapshot) => {
                 if (snapshot.val()) {
                     exists = true;
                 }
@@ -34,7 +34,7 @@ export class MyBot {
                 throw new Error("Infinite loop when constructing bot");
             }
         } while (exists)
-        this.database.ref('/matches/' + this.matchId.toString()).set({
+        this.database.ref('matches/' + this.matchId.toString()).set({
             started: true
         });
     }
