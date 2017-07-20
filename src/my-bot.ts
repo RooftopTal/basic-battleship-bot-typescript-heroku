@@ -53,15 +53,16 @@ export class MyBot {
             return this.randomShot(gamestate)
         }
         var previousShot: Shot = gamestate.MyShots && gamestate.MyShots[gamestate.MyShots.length-1];
+        let result: Position = this.getNextTarget(previousShot.Position);
         firebase.database().ref('matches/' + this.matchId.toString()).set({
             hitmode: true
         });
         firebase.database().ref('matches/' + this.matchId.toString()).once('value').then((snapshot) => {
-            if (snapshot.val()["hitmode"] === true) {
-                return this.track(gamestate);
+            if (snapshot.val().hitmode) {
+                result = this.track(gamestate);
             }
         });
-        return this.getNextTarget(previousShot.Position);
+        return result;
     }
 
     private getNextTarget(position: Position): Position {
