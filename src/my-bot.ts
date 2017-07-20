@@ -61,9 +61,7 @@ export class MyBot {
             if (snapshot.val().hitmode) {
                 result = this.track(gamestate);
             }
-            console.log(result);
-        });                
-        console.log(result);    
+        });                   
         return result;
     }
 
