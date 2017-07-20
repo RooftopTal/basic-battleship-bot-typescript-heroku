@@ -1,6 +1,6 @@
 {
   "name": "brokenbot",
-  "version": "-3.0e",
+  "version": "0.0.2",
   "description": "bad ai for playing battleships",
   "main": "router.js",
   "scripts": {
