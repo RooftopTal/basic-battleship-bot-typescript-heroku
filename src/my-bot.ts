@@ -58,6 +58,7 @@ export class MyBot {
             hitmode: true
         });
         firebase.database().ref('matches/' + this.matchId.toString()).once('value').then((snapshot) => {
+            console.log(snapshot.val().hitmode);
             if (snapshot.val().hitmode) {
                 result = this.track(gamestate);
             }
