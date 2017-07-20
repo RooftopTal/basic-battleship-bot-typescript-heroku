@@ -73,7 +73,7 @@ export class MyBot {
             .catch((err) => {
                 console.log(err);
             });
-            
+        console.log(result);    
         return result;
     }
 
