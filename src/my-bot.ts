@@ -27,8 +27,8 @@ export class MyBot {
             if(previousShot.WasHit)
             {
                 console.log("last shot hit")
-                if(this.hitArray)this.hitArray[this.hitArray.length] = previousShot.position;
-                else this.hitArray = [previousShot.position];
+                if(this.hitArray)this.hitArray[this.hitArray.length] = previousShot.Position;
+                else this.hitArray = [previousShot.Position];
                 if(this.stateHitShipButNotSunk)
                 {
                     //second hit on ship so can find direction
@@ -41,7 +41,7 @@ export class MyBot {
                             break; 
                         }
                     }
-                    this.stateHorizontalShip = this.shipHorizontal(previousShot.position,positionHitBefore);
+                    this.stateHorizontalShip = this.shipHorizontal(previousShot.Position,positionHitBefore);
                     this.stateKnowShipDirection = true;
                     this.stateWalkingPositiveAxis = (onShot == 2 || onShot == 3);
                 }
@@ -51,14 +51,14 @@ export class MyBot {
                     if(this.stateHorizontalShip){
                         if(this.stateWalkingPositiveAxis){
                             //next guess to right
-                            let nextShot:Position =  new Position(previousShot.position.Row, this.getRightColumn(previousShot.position.Column));
+                            let nextShot:Position =  new Position(previousShot.Position.Row, this.getRightColumn(previousShot.Position.Column));
                             if(this.alreadyHitAt(nextShot) || this.alreadyMissAt(nextShot) || nextShot.Column == 1){
                                 //clearly to the right is a miss or not on screen so need to find next left guess
                                 this.stateWalkingPositiveAxis = false;
                                 let noMissLeft = false;
                                 for(let i = 2; i <= 4; i ++){
                                     //test position i positions left of current guess
-                                    nextShot = new Position(previousShot.position.Row, this.getLeftColumn(nextShot.Column));
+                                    nextShot = new Position(previousShot.Position.Row, this.getLeftColumn(nextShot.Column));
                                     if(this.alreadyMissAt(nextShot)){
                                         // sunk************
                                     }
@@ -82,7 +82,7 @@ export class MyBot {
                         }
                         else{
                             //next guess to left
-                            let nextShot:Position =  new Position(previousShot.position.Row, this.getLeftColumn(previousShot.position.column));
+                            let nextShot:Position =  new Position(previousShot.Position.Row, this.getLeftColumn(previousShot.Position.column));
                             if(this.alreadyMissAt(nextShot)){
                                 //sunk ***********
                             }
@@ -93,14 +93,14 @@ export class MyBot {
                         //vertical ship
                         if(this.stateWalkingPositiveAxis){
                             //next guess up
-                            let nextShot:Position =  new Position(this.getUpRow(previousShot.position.Row), previousShot.position.Column);
+                            let nextShot:Position =  new Position(this.getUpRow(previousShot.Position.Row), previousShot.Position.Column);
                             if(this.alreadyHitAt(nextShot) || this.alreadyMissAt(nextShot) || nextShot.Column == 1){
                                 //clearly to the right is a miss or not on screen so need to find next left guess
                                 this.stateWalkingPositiveAxis = false;
                                 let noMissDown = false;
                                 for(let i = 2; i <= 4; i ++){
                                     //test position i positions left of current guess
-                                    nextShot =  new Position(this.getDownRow(nextShot.Row), previousShot.position.Column);
+                                    nextShot =  new Position(this.getDownRow(nextShot.Row), previousShot.Position.Column);
                                     if(this.alreadyMissAt(nextShot)){
                                         // sunk************
                                     }
@@ -124,7 +124,7 @@ export class MyBot {
                         }
                         else{
                             //next guess down
-                            let nextShot:Position =  new Position(this.getDownRow(previousShot.position.Row), previousShot.position.Column);
+                            let nextShot:Position =  new Position(this.getDownRow(previousShot.Position.Row), previousShot.Position.Column);
                             if(this.alreadyMissAt(nextShot)){
                                 //sunk ***********
                             }
@@ -134,17 +134,15 @@ export class MyBot {
                 }
                 else{
                     //find the direction by hitting around the hit
-                    return this.hitButUnknownDirection(previousShot);
+                    return this.hitButUnknownDirection(previousShot.Position);
                 }
             }
             else
             {
                 //not hit
                 console.log("last shot missed")
-                console.log("at pos "+ previousShot + " " +previousShot.Position + "   " +previousShot.Position.Column);
-
-                if(this.missArray)this.missArray[this.missArray.length] = previousShot;
-                else this.missArray = [previousShot];
+                if(this.missArray)this.missArray[this.missArray.length] = previousShot.Position;
+                else this.missArray = [previousShot.Position];
 
                 if(!this.stateHitShipButNotSunk){
                     console.log("not sunk");
