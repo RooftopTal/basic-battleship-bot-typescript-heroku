@@ -199,10 +199,11 @@ export class MyBot {
 
 
     private hitButUnknownDirection(hitPosition:Position):Position{
+        console.log(this.missArray.toString());
         hitPosition.print("orig");
         var nextShot =new Position(this.getUpRow(hitPosition.Row), hitPosition.Column);
         nextShot.print("pos1");
-        if(this.alreadyMissAt(nextShot)){
+        if(this.alreadyMissAt(nextShot) || hitPosition.Row == 'A'){
             nextShot = new Position(hitPosition.Row, this.getRightColumn(hitPosition.Column));
             hitPosition.print("pos2");
 
