@@ -15,8 +15,7 @@ export class MyBot {
 
     constructor() {
         firebase.initializeApp(this.config);
-        this.authenticate();
-        firebase.database() = firebase.database();        
+        this.authenticate();        
     }
     
     public getShipPositions() {
