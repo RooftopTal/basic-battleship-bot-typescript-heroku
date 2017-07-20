@@ -21,6 +21,8 @@ export class MyBot {
         this.database = firebase.database();
         let exists: boolean = false;
         let counter = 0;
+        this.matchId = Math.floor(Math.random() * 1000) + 1;
+        this.gameNum = 1;
         /*do {
             this.database.ref('matches/' + this.matchId.toString()).once('value').then((snapshot) => {
                 if (snapshot.val()) {
