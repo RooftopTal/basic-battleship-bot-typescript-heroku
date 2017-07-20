@@ -21,9 +21,9 @@ export class MyBot {
         this.database = firebase.database();
         this.gameNum = 1;
         this.matchId = Math.floor(Math.random() * 10000) + 1;
-        let exists: boolean = false;
-        let counter = 0;
-        do {
+        //let exists: boolean = false;
+        //let counter = 0;
+        /*do {
             this.database.ref('matches/' + this.matchId.toString()).once('value').then((snapshot) => {
                 if (snapshot.val()) {
                     exists = true;
@@ -33,7 +33,7 @@ export class MyBot {
             if (counter > 10000) {
                 throw new Error("Infinite loop when constructing bot");
             }
-        } while (exists)
+        } while (exists)*/
         this.database.ref('matches/' + this.matchId.toString()).set({
             started: true
         });
