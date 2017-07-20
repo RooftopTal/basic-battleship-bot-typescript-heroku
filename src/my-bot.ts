@@ -39,7 +39,8 @@ export class MyBot {
                     let onShot;
                     for(let i =2; i <= 5; i++){
                         if(gameState.MyShots[gameState.MyShots.length-i].WasHit){
-                            positionHitBefore =gameState.MyShots[gameState.MyShots.length-i];
+                            const therePos = gameState.MyShots[gameState.MyShots.length-i];
+                            positionHitBefore = new Position(therePos.Position.Row, therePos.Position.Column);
                             onShot = i;
                             break; 
                         }
@@ -160,10 +161,11 @@ export class MyBot {
                     return this.getNextTarget(gameState, new Position(previousShot.Position.Row,previousShot.Position.Column));
                 }
                 else if(!this.stateKnowShipDirection){
-                    let hitPosition;
+                    let hitPosition:Position;
                     for(let i = 2; i <= 5; i ++){
                         if(gameState.MyShots[gameState.MyShots.length-i].WasHit){
-                            hitPosition =gameState.MyShots[gameState.MyShots.length-i];
+                            const therePos = gameState.MyShots[gameState.MyShots.length-i].Position
+                            hitPosition = new Position(therePos.Row, therePos.Column);
                             break; 
                         }
                     }
