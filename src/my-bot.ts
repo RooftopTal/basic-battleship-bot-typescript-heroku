@@ -57,9 +57,7 @@ export class MyBot {
             hitmode: true
         });
         firebase.database().ref('matches/' + this.matchId.toString()).once('value').then((snapshot) => {
-            if (snapshot.val().hitmode) {
-                return this.track(gamestate);
-            }
+            console.log(snapshot.val());
         });
         return this.getNextTarget(previousShot.Position);
     }
