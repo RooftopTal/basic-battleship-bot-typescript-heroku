@@ -312,10 +312,13 @@ export class MyBot {
         //col is random value between 1 and 10;
         var row;
         if(column%2 == 0){
-            row = String.fromCharCode((Math.floor(Math.random()*5))*2+65);
+            row = String.fromCharCode((Math.floor(Math.random()*5)+1)*2+64);
+            console.log("even col gives " + row)
         }
         else{
-            row = String.fromCharCode((Math.floor(Math.random()*5))*2+66);
+            row = String.fromCharCode((Math.floor(Math.random()*5))*2+65);
+            console.log("odd col gives " + row)
+
         }
         const nextPos:Position = new Position(row, column);
         console.log(nextPos.print("trying point"));
