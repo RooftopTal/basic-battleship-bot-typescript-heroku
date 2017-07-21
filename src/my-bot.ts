@@ -37,7 +37,15 @@ export class MyBot {
         } while (exists)
         firebase.database().ref('matches/' + this.matchId.toString()).set({
             started: true,
-            hitmode: false
+            hitmode: false,
+            sizes: {
+                patrol: true,
+                submarine: true,
+                destroyer: true,
+                battleship: true,
+                carrier: true
+            },
+            hitmap: []
         });
         let shipPlaces: ShipPlace[] = [];
         let done: boolean = false;
@@ -69,7 +77,6 @@ export class MyBot {
         if (counter === 1000) {
             throw new Error("Infinite loop generating ship positions");
         }
-        //console.log(shipPlaces);
         return shipPlaces;
     }
 
@@ -83,13 +90,21 @@ export class MyBot {
             let result: boolean = previousShot.WasHit;
             if (result) {
                 let updates: any = {};
-                updates["hitmode"] = true
+                updates.hitmode = true;
                 firebase.database().ref('matches/' + this.matchId.toString()).update(updates);
             }
             firebase.database().ref('matches/' + this.matchId.toString()).once('value').then((snapshot) => {
-                if (snapshot.val().hitmode) {
-                    target = this.track(gamestate);
+                let snapCopy = snapshot.val();
+                if (result) {
+                    snapCopy.hitmode = true;
+                    snapCopy.hitmap.push(previousShot.Position);
                 }
+                if (snapCopy.hitmode) {
+                    this.track(gamestate).then((decision) => {
+                        target = decision;
+                    });
+                }
+                firebase.database().ref('matches/' + this.matchId.toString()).set(snapCopy);
                 return resolve(target);
             });
         })
@@ -306,7 +321,6 @@ export class MyBot {
 
     private generateAdjacentSquares(ship: Position[]): Position[] {
         let squares: Position[] = [];
-        //console.log(ship);
         for (let i: number = 0; i < ship.length; i++) {
             squares.push({ Row: ship[i].Row, Column: ship[i].Column + 1 });
             squares.push({ Row: ship[i].Row, Column: ship[i].Column + 1 });
@@ -317,7 +331,6 @@ export class MyBot {
         squares.push({ Row: String.fromCharCode(ship[0].Row.charCodeAt(0) - 1), Column: ship[0].Column + 1 });
         squares.push({ Row: String.fromCharCode(ship[0].Row.charCodeAt(0) + 1), Column: ship[0].Column - 1 });
         squares.push({ Row: String.fromCharCode(ship[0].Row.charCodeAt(0) - 1), Column: ship[0].Column - 1 });
-        //console.log(squares);
         return squares;
     }
 
@@ -330,7 +343,6 @@ export class MyBot {
             position = { Row: row, Column: column};
             found = false;
             for (let i = 0; i < gamestate.MyShots.length; i++) {
-                //console.log(gamestate.MyShots[i].Position);
                 if ((gamestate.MyShots[i].Position.Row === position.Row) && (gamestate.MyShots[i].Position.Column === position.Column)) {
                     found = true;
                     break;
@@ -340,8 +352,164 @@ export class MyBot {
         return position
     }
 
-    private track(gamestate): Position {
-        return this.randomShot(gamestate);
+    private track(gamestate): Promise<Position> {
+        return new Promise<Position>((resolve, reject) => {
+            const hitmap: boolean[][] = this.generateHitMap(gamestate.MyShots);
+            let lastHit: Position = null;
+            let shot: Position = null;
+            for (let i: number = 0; i < gamestate.MyShots.length; i++) {
+                if (gamestate.MyShots[i].WasHit) {
+                    lastHit = gamestate.MyShots.Position;
+                    break;
+                }
+            }
+            let up: boolean = true;
+            let down: boolean = true;
+            let left: boolean = true;
+            let right: boolean = true;
+            if ((lastHit.Column === 1) || (hitmap[lastHit.Row.charCodeAt(0)][lastHit.Column - 1] === false)) {
+                left = false;
+            }
+            if ((lastHit.Column === 10) || (hitmap[lastHit.Row.charCodeAt(0)][lastHit.Column + 1] === false)) {
+                right = false;
+            }
+            if ((lastHit.Row === 'A') || (hitmap[lastHit.Row.charCodeAt(0) - 1][lastHit.Column] === false)) {
+                up = false;
+            }
+            if ((lastHit.Row === 'J') || (hitmap[lastHit.Row.charCodeAt(0) + 1][lastHit.Column] === false)) {
+                down = false;
+            }
+            firebase.database().ref('matches/' + this.matchId.toString()).once('value').then((snapshot) => {
+                let maxboatsize: number = 5;
+                if (snapshot.val().sizes.carrier) {
+                    maxboatsize = 5;
+                } else if (snapshot.val().sizes.battleship) {
+                    maxboatsize = 4;
+                } else if (snapshot.val().sizes.destroyer || snapshot.val().sizes.submarine) {
+                    maxboatsize = 3;
+                } else {
+                    maxboatsize = 2;
+                }
+                let boatsize: number = 1;
+                let offset: number = 1;
+                if (up && (hitmap[lastHit.Row.charCodeAt(0) - 1][lastHit.Column])) {
+                    left = false;
+                    right = false;
+                    boatsize++;
+                    offset++;
+                    while (hitmap[lastHit.Row.charCodeAt(0) - boatsize][lastHit.Column]) {
+                        boatsize++;
+                        offset++;
+                    }
+                    if ((hitmap[lastHit.Row.charCodeAt(0) - boatsize][lastHit.Column] === false) || (lastHit.Row.charCodeAt(0) - boatsize === 64)) {
+                        up = false;
+                        offset = 0;
+                        let othersize: number = 1;
+                        while (hitmap[lastHit.Row.charCodeAt(0) + othersize + 1][lastHit.Column]) {
+                            othersize++;
+                            offset++;
+                        }
+                        boatsize += othersize;
+                        if (hitmap[lastHit.Row.charCodeAt(0) + othersize + 1][lastHit.Column] === false) {
+                            down = false;
+                        }
+                    }
+                } else if (down && (hitmap[lastHit.Row.charCodeAt(0) + 1][lastHit.Column])) {
+                    left = false;
+                    right = false;
+                    boatsize++;
+                    offset++;
+                    while (hitmap[lastHit.Row.charCodeAt(0) + boatsize][lastHit.Column]) {
+                        boatsize++;
+                        offset++;
+                    }
+                    if ((hitmap[lastHit.Row.charCodeAt(0) + boatsize][lastHit.Column] === false) || (lastHit.Row.charCodeAt(0) + boatsize === 75)) {
+                        down = false;
+                    }
+                } else if (left && (hitmap[lastHit.Row.charCodeAt(0)][lastHit.Column - 1])) {
+                    up = false;
+                    down = false;
+                    boatsize++;
+                    offset++;
+                    while (hitmap[lastHit.Row.charCodeAt(0)][lastHit.Column - boatsize]) {
+                        boatsize++;
+                        offset++;
+                    }
+                    if ((hitmap[lastHit.Row.charCodeAt(0)][lastHit.Column - boatsize] === false) || (lastHit.Column - boatsize === 0)) {
+                        left = false;
+                        offset = 0;
+                        let othersize: number = 1;
+                        while (hitmap[lastHit.Row.charCodeAt(0)][lastHit.Column + othersize + 1]) {
+                            othersize++;
+                            offset++;
+                        }
+                        boatsize += othersize;
+                        if (hitmap[lastHit.Row.charCodeAt(0)][lastHit.Column + othersize + 1] === false) {
+                            right = false;
+                        }
+                    }
+                } else if (right && (hitmap[lastHit.Row.charCodeAt(0)][lastHit.Column + 1])) {
+                    up = false;
+                    down = false;
+                    boatsize++;
+                    offset++;
+                    while (hitmap[lastHit.Row.charCodeAt(0)][lastHit.Column + boatsize]) {
+                        boatsize++;
+                        offset++;
+                    }
+                    if ((hitmap[lastHit.Row.charCodeAt(0)][lastHit.Column + boatsize] === false) || (lastHit.Column + boatsize === 11)) {
+                        right = false;
+                    }
+                }
+                if (boatsize === maxboatsize) {
+                    up = false;
+                    down = false;
+                    right = false;
+                    left = false;
+                }
+                if (up) {
+                    return resolve({ Row: String.fromCharCode(lastHit.Row.charCodeAt(0) - offset), Column: lastHit.Column })
+                } else if (down) {
+                    return resolve({ Row: String.fromCharCode(lastHit.Row.charCodeAt(0) + offset), Column: lastHit.Column })
+                } else if (left) {
+                    return resolve({ Row: lastHit.Row, Column: lastHit.Column - offset })
+                } else if (right) {
+                    return resolve({ Row: lastHit.Row, Column: lastHit.Column + offset })
+                } else {
+                    let snapCopy = snapshot.val();
+                    snapCopy.hitmode = false;
+                    if (boatsize === 5) {
+                        snapCopy.sizes.carrier = false;
+                    } else if (boatsize === 4) {
+                        snapCopy.sizes.battleship = false;
+                    } else if (boatsize === 3) {
+                        if (snapCopy.sizes.destroyer) {
+                            snapCopy.sizes.destroyer = false;
+                        } else {
+                            snapCopy.sizes.submarine = false;
+                        }
+                    } else {
+                        snapCopy.sizes.patrol = false;
+                    }
+                    firebase.database().ref('matches/' + this.matchId.toString()).set(snapCopy);
+                    return resolve(this.randomShot(gamestate))
+                }
+            });
+
+            if (!shot) {
+                shot = this.randomShot(gamestate);
+            }
+            resolve(shot);
+        })
+        
+    }
+
+    private generateHitMap(shots: Shot[]): boolean[][] {
+        let map: boolean[][] = [];
+        for (let i: number = 0; i < shots.length; i++) {
+            map[shots[i].Position.Row.charCodeAt(0)][shots[i].Position.Column] = shots[i].WasHit;
+        }
+        return map;
     }
 }
 
