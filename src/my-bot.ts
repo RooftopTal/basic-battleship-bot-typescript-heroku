@@ -119,13 +119,19 @@ export class MyBot {
 
     private randomShot(gamestate): Position {
         let position: Position = { Row: 'A', Column: 1 };
+        let found: boolean = false;
         do {
             const row: string = String.fromCharCode(Math.floor(Math.random() * 10) + 65);
             const column: number = Math.floor(Math.random() * 10) + 1;
             position = { Row: row, Column: column};
-        } while (gamestate.MyShots.includes(position))
-        console.log(position);
-        console.log(gamestate.MyShots);
+            found = false;
+            for (let i = 0; i < gamestate.MyShots.length; i++) {
+                if (gamestate.MyShots[i].Position === position) {
+                    found = true;
+                    break;
+                }
+            }
+        } while (found)
         return position
     }
 
