@@ -308,10 +308,10 @@ export class MyBot {
         //col is random value between 1 and 10;
         var row;
         if(column%2 == 0){
-            row = String.fromCharCode((Math.floor(Math.random()*5))*2+61);
+            row = String.fromCharCode((Math.floor(Math.random()*5))*2+63);
         }
         else{
-            row = String.fromCharCode((Math.floor(Math.random()*5))*2+62);
+            row = String.fromCharCode((Math.floor(Math.random()*5))*2+64);
         }
         const nextPos:Position = new Position(row, column);
         if(!this.alreadyHitAt(nextPos) && !this.alreadyMissAt(nextPos)) return nextPos;
