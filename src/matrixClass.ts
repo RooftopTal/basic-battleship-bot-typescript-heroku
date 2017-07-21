@@ -1,7 +1,7 @@
 import {Position} from './Position'
 
 export class Matrix{
-    public board:number[][];
+    public board:number[][] = [];
     /*
     0 = uncharted
     1 = hit
