@@ -19,8 +19,10 @@ export class Router {
 
         app.post('/SelectTarget', (req, res) => {
             //console.log(req.body);
-            let target = myBot.selectTarget(req.body);
-            res.send(target);
+            let targetPromise = myBot.selectTarget(req.body);
+            targetPromise.then((target) => {
+                res.send(target);
+            });
         });
 
         app.listen(app.get('port'), () => {

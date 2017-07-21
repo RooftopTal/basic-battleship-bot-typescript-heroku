@@ -48,23 +48,27 @@ export class MyBot {
         ]
     }
 
-    public selectTarget(gamestate): Position {
-        if (gamestate.MyShots.length === 0) {
-            return this.randomShot(gamestate)
-        }
-        var previousShot: Shot = gamestate.MyShots && gamestate.MyShots[gamestate.MyShots.length-1];
-        let result: Position = this.getNextTarget(previousShot.Position);
-        firebase.database().ref('matches/' + this.matchId.toString()).set({
-            hitmode: true
-        });
-        const dataPromise = this.getHitMode();
-        dataPromise.then((snapshot) => {
-            if (snapshot.val().hitmode) {
-                this.track(gamestate);
+    public selectTarget(gamestate): Promise<Position> {
+        return new Promise((resolve, reject) => {
+            if (gamestate.MyShots.length === 0) {
+                resolve(this.randomShot(gamestate));
             }
-            console.log(dataPromise);
-            return result;
-        });
+            const previousShot: Shot = gamestate.MyShots && gamestate.MyShots[gamestate.MyShots.length-1];
+            let target: Position = this.getNextTarget(previousShot.Position);
+            let result: boolean = previousShot.WasHit;
+            if (result) {
+                let updates: any = {};
+                updates["hitmode"] = true
+                firebase.database().ref('matches/' + this.matchId.toString()).update(updates);
+            }
+            firebase.database().ref('matches/' + this.matchId.toString()).once('value').then((snapshot) => {
+                if (snapshot.val().hitmode) {
+                    target = this.track(gamestate);
+                }
+                return resolve(target);
+            });
+        })
+        
         
     }
 
@@ -125,10 +129,6 @@ export class MyBot {
 
     private track(gamestate): Position {
         return this.randomShot(gamestate);
-    }
-
-    private getHitMode(): firebase.Promise<any> {
-        return firebase.database().ref('matches/' + this.matchId.toString()).once('value');
     }
 }
 
