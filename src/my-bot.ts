@@ -366,7 +366,7 @@ export class MyBot {
 
     private track(gamestate): Promise<Position> {
         return new Promise<Position>((resolve, reject) => {
-            const hitmap: boolean[][] = this.generateHitMap(gamestate.MyShots);
+            const hitmap: number[][] = this.generateHitMap(gamestate.MyShots);
             let lastHit: Position = null;
             let shot: Position = null;
             for (let i: number = 0; i < gamestate.MyShots.length; i++) {
@@ -379,16 +379,16 @@ export class MyBot {
             let down: boolean = true;
             let left: boolean = true;
             let right: boolean = true;
-            if ((lastHit.Column === 1) || (hitmap[lastHit.Row.charCodeAt(0)][lastHit.Column - 1] === false)) {
+            if ((lastHit.Column === 1) || (hitmap[lastHit.Row.charCodeAt(0)][lastHit.Column - 1] === 1)) {
                 left = false;
             }
-            if ((lastHit.Column === 10) || (hitmap[lastHit.Row.charCodeAt(0)][lastHit.Column + 1] === false)) {
+            if ((lastHit.Column === 10) || (hitmap[lastHit.Row.charCodeAt(0)][lastHit.Column + 1] === 1)) {
                 right = false;
             }
-            if ((lastHit.Row === 'A') || (hitmap[lastHit.Row.charCodeAt(0) - 1][lastHit.Column] === false)) {
+            if ((lastHit.Row === 'A') || (hitmap[lastHit.Row.charCodeAt(0) - 1][lastHit.Column] === 1)) {
                 up = false;
             }
-            if ((lastHit.Row === 'J') || (hitmap[lastHit.Row.charCodeAt(0) + 1][lastHit.Column] === false)) {
+            if ((lastHit.Row === 'J') || (hitmap[lastHit.Row.charCodeAt(0) + 1][lastHit.Column] === 1)) {
                 down = false;
             }
             firebase.database().ref('matches/' + this.matchId.toString()).once('value').then((snapshot) => {
@@ -404,72 +404,72 @@ export class MyBot {
                 }
                 let boatsize: number = 1;
                 let offset: number = 1;
-                if (up && (hitmap[lastHit.Row.charCodeAt(0) - 1][lastHit.Column])) {
+                if (up && (hitmap[lastHit.Row.charCodeAt(0) - 1][lastHit.Column] === 2)) {
                     left = false;
                     right = false;
                     boatsize++;
                     offset++;
-                    while (hitmap[lastHit.Row.charCodeAt(0) - boatsize][lastHit.Column]) {
+                    while (hitmap[lastHit.Row.charCodeAt(0) - boatsize][lastHit.Column] === 2) {
                         boatsize++;
                         offset++;
                     }
-                    if ((hitmap[lastHit.Row.charCodeAt(0) - boatsize][lastHit.Column] === false) || (lastHit.Row.charCodeAt(0) - boatsize === 64)) {
+                    if ((hitmap[lastHit.Row.charCodeAt(0) - boatsize][lastHit.Column] === 1) || (lastHit.Row.charCodeAt(0) - boatsize === 64)) {
                         up = false;
                         offset = 0;
                         let othersize: number = 1;
-                        while (hitmap[lastHit.Row.charCodeAt(0) + othersize + 1][lastHit.Column]) {
+                        while (hitmap[lastHit.Row.charCodeAt(0) + othersize + 1][lastHit.Column] === 2) {
                             othersize++;
                             offset++;
                         }
                         boatsize += othersize;
-                        if (hitmap[lastHit.Row.charCodeAt(0) + othersize + 1][lastHit.Column] === false) {
+                        if (hitmap[lastHit.Row.charCodeAt(0) + othersize + 1][lastHit.Column] === 1) {
                             down = false;
                         }
                     }
-                } else if (down && (hitmap[lastHit.Row.charCodeAt(0) + 1][lastHit.Column])) {
+                } else if (down && (hitmap[lastHit.Row.charCodeAt(0) + 1][lastHit.Column] === 2)) {
                     left = false;
                     right = false;
                     boatsize++;
                     offset++;
-                    while (hitmap[lastHit.Row.charCodeAt(0) + boatsize][lastHit.Column]) {
+                    while (hitmap[lastHit.Row.charCodeAt(0) + boatsize][lastHit.Column] === 2) {
                         boatsize++;
                         offset++;
                     }
-                    if ((hitmap[lastHit.Row.charCodeAt(0) + boatsize][lastHit.Column] === false) || (lastHit.Row.charCodeAt(0) + boatsize === 75)) {
+                    if ((hitmap[lastHit.Row.charCodeAt(0) + boatsize][lastHit.Column] === 1) || (lastHit.Row.charCodeAt(0) + boatsize === 75)) {
                         down = false;
                     }
-                } else if (left && (hitmap[lastHit.Row.charCodeAt(0)][lastHit.Column - 1])) {
+                } else if (left && (hitmap[lastHit.Row.charCodeAt(0)][lastHit.Column - 1] === 2)) {
                     up = false;
                     down = false;
                     boatsize++;
                     offset++;
-                    while (hitmap[lastHit.Row.charCodeAt(0)][lastHit.Column - boatsize]) {
+                    while (hitmap[lastHit.Row.charCodeAt(0)][lastHit.Column - boatsize] === 2) {
                         boatsize++;
                         offset++;
                     }
-                    if ((hitmap[lastHit.Row.charCodeAt(0)][lastHit.Column - boatsize] === false) || (lastHit.Column - boatsize === 0)) {
+                    if ((hitmap[lastHit.Row.charCodeAt(0)][lastHit.Column - boatsize] === 1) || (lastHit.Column - boatsize === 0)) {
                         left = false;
                         offset = 0;
                         let othersize: number = 1;
-                        while (hitmap[lastHit.Row.charCodeAt(0)][lastHit.Column + othersize + 1]) {
+                        while (hitmap[lastHit.Row.charCodeAt(0)][lastHit.Column + othersize + 1] === 2) {
                             othersize++;
                             offset++;
                         }
                         boatsize += othersize;
-                        if (hitmap[lastHit.Row.charCodeAt(0)][lastHit.Column + othersize + 1] === false) {
+                        if (hitmap[lastHit.Row.charCodeAt(0)][lastHit.Column + othersize + 1] === 1) {
                             right = false;
                         }
                     }
-                } else if (right && (hitmap[lastHit.Row.charCodeAt(0)][lastHit.Column + 1])) {
+                } else if (right && (hitmap[lastHit.Row.charCodeAt(0)][lastHit.Column + 1] === 2)) {
                     up = false;
                     down = false;
                     boatsize++;
                     offset++;
-                    while (hitmap[lastHit.Row.charCodeAt(0)][lastHit.Column + boatsize]) {
+                    while (hitmap[lastHit.Row.charCodeAt(0)][lastHit.Column + boatsize] === 2) {
                         boatsize++;
                         offset++;
                     }
-                    if ((hitmap[lastHit.Row.charCodeAt(0)][lastHit.Column + boatsize] === false) || (lastHit.Column + boatsize === 11)) {
+                    if ((hitmap[lastHit.Row.charCodeAt(0)][lastHit.Column + boatsize] === 1) || (lastHit.Column + boatsize === 11)) {
                         right = false;
                     }
                 }
@@ -511,10 +511,17 @@ export class MyBot {
         
     }
 
-    private generateHitMap(shots: Shot[]): boolean[][] {
-        let map: boolean[][] = [];
+    private generateHitMap(shots: Shot[]): number[][] {
+        let map: number[][] = [];
+        const arr: number[] = [];
+        arr.fill(0,1,11);
+        map.fill(arr,65,74);
         for (let i: number = 0; i < shots.length; i++) {
-            map[shots[i].Position.Row.charCodeAt(0)][shots[i].Position.Column] = shots[i].WasHit;
+            if (shots[i].WasHit) {
+                map[shots[i].Position.Row.charCodeAt(0)][shots[i].Position.Column] = 2;
+            } else {
+                map[shots[i].Position.Row.charCodeAt(0)][shots[i].Position.Column] = 1;
+            }
         }
         return map;
     }
