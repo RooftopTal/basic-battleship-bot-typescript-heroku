@@ -56,7 +56,7 @@ export class Matrix{
             if(this.alreadyMissAt(curPos) || this.getRowPos(curPos.Row) ==9)          break;
             else if(this.alreadyHitAt(curPos))                          count++;
             else{
-                this.board[this.getRowPos(lastShot.Row)][lastShot.Column-1] = 3;
+                this.board[this.getRowPos(curPos.Row)][curPos.Column-1] = 3;
                 return true;  
             }
         }
@@ -67,7 +67,7 @@ export class Matrix{
             if(this.alreadyMissAt(curPos) || this.getRowPos(curPos.Row) ==0)          break;
             else if(this.alreadyHitAt(curPos))                          count++;
             else{
-                this.board[this.getRowPos(lastShot.Row)][lastShot.Column-1] = 3;
+                this.board[this.getRowPos(curPos.Row)][curPos.Column-1] = 3;
                 return true;  
             }
         }
@@ -82,7 +82,7 @@ export class Matrix{
             if(this.alreadyMissAt(curPos) || curPos.Column == 10)          break;
             else if(this.alreadyHitAt(curPos))                          count++;
             else{
-                this.board[this.getRowPos(lastShot.Row)][lastShot.Column-1] = 3;
+                this.board[this.getRowPos(curPos.Row)][curPos.Column-1] = 3;
                 return true;  
             }
         }
@@ -93,7 +93,7 @@ export class Matrix{
             if(this.alreadyMissAt(curPos) || curPos.Column== 1)          break;
             else if(this.alreadyHitAt(curPos))                          count++;
             else{
-                this.board[this.getRowPos(lastShot.Row)][lastShot.Column-1] = 3;
+                this.board[this.getRowPos(curPos.Row)][curPos.Column-1] = 3;
                 return true;  
             }
         }
