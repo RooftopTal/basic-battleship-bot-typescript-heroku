@@ -307,6 +307,25 @@ export class MyBot {
         else return this.getNextTarget(gameState,nextPos);
     }
 
+
+    private targetMethodTryRandomBlackSquare(gameState){
+        console.log("get next Target method ");
+        var column = (Math.floor(Math.random()*10)+1);
+        //col is random value between 1 and 10;
+        var row;
+        if(column%2 == 0){
+            row = String.fromCharCode((Math.floor(Math.random()*5))*2+61);
+        }
+        else{
+            row = String.fromCharCode((Math.floor(Math.random()*5))*2+62);
+        }
+        const nextPos:Position = new Position(row, column);
+        if(!this.alreadyHitAt(nextPos) && !this.alreadyMissAt(nextPos)) return nextPos;
+        else return this.getNextTarget(gameState,nextPos);
+
+        
+    }
+
     private getDownRow(row) {
         var newRow = row.charCodeAt(0) + 1;
         if(newRow > 'J'.charCodeAt(0)) {
