@@ -314,8 +314,9 @@ export class MyBot {
             row = String.fromCharCode((Math.floor(Math.random()*5))*2+64);
         }
         const nextPos:Position = new Position(row, column);
+        console.log(nextPos.print("trying point"));
         if(!this.alreadyHitAt(nextPos) && !this.alreadyMissAt(nextPos)) return nextPos;
-        else return this.getNextTarget(gameState,nextPos);
+        else return this.targetMethodTryRandomBlackSquare(gameState);
 
         
     }
