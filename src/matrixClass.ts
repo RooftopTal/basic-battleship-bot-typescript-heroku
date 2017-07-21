@@ -29,10 +29,12 @@ export class Matrix{
         var right = lastShot.getPositionRight();
         if(left.Column<10 && this.alreadyHitAt(left) || right.Column>1 && this.alreadyHitAt(right)){
             //horizontal ship
+            console.log("HORIZONTAL ")
             return this.horizontalShipSunk(lastShot);
         }
         else if (this.getRowPos(up.Row) <10  && this.alreadyHitAt(up) || (this.getRowPos(down.Row)>1 && this.alreadyHitAt(down))){
             //vert ship
+            console.log("vertical ")
             return this.verticalShipSunk(lastShot);
         }
         else{
@@ -51,7 +53,7 @@ export class Matrix{
         let curPos = lastShot;
         for(let i =1; i<=4; i ++){
             curPos = curPos.getPositionAbove();
-            if(this.alreadyMissAt(curPos) || curPos.Column< 1)          break;
+            if(this.alreadyMissAt(curPos) || this.getRowPos(curPos.Row) ==9)          break;
             else if(this.alreadyHitAt(curPos))                          count++;
             else{
                 this.board[this.getRowPos(lastShot.Row)][lastShot.Column-1] = 3;
@@ -62,7 +64,7 @@ export class Matrix{
         curPos = lastShot;
         for(let i=1; i <= 4-count; i ++){
             curPos = curPos.getPositionDown();
-            if(this.alreadyMissAt(curPos) || curPos.Column>10)          break;
+            if(this.alreadyMissAt(curPos) || this.getRowPos(curPos.Row) ==0)          break;
             else if(this.alreadyHitAt(curPos))                          count++;
             else{
                 this.board[this.getRowPos(lastShot.Row)][lastShot.Column-1] = 3;
@@ -77,7 +79,7 @@ export class Matrix{
         let curPos = lastShot;
         for(let i =1; i<=4; i ++){
             curPos = curPos.getPositionLeft();
-            if(this.alreadyMissAt(curPos) || curPos.Column< 1)          break;
+            if(this.alreadyMissAt(curPos) || curPos.Column == 10)          break;
             else if(this.alreadyHitAt(curPos))                          count++;
             else{
                 this.board[this.getRowPos(lastShot.Row)][lastShot.Column-1] = 3;
@@ -88,7 +90,7 @@ export class Matrix{
         curPos = lastShot;
         for(let i=1; i <= 4-count; i ++){
             curPos = curPos.getPositionRight();
-            if(this.alreadyMissAt(curPos) || curPos.Column>10)          break;
+            if(this.alreadyMissAt(curPos) || curPos.Column== 1)          break;
             else if(this.alreadyHitAt(curPos))                          count++;
             else{
                 this.board[this.getRowPos(lastShot.Row)][lastShot.Column-1] = 3;
