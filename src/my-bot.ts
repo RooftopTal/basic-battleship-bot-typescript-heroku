@@ -271,9 +271,9 @@ export class MyBot {
         for (let i: number = 0; i < shipPlaces.length - 1; i++) {
             let ship1: Position[] = this.generateShipSquares(shipPlaces[i]);
             for (let j: number = i + 1; j < shipPlaces.length; j++) {
-                let ship2: Position[] = this.generateShipSquares(shipPlaces[j]);
+                let ship2: Set<Position> = this.generateAdjacentSquares(this.generateShipSquares(shipPlaces[j]));
                 for (let x: number = 0; x < ship1.length; x++) {
-                    if (ship2.indexOf(ship1[x]) >= 0) {
+                    if (ship2.has(ship1[x])) {
                         return true;
                     }
                 }
@@ -300,6 +300,18 @@ export class MyBot {
             }
         }
         return ship;
+    }
+
+    private generateAdjacentSquares(ship: Position[]): Set<Position> {
+        let set: Set<Position> = new Set<Position>();
+        for (let i: number = 1; i < ship.length; i++) {
+            set.add(ship[i]);
+            set.add({ Row: ship[i].Row, Column: ship[i].Column + 1 });
+            set.add({ Row: ship[i].Row, Column: ship[i].Column + 1 });
+            set.add({ Row: String.fromCharCode(ship[i].Row.charCodeAt(0) + 1), Column: ship[i].Column + 1 });
+            set.add({ Row: String.fromCharCode(ship[i].Row.charCodeAt(0) - 1), Column: ship[i].Column + 1 });
+        }
+        return set;
     }
 
     private randomShot(gamestate): Position {
