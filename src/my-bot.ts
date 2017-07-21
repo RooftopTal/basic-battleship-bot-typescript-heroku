@@ -24,6 +24,7 @@ export class MyBot {
     }
 
     public selectTarget(gameState) {
+         var mat:Matrix = new Matrix(gameState);
         console.log("turn "+ (gameState.MyShots.length+1))
         this.selectNextTar(gameState);
         var ispreviousShot = gameState.MyShots && gameState.MyShots[gameState.MyShots.length-1];
@@ -66,7 +67,7 @@ export class MyBot {
 
                             //next guess to right
                             let nextShot:Position =  new Position(previousShot.Position.Row, this.getRightColumn(previousShot.Position.Column));
-                            if(this.alreadyHitAt(nextShot) || this.alreadyMissAt(nextShot) || nextShot.Column == 1){
+                            if(mat.alreadyHitAt(nextShot) || mat.alreadyMissAt(nextShot) || nextShot.Column == 1){
                                 //clearly to the right is a miss or not on screen so need to find next left guess
                                 nextShot =  new Position(previousShot.Position.Row, this.getLeftColumn(previousShot.Position.Column));
                                 this.state.stateWalkingPositiveAxis = false;
@@ -74,13 +75,13 @@ export class MyBot {
                                 for(let i = 2; i <= 4; i ++){
                                     //test position i positions left of current guess
                                     nextShot = new Position(previousShot.Position.Row, this.getLeftColumn(nextShot.Column));
-                                    if(this.alreadyMissAt(nextShot)){
+                                    if(mat.alreadyMissAt(nextShot)){
                                         // sunk************
                                         console.log("SUNK");
                                         this.state.stateHitShipButNotSunk = false;
                                         this.state.stateKnowShipDirection =false;
                                     }
-                                    else if(!this.alreadyHitAt(nextShot)){
+                                    else if(!mat.alreadyHitAt(nextShot)){
                                         //havent shot at this position before
                                         break;
                                     }
@@ -105,7 +106,7 @@ export class MyBot {
                             //next guess to left
 
                             let nextShot:Position =  new Position(previousShot.Position.Row, this.getLeftColumn(previousShot.Position.Column));
-                            if(this.alreadyMissAt(nextShot)  || nextShot.Column == 10){
+                            if(mat.alreadyMissAt(nextShot)  || nextShot.Column == 10){
                                 //sunk ***********
                                 console.log("sunk in moving left");
                                 this.state.stateHitShipButNotSunk = false;
@@ -121,7 +122,7 @@ export class MyBot {
                         if(this.state.stateWalkingPositiveAxis){
                             //next guess up
                             let nextShot:Position =  new Position(this.getUpRow(previousShot.Position.Row), previousShot.Position.Column);
-                            if(this.alreadyHitAt(nextShot) || this.alreadyMissAt(nextShot) || nextShot.Row.charAt(0) == 'J'){
+                            if(mat.alreadyHitAt(nextShot) || mat.alreadyMissAt(nextShot) || nextShot.Row.charAt(0) == 'J'){
                                 //clearly to up is a miss or not on screen so need to find next down guess
                                 nextShot =  new Position(this.getDownRow(previousShot.Position.Row), previousShot.Position.Column);
                                 this.state.stateWalkingPositiveAxis = false;
@@ -129,12 +130,12 @@ export class MyBot {
                                 for(let i = 2; i <= 4; i ++){
                                     //test position i positions left of current guess
                                     nextShot =  new Position(this.getDownRow(nextShot.Row), previousShot.Position.Column);
-                                    if(this.alreadyMissAt(nextShot)){
+                                    if(mat.alreadyMissAt(nextShot)){
                                         // sunk************
                                         this.state.stateHitShipButNotSunk = false;
                                         this.state.stateKnowShipDirection =false;
                                     }
-                                    else if(!this.alreadyHitAt(nextShot)){
+                                    else if(!mat.alreadyHitAt(nextShot)){
                                         //havent shot at this position before
                                         break;
                                     }
@@ -162,7 +163,7 @@ export class MyBot {
                             //next guess down
                             console.log("guessing down")
                             let nextShot:Position =  new Position(this.getDownRow(previousShot.Position.Row), previousShot.Position.Column);
-                            if(this.alreadyMissAt(nextShot)){
+                            if(mat.alreadyMissAt(nextShot)){
                                 //sunk ***********
                                 console.log("SUNK");
                                 this.state.stateHitShipButNotSunk = false;
@@ -177,7 +178,7 @@ export class MyBot {
                     //find the direction by hitting around the hit
                     console.log("calling unknownDirectoin")
                     this.state.stateHitShipButNotSunk = true;
-                    return this.hitButUnknownDirection(new Position(previousShot.Position.Row, previousShot.Position.Column));
+                    return this.hitButUnknownDirection(mat, new Position(previousShot.Position.Row, previousShot.Position.Column));
                 }
             }
             else
@@ -200,7 +201,7 @@ export class MyBot {
                             break; 
                         }
                     }
-                    return this.hitButUnknownDirection(hitPosition);
+                    return this.hitButUnknownDirection(mat, hitPosition);
                 }
                 else
                 {
@@ -220,14 +221,14 @@ export class MyBot {
                             if(this.state.stateHorizontalShip)  nextShot = new Position(nextShot.Row, this.getLeftColumn(nextShot.Column));
                             else                                nextShot = new Position(this.getDownRow(nextShot.Row), nextShot.Column);
 
-                            if(!this.shotOnBoard(nextShot) || this.alreadyMissAt(nextShot)){
+                            if(!this.shotOnBoard(nextShot) || mat.alreadyMissAt(nextShot)){
                                 //sunk
                                console.log(nextShot.print("sunk method"));
                                 this.state.stateHitShipButNotSunk = false;
                                 this.state.stateKnowShipDirection =false;
                                 return this.getNextTarget(gameState, new Position(previousShot.Position.Row, previousShot.Position.Column));
                             }
-                            else if(this.alreadyHitAt(nextShot)){
+                            else if(mat.alreadyHitAt(nextShot)){
                                 continue;
                             }
                             else{
@@ -246,41 +247,23 @@ export class MyBot {
         return { Row: "A", Column: 1 };  
     }
 
-    public alreadyHitAt(pos:Position):boolean{
-        if(this.state.hitArray){
-            for(let i=0 ; i < this.state.hitArray.length; i ++){
-                if(this.state.hitArray[i].Row == pos.Row && this.state.hitArray[i].Column == pos.Column) return true;
-            }
-        }
-        return false;
-    }
-
-    public alreadyMissAt(pos:Position):boolean{
-        if(this.state.missArray){
-            for(let i=0 ; i < this.state.missArray.length; i ++){
-                if(this.state.missArray[i].Row == pos.Row && this.state.missArray[i].Column == pos.Column) return true;
-            }
-        }
-        return false;
-    }
-
     private shotOnBoard(pos:Position){
         return (pos.Row.charAt(0)>= 'A' && pos.Row.charAt(0) <= 'J' && pos.Column>=1 && pos.Column <= 10);
     }
 
 
-    private hitButUnknownDirection(hitPosition:Position):Position{
+    private hitButUnknownDirection(mat:Matrix, hitPosition:Position):Position{
         hitPosition.print("orig ");
         var nextShot =new Position(this.getUpRow(hitPosition.Row), hitPosition.Column);
         nextShot.print("pos1 ");
-        if(this.alreadyMissAt(nextShot) || this.alreadyHitAt(nextShot) || hitPosition.Row == 'A'){
+        if(mat.alreadyMissAt(nextShot) || mat.alreadyHitAt(nextShot) || hitPosition.Row == 'A'){
             nextShot = new Position(hitPosition.Row, this.getRightColumn(hitPosition.Column));
             nextShot.print("pos2 ");
 
-            if(this.alreadyMissAt(nextShot) || this.alreadyHitAt(nextShot)|| hitPosition.Column == 10){
+            if(mat.alreadyMissAt(nextShot) || mat.alreadyHitAt(nextShot)|| hitPosition.Column == 10){
                 nextShot =new Position(this.getDownRow(hitPosition.Row), hitPosition.Column);
                 nextShot.print("pos3 ");
-                if(this.alreadyMissAt(nextShot) || this.alreadyHitAt(nextShot) || hitPosition.Row == 'J'){
+                if(mat.alreadyMissAt(nextShot) || mat.alreadyHitAt(nextShot) || hitPosition.Row == 'J'){
                     nextShot = new Position(hitPosition.Row, this.getLeftColumn(hitPosition.Column));
                 }
             }
@@ -329,7 +312,7 @@ export class MyBot {
         }
         const nextPos:Position = new Position(row, column);
         console.log(nextPos.print("trying point"));
-        if(!this.alreadyHitAt(nextPos) && !this.alreadyMissAt(nextPos)) return nextPos;
+        if(!mat.alreadyHitAt(nextPos) && !mat.alreadyMissAt(nextPos)) return nextPos;
         else return this.targetMethodTryRandomBlackSquare(gameState);
     }
 
