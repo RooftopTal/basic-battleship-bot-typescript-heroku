@@ -18,11 +18,11 @@ export class MyBot {
         this.authenticate();        
     }
     
-    public getShipPositions() {
+    public getShipPositions(): ShipPlace[] {
         let exists: boolean = false;
         let counter: number = 0;        
         do {
-            this.matchId = Math.floor(Math.random() * 1000) + 1;
+            this.matchId = Math.floor(Math.random() * 10000) + 1;
             firebase.database().ref('matches/' + this.matchId.toString()).once('value').then((snapshot) => {
                 if (snapshot.val()) {
                     exists = true;
@@ -39,13 +39,37 @@ export class MyBot {
             started: true,
             hitmode: false
         });
-        return [
-            this.getAirCarrierPlace(),
-            this.getBattleshipPlace(),
-            this.getDestroyerPlace(),
-            this.getSubmarinePlace(),
-            this.getPatrolPlace(),
-        ]
+        let shipPlaces: ShipPlace[] = [];
+        let done: boolean = false;
+        counter = 0;
+        do {
+            counter++;
+            shipPlaces.push(this.getAirCarrierPlace(shipPlaces));
+            if (shipPlaces[0].StartingSquare.Column === -1) {
+                continue;
+            }
+            shipPlaces.push(this.getBattleshipPlace(shipPlaces));
+            if (shipPlaces[1].StartingSquare.Column === -1) {
+                continue;
+            }
+            shipPlaces.push(this.getDestroyerPlace(shipPlaces));
+            if (shipPlaces[2].StartingSquare.Column === -1) {
+                continue;
+            }
+            shipPlaces.push(this.getSubmarinePlace(shipPlaces));
+            if (shipPlaces[3].StartingSquare.Column === -1) {
+                continue;
+            }
+            shipPlaces.push(this.getPatrolPlace(shipPlaces));
+            if (shipPlaces[4].StartingSquare.Column === -1) {
+                continue;
+            }
+            done = true;
+        } while ((!done) && (counter < 1000))
+        if (counter === 1000) {
+            throw new Error("Infinite loop generating ship positions");
+        }
+        return shipPlaces;
     }
 
     public selectTarget(gamestate): Promise<Position> {
@@ -97,24 +121,164 @@ export class MyBot {
         );
     }
 
-    private getAirCarrierPlace(): ShipPlace {
-        return { StartingSquare: { Row: "A", Column: 1 }, EndingSquare : { Row: "A", Column: 5 } }
+    private getAirCarrierPlace(shipPlaces: ShipPlace[]): ShipPlace {
+        let counter:number = 0;
+        let place: ShipPlace = { StartingSquare: { Row: "A", Column: 1 }, EndingSquare : { Row: "A", Column: 5 } };
+        let collision: boolean = false;
+        do {
+            let places: ShipPlace[] = shipPlaces.slice(0);
+            collision = false;
+            const row: string = String.fromCharCode(Math.floor(Math.random() * 10) + 65);
+            const column: number = Math.floor(Math.random() * 10) + 1;
+            if ((row > 'F') && (column > 6)) {
+                continue;
+            }
+            place = { StartingSquare: { Row: row, Column: column }, EndingSquare: { Row: String.fromCharCode(row.charCodeAt(0) + 4), Column: (column + 4) } };
+            places.push(place);
+            if (this.detectCollision(places)) {
+                collision = true;
+                counter++;
+            }
+        } while((counter < 50) && (collision))
+        if (counter === 50) {
+            return { StartingSquare: { Row: "A", Column: -1 }, EndingSquare : { Row: "A", Column: 5 } };
+        }
+        return place;
     }
 
-    private getBattleshipPlace(): ShipPlace {
-        return { StartingSquare: { Row: "C", Column: 1 }, EndingSquare : { Row: "C", Column: 4 } }
+    private getBattleshipPlace(shipPlaces: ShipPlace[]): ShipPlace {
+        let counter:number = 0;
+        let place: ShipPlace = { StartingSquare: { Row: "C", Column: 1 }, EndingSquare : { Row: "C", Column: 4 } };
+        let collision: boolean = false;
+        do {
+            let places: ShipPlace[] = shipPlaces.slice(0);
+            collision = false;
+            const row: string = String.fromCharCode(Math.floor(Math.random() * 10) + 65);
+            const column: number = Math.floor(Math.random() * 10) + 1;
+            if ((row > 'G') && (column > 7)) {
+                continue;
+            }
+            place = { StartingSquare: { Row: row, Column: column }, EndingSquare: { Row: String.fromCharCode(row.charCodeAt(0) + 3), Column: (column + 3) } };
+            places.push(place);
+            if (this.detectCollision(places)) {
+                collision = true;
+                counter++;
+            }
+        } while((counter < 50) && (collision))
+        if (counter === 50) {
+            return { StartingSquare: { Row: "A", Column: -1 }, EndingSquare : { Row: "A", Column: 5 } };
+        }
+        return place;
     }
 
-    private getDestroyerPlace(): ShipPlace {
-        return { StartingSquare: { Row: "E", Column: 1 }, EndingSquare : { Row: "E", Column: 3 } }
+    private getDestroyerPlace(shipPlaces: ShipPlace[]): ShipPlace {
+        let counter:number = 0;
+        let place: ShipPlace = { StartingSquare: { Row: "E", Column: 1 }, EndingSquare : { Row: "E", Column: 3 } };
+        let collision: boolean = false;
+        do {
+            let places: ShipPlace[] = shipPlaces.slice(0);
+            collision = false;
+            const row: string = String.fromCharCode(Math.floor(Math.random() * 10) + 65);
+            const column: number = Math.floor(Math.random() * 10) + 1;
+            if ((row > 'H') && (column > 8)) {
+                continue;
+            }
+            place = { StartingSquare: { Row: row, Column: column }, EndingSquare: { Row: String.fromCharCode(row.charCodeAt(0) + 2), Column: (column + 2) } };
+            places.push(place);
+            if (this.detectCollision(places)) {
+                collision = true;
+                counter++;
+            }
+        } while((counter < 50) && (collision))
+        if (counter === 50) {
+            return { StartingSquare: { Row: "A", Column: -1 }, EndingSquare : { Row: "A", Column: 5 } };
+        }
+        return place;
     }
 
-    private getSubmarinePlace(): ShipPlace {
-        return { StartingSquare: { Row: "G", Column: 1 }, EndingSquare : { Row: "G", Column: 3 } }
+    private getSubmarinePlace(shipPlaces: ShipPlace[]): ShipPlace {
+        let counter:number = 0;
+        let place: ShipPlace = { StartingSquare: { Row: "G", Column: 1 }, EndingSquare : { Row: "G", Column: 3 } };
+        let collision: boolean = false;
+        do {
+            let places: ShipPlace[] = shipPlaces.slice(0);
+            collision = false;
+            const row: string = String.fromCharCode(Math.floor(Math.random() * 10) + 65);
+            const column: number = Math.floor(Math.random() * 10) + 1;
+            if ((row > 'H') && (column > 8)) {
+                continue;
+            }
+            place = { StartingSquare: { Row: row, Column: column }, EndingSquare: { Row: String.fromCharCode(row.charCodeAt(0) + 2), Column: (column + 2) } };
+            places.push(place);
+            if (this.detectCollision(places)) {
+                collision = true;
+                counter++;
+            }
+        } while((counter < 50) && (collision))
+        if (counter === 50) {
+            return { StartingSquare: { Row: "A", Column: -1 }, EndingSquare : { Row: "A", Column: 5 } };
+        }
+        return place;
     }
 
-    private getPatrolPlace(): ShipPlace {
-        return { StartingSquare: { Row: "I", Column: 1 }, EndingSquare : { Row: "I", Column: 2 } }
+    private getPatrolPlace(shipPlaces: ShipPlace[]): ShipPlace {
+        let counter:number = 0;
+        let place: ShipPlace = { StartingSquare: { Row: "I", Column: 1 }, EndingSquare : { Row: "I", Column: 2 } };
+        let collision: boolean = false;
+        do {
+            let places: ShipPlace[] = shipPlaces.slice(0);
+            collision = false;
+            const row: string = String.fromCharCode(Math.floor(Math.random() * 10) + 65);
+            const column: number = Math.floor(Math.random() * 10) + 1;
+            if ((row > 'I') && (column > 9)) {
+                continue;
+            }
+            place = { StartingSquare: { Row: row, Column: column }, EndingSquare: { Row: String.fromCharCode(row.charCodeAt(0) + 1), Column: (column + 1) } };
+            places.push(place);
+            if (this.detectCollision(places)) {
+                collision = true;
+                counter++;
+            }
+        } while((counter < 50) && (collision))
+        if (counter === 50) {
+            return { StartingSquare: { Row: "A", Column: -1 }, EndingSquare : { Row: "A", Column: 5 } };
+        }
+        return place;
+    }
+
+    private detectCollision(shipPlaces: ShipPlace[]): boolean {
+        for (let i: number = 0; i < shipPlaces.length - 1; i++) {
+            let ship1: Position[] = this.generateShipSquares(shipPlaces[i]);
+            for (let j: number = i + 1; j < shipPlaces.length; j++) {
+                let ship2: Position[] = this.generateShipSquares(shipPlaces[j]);
+                for (let x: number = 0; x < ship1.length; x++) {
+                    if (ship2.indexOf(ship1[x]) >= 0) {
+                        return true;
+                    }
+                }
+            }
+        }
+        return false;
+    }
+
+    private generateShipSquares(shipPlace: ShipPlace): Position[] {
+        let ship: Position[] = [];
+        if (shipPlace.StartingSquare.Row === shipPlace.EndingSquare.Row) {
+            for (let i: number = shipPlace.StartingSquare.Column; i <= shipPlace.StartingSquare.Column; i++) {
+                ship.push({
+                    Row: shipPlace.StartingSquare.Row,
+                    Column: i
+                });
+            }
+        } else {
+            for (let i: number = shipPlace.StartingSquare.Row.charCodeAt(0); i <= shipPlace.StartingSquare.Row.charCodeAt(0); i++) {
+                ship.push({
+                    Row: String.fromCharCode(i),
+                    Column: shipPlace.StartingSquare.Column
+                });
+            }
+        }
+        return ship;
     }
 
     private randomShot(gamestate): Position {
