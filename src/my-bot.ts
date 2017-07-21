@@ -29,14 +29,20 @@ export class MyBot {
             if(previousShot.WasHit)
             {
                 if(!mat.isThereUnsunkShipAt(previousShotAsCorrectClass)) return this.getNextTarget(mat);
-                else return mat.returnUnsunkShot();
+                else {
+                    console.log(mat.board);
+                    return mat.returnUnsunkShot();
+                }
             }
             else{
                 for(let i = 1; i < gameState.MyShots.length; i ++){
                     if(gameState.MyShots[gameState.MyShots.length-i].WasHit){
                         //this is the most recent hit;
                         if(!mat.isThereUnsunkShipAt(new Position(gameState.MyShots[gameState.MyShots.length-i].Position.Row, gameState.MyShots[gameState.MyShots.length-i].Position.Column))) return this.getNextTarget(mat);
-                        else return mat.returnUnsunkShot();
+                        else{
+                            console.log(mat.board);
+                            return mat.returnUnsunkShot();
+                        }
                     }
                 }
             }
