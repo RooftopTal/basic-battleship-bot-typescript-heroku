@@ -121,7 +121,7 @@ export class MyBot {
         let position: Position = { Row: 'A', Column: 1 };
         do {
             const row: string = String.fromCharCode(Math.floor(Math.random() * 10) + 65);
-            const column: number = Math.floor(Math.random() * 10);
+            const column: number = Math.floor(Math.random() * 10) + 1;
             position = { Row: row, Column: column};
         } while (gamestate.MyShots.includes(position))
         return position
