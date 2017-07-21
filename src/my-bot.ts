@@ -514,9 +514,11 @@ export class MyBot {
     private generateHitMap(shots: Shot[]): number[][] {
         console.log(shots);
         let map: number[][] = [];
-        const arr: number[] = [];
-        arr.fill(0,1,11);
-        map.fill(arr,65,74);
+        for (let i: number = 65; i < 75; i++) {
+            const arr: number[] = [];
+            arr.fill(0,1,12);
+            map[i] = arr;
+        }
         for (let i: number = 0; i < shots.length; i++) {
             if (shots[i].WasHit) {
                 map[shots[i].Position.Row.charCodeAt(0)][shots[i].Position.Column] = 2;
