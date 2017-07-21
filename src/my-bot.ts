@@ -298,17 +298,11 @@ export class MyBot {
     }
 
     private getNextTarget(gameState,position:Position):Position {
-        console.log("get next Target method " + position.Column + position.Row );
-        var column = this.getRightColumn(position.Column);
-        var row:string = column === 1 ? this.getDownRow(position.Row) : position.Row;
-        var nextPos:Position = new Position(row,column);
-        console.log("try "  + column +" "+ row);
-        if(!this.alreadyHitAt(nextPos) && !this.alreadyMissAt(nextPos)) return nextPos;
-        else return this.getNextTarget(gameState,nextPos);
+        return this.targetMethodTryRandomBlackSquare(gameState);
     }
 
 
-    private targetMethodTryRandomBlackSquare(gameState){
+    private targetMethodTryRandomBlackSquare(gameState):Position{
         console.log("get next Target method ");
         var column = (Math.floor(Math.random()*10)+1);
         //col is random value between 1 and 10;
