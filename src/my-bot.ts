@@ -57,14 +57,15 @@ export class MyBot {
         firebase.database().ref('matches/' + this.matchId.toString()).set({
             hitmode: true
         });
-        const database = firebase.database().ref('matches/' + this.matchId.toString()).once('value')
-        const dataPromise = database.then((snapshot) => {
+        const dataPromise = this.getHitMode();
+        dataPromise.then((snapshot) => {
             if (snapshot.val().hitmode) {
-                return result = this.track(gamestate);
+                this.track(gamestate);
             }
+            console.log(dataPromise);
+            return result;
         });
-        console.log(dataPromise);                   
-        return result;
+        
     }
 
     private getNextTarget(position: Position): Position {
@@ -124,6 +125,10 @@ export class MyBot {
 
     private track(gamestate): Position {
         return this.randomShot(gamestate);
+    }
+
+    private getHitMode(): firebase.Promise<any> {
+        return firebase.database().ref('matches/' + this.matchId.toString()).once('value');
     }
 }
 
