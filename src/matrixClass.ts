@@ -20,6 +20,7 @@ export class Matrix{
         }
         for(let i = 0; i < gameState.MyShots.length; i++){
             const pos: Position = new Position(gameState.MyShots[i].Position.Row, gameState.MyShots[i].Position.Column);
+            console.log(this.getRowPos(pos.Row));
             if(gameState.MyShots[i].WasHit){
                 this.board[this.getRowPos(pos.Row)][pos.Column] = 1;
             }
