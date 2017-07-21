@@ -126,8 +126,8 @@ export class MyBot {
             position = { Row: row, Column: column};
             found = false;
             for (let i = 0; i < gamestate.MyShots.length; i++) {
-                console.log(gamestate.MyShots[i].Position);
-                if (gamestate.MyShots[i].Position === position) {
+                //console.log(gamestate.MyShots[i].Position);
+                if ((gamestate.MyShots[i].Position.Row === position.Row) && (gamestate.MyShots[i].Position.Column === position.Column)) {
                     found = true;
                     break;
                 }
