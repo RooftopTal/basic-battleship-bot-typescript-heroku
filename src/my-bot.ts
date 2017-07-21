@@ -18,15 +18,11 @@ export class MyBot {
         return firstPos.Row > secondPos.Row || firstPos.Column < secondPos.Column;
     }
 
-    private selectNextTar(gameState){
-        var mat:Matrix = new Matrix(gameState);
-        console.log(mat.board);
-    }
 
     public selectTarget(gameState) {
          var mat:Matrix = new Matrix(gameState);
         console.log("turn "+ (gameState.MyShots.length+1))
-        this.selectNextTar(gameState);
+
         var ispreviousShot = gameState.MyShots && gameState.MyShots[gameState.MyShots.length-1];
         if(ispreviousShot) {
             var previousShot = gameState.MyShots[gameState.MyShots.length-1];
@@ -276,19 +272,7 @@ export class MyBot {
         if(shot1.Row == shot2.Row){
             return true;
         }
-        console.log("not horizontal = "+ shot1.Row +" = " + shot2.Row)
         return false;
-    }
-
-
-
-    private findBottomOfHits(gameState):Position
-    {
-        var bottomPos;
-        for(let i = 1; i < gameState.length; i ++){
-            if(gameState.MyShots[gameState.length-i].WasHit) bottomPos = gameState.MyShots[gameState.length-i].position;
-        }
-        return bottomPos;
     }
 
     private getNextTarget(mat:Matrix):Position {
@@ -312,7 +296,7 @@ export class MyBot {
         }
         const nextPos:Position = new Position(row, column);
         console.log(nextPos.print("trying point"));
-        if(!mat.alreadyHitAt(nextPos) && !mat.alreadyMissAt(nextPos)) return nextPos;
+        if(mat.validShotPlace(nextPos)) return nextPos;
         else return this.targetMethodTryRandomBlackSquare(mat);
     }
 
