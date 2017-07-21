@@ -13,16 +13,25 @@ export class Router {
         app.use(bodyParser.json());
 
         app.get('/GetShipPositions', (req, res) => {
-            let positions = myBot.getShipPositions();
-            res.send(positions);
+            try {
+                let positions = myBot.getShipPositions();
+                res.send(positions);
+            } catch(err) {
+                console.log(err);
+                res.send(err)
+            }
         });
 
         app.post('/SelectTarget', (req, res) => {
-            //console.log(req.body);
-            let targetPromise = myBot.selectTarget(req.body);
-            targetPromise.then((target) => {
-                res.send(target);
-            });
+            try {
+                let targetPromise = myBot.selectTarget(req.body);
+                targetPromise.then((target) => {
+                    res.send(target);
+                });
+            } catch(err) {
+                console.log(err);
+                res.send(err);
+            }
         });
 
         app.listen(app.get('port'), () => {

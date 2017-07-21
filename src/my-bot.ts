@@ -69,6 +69,7 @@ export class MyBot {
         if (counter === 1000) {
             throw new Error("Infinite loop generating ship positions");
         }
+        console.log(shipPlaces);
         return shipPlaces;
     }
 
