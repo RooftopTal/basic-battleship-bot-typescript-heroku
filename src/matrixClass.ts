@@ -22,6 +22,8 @@ export class Matrix{
     public isThereUnsunkShipAt(lastShot:Position):boolean
     {
         // as a side affect add a 3 where the shot should be if true
+        console.log(lastShot);
+        lastShot.print("unsunk " );
         var up = lastShot.getPositionAbove();
         var down = lastShot.getPositionDown();
         var left = lastShot.getPositionLeft();
