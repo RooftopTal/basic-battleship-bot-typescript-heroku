@@ -199,11 +199,31 @@ export class MyBot {
                         console.log("SUNK");
                         this.state.stateHitShipButNotSunk = false;
                         this.state.stateKnowShipDirection =false;
+                        return this.getNextTarget(gameState, new Position(previousShot.Position.Row, previousShot.Position.Column));
                     }
                     else{
                         this.state.stateWalkingPositiveAxis = false;
                         // TODO this make it check the other end of the ship -- this is called when come to the end of a ship walking up/ right - need to confirm other end not hit see page
-                    }
+                        let nextShot:Position = new Position(previousShot.Position.Row, previousShot.Position.Column);
+                        for(let i = 1; i < 6; i ++){
+                            if(this.state.stateHorizontalShip)  nextShot = new Position(nextShot.Row, this.getLeftColumn(nextShot.Column));
+                            else                                nextShot = new Position(this.getDownRow(nextShot.Row), nextShot.Column);
+
+                            if(this.alreadyHitAt(nextShot)){
+                                continue;
+                            }
+                            else if(this.alreadyMissAt(nextShot)){
+                                //sunk
+                                this.state.stateHitShipButNotSunk = false;
+                                this.state.stateKnowShipDirection =false;
+                                return this.getNextTarget(gameState, new Position(previousShot.Position.Row, previousShot.Position.Column));
+                            }
+                            else{
+                                break;
+                            }
+                        }
+                        return nextShot;
+                }
                 }
             }
 
