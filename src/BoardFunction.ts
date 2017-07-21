@@ -1,5 +1,5 @@
 import {Position} from './Position'
-import {StateClass} from './StateClass'
+import {StateClass} from './stateClass'
 
 export class BoardFunctions{
     private state:StateClass;
