@@ -104,13 +104,16 @@ export class MyBot {
                     }
                 }
                 firebase.database().ref('matches/' + this.matchId.toString()).set(snapCopy);
+                console.log(snapCopy);
                 if (snapCopy.hitmode) {
                     this.track(gamestate).then((decision) => {
                         target = decision;
-                        console.log(target);
+                        //console.log(target);
                     });
+                } else {
+                    target = this.randomShot(gamestate);
                 }
-                console.log(target);
+                //console.log(target);
                 return resolve(target);
             });
         })
@@ -501,11 +504,6 @@ export class MyBot {
                     return resolve(this.randomShot(gamestate))
                 }
             });
-
-            if (!shot) {
-                shot = this.randomShot(gamestate);
-            }
-            resolve(shot);
         })
         
     }
