@@ -98,7 +98,7 @@ export class MyBot {
                             //next guess to left
 
                             let nextShot:Position =  new Position(previousShot.Position.Row, this.getLeftColumn(previousShot.Position.Column));
-                            if(this.alreadyMissAt(nextShot)){
+                            if(this.alreadyMissAt(nextShot)  || nextShot.Column == 10){
                                 //sunk ***********
                                 console.log("sunk in moving left");
                                 this.state.stateHitShipButNotSunk = false;
@@ -347,7 +347,8 @@ export class MyBot {
     }
 
     private getLeftColumn(column) {
-        return (column+9)%10;
+        if(column != 1)return (column+9)%10;
+        else return 10;
     }
 }
 
