@@ -209,14 +209,14 @@ export class MyBot {
                             if(this.state.stateHorizontalShip)  nextShot = new Position(nextShot.Row, this.getLeftColumn(nextShot.Column));
                             else                                nextShot = new Position(this.getDownRow(nextShot.Row), nextShot.Column);
 
-                            if(this.alreadyHitAt(nextShot)){
-                                continue;
-                            }
-                            else if(this.alreadyMissAt(nextShot)){
+                            if(!this.shotOnBoard(nextShot) || this.alreadyMissAt(nextShot)){
                                 //sunk
                                 this.state.stateHitShipButNotSunk = false;
                                 this.state.stateKnowShipDirection =false;
                                 return this.getNextTarget(gameState, new Position(previousShot.Position.Row, previousShot.Position.Column));
+                            }
+                            else if(this.alreadyHitAt(nextShot)){
+                                continue;
                             }
                             else{
                                 break;
@@ -249,6 +249,10 @@ export class MyBot {
             }
         }
         return false;
+    }
+
+    private shotOnBoard(pos:Position){
+        return (pos.Row.charAt(0)>= 'A' && pos.Row.charAt(0) <= 'J' && pos.Column>=1 && pos.Column <= 10);
     }
 
 
