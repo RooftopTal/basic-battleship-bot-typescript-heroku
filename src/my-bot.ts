@@ -111,7 +111,7 @@ export class MyBot {
                                 console.log("sunk in moving left");
                                 this.state.stateHitShipButNotSunk = false;
                                 this.state.stateKnowShipDirection =false;
-                                return this.getNextTarget(gameState,new Position(previousShot.Position.Row, previousShot.Position.Column));
+                                return this.getNextTarget(mat);
                             }
                             return nextShot;
                         }
@@ -148,7 +148,7 @@ export class MyBot {
                                     console.log("SUNK");
                                     this.state.stateHitShipButNotSunk = false;
                                     this.state.stateKnowShipDirection =false;
-                                    return this.getNextTarget(gameState,new Position(previousShot.Position.Row, previousShot.Position.Column));
+                                    return this.getNextTarget(mat);
                                 }
                                 else {
                                     return nextShot;
@@ -168,7 +168,7 @@ export class MyBot {
                                 console.log("SUNK");
                                 this.state.stateHitShipButNotSunk = false;
                                 this.state.stateKnowShipDirection =false;
-                                return this.getNextTarget(gameState,new Position(previousShot.Position.Row, previousShot.Position.Column));
+                                return this.getNextTarget(mat);
                             }
                             return nextShot;
                         }
@@ -190,7 +190,7 @@ export class MyBot {
 
                 if(!this.state.stateHitShipButNotSunk){
                     console.log("not sinking");
-                    return this.getNextTarget(gameState, new Position(previousShot.Position.Row,previousShot.Position.Column));
+                    return this.getNextTarget(mat);
                 }
                 else if(!this.state.stateKnowShipDirection){
                     let hitPosition:Position;
@@ -211,7 +211,7 @@ export class MyBot {
                         console.log("SUNK");
                         this.state.stateHitShipButNotSunk = false;
                         this.state.stateKnowShipDirection =false;
-                        return this.getNextTarget(gameState, new Position(previousShot.Position.Row, previousShot.Position.Column));
+                        return this.getNextTarget(mat);
                     }
                     else{
                         this.state.stateWalkingPositiveAxis = false;
@@ -226,7 +226,7 @@ export class MyBot {
                                console.log(nextShot.print("sunk method"));
                                 this.state.stateHitShipButNotSunk = false;
                                 this.state.stateKnowShipDirection =false;
-                                return this.getNextTarget(gameState, new Position(previousShot.Position.Row, previousShot.Position.Column));
+                                return this.getNextTarget(mat);
                             }
                             else if(mat.alreadyHitAt(nextShot)){
                                 continue;
@@ -241,7 +241,7 @@ export class MyBot {
                 }
             }
 
-            return this.getNextTarget(gameState,new Position(previousShot.Position.Row,previousShot.Position.Column));
+            return this.getNextTarget(mat);
         }
         this.state = new StateClass();
         return { Row: "A", Column: 1 };  
@@ -291,12 +291,12 @@ export class MyBot {
         return bottomPos;
     }
 
-    private getNextTarget(gameState,position:Position):Position {
-        return this.targetMethodTryRandomBlackSquare(gameState);
+    private getNextTarget(mat:Matrix):Position {
+        return this.targetMethodTryRandomBlackSquare(mat);
     }
 
 
-    private targetMethodTryRandomBlackSquare(gameState):Position{
+    private targetMethodTryRandomBlackSquare(mat:Matrix):Position{
         console.log("get next Target method ");
         var column = (Math.floor(Math.random()*10)+1);
         //col is random value between 1 and 10;
@@ -313,7 +313,7 @@ export class MyBot {
         const nextPos:Position = new Position(row, column);
         console.log(nextPos.print("trying point"));
         if(!mat.alreadyHitAt(nextPos) && !mat.alreadyMissAt(nextPos)) return nextPos;
-        else return this.targetMethodTryRandomBlackSquare(gameState);
+        else return this.targetMethodTryRandomBlackSquare(mat);
     }
 
     private getDownRow(row) {
