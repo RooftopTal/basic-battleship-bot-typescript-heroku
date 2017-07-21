@@ -104,9 +104,10 @@ export class MyBot {
                     }
                 }
                 firebase.database().ref('matches/' + this.matchId.toString()).set(snapCopy);
-                console.log(snapCopy);
+                //console.log(snapCopy);
                 if (snapCopy.hitmode) {
                     this.track(gamestate).then((decision) => {
+                        console.log(decision);
                         target = decision;
                         //console.log(target);
                     });
