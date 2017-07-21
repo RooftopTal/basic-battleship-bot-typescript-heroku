@@ -34,11 +34,11 @@ export class Matrix{
         return row.charCodeAt(0)-65;
     }
 
-    public isHitAt(pos){
+    public alreadyHitAt(pos){
         return this.board[this.getRowPos(pos.Row)][pos.Column-1] == 1;
     }
 
-    public isMissAt(pos){
+    public alreadyMissAt(pos){
         return this.board[this.getRowPos(pos.Row)][pos.Column-1] == 2;
     }
 
