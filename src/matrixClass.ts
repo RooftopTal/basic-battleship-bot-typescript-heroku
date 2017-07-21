@@ -100,7 +100,7 @@ export class Matrix{
     
 
     private positionFromCoords(row, col){
-        return new Position(String.fromCharCode(row+65), col);
+        return new Position(String.fromCharCode(row+65), col+1);
     }
 
     public constructor(gameState){
