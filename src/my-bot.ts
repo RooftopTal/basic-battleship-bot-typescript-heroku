@@ -347,7 +347,7 @@ export class MyBot {
     }
 
     private getLeftColumn(column) {
-        return column % 10 - 1;
+        return (column+9)%10;
     }
 }
 
