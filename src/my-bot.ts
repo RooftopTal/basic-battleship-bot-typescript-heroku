@@ -134,7 +134,11 @@ export class MyBot {
             if ((row > 'F') && (column > 6)) {
                 continue;
             }
-            place = { StartingSquare: { Row: row, Column: column }, EndingSquare: { Row: String.fromCharCode(row.charCodeAt(0) + 4), Column: (column + 4) } };
+            if (Math.random() < 0.5) {
+                place = { StartingSquare: { Row: row, Column: column }, EndingSquare: { Row: String.fromCharCode(row.charCodeAt(0) + 4), Column: column } };
+            } else {
+                place = { StartingSquare: { Row: row, Column: column }, EndingSquare: { Row: row, Column: (column + 4) } };
+            }
             places.push(place);
             if (this.detectCollision(places)) {
                 collision = true;
