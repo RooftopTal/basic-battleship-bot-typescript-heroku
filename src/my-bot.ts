@@ -311,6 +311,7 @@ export class MyBot {
             set.add({ Row: String.fromCharCode(ship[i].Row.charCodeAt(0) + 1), Column: ship[i].Column + 1 });
             set.add({ Row: String.fromCharCode(ship[i].Row.charCodeAt(0) - 1), Column: ship[i].Column + 1 });
         }
+        console.log(set);
         return set;
     }
 
