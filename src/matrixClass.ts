@@ -11,7 +11,7 @@ export class Matrix{
     public returnUnsunkShot(){
         for(let row =0; row < this.board.length; row ++){
             for(let col = 0; col < this.board.length; col ++){
-                if(this.board[row][col])return this.positionFromCoords(row, col);
+                if(this.board[row][col] == 3)return this.positionFromCoords(row, col);
             }
         }
         // should never reach hear;
@@ -27,12 +27,6 @@ export class Matrix{
         var down = lastShot.getPositionDown();
         var left = lastShot.getPositionLeft();
         var right = lastShot.getPositionRight();
-        up.print("up " );
-        down.print("down " );
-        left.print("left " );
-        right.print("right " );
-
-
         if(left.Column<10 && this.alreadyHitAt(left) || right.Column>1 && this.alreadyHitAt(right)){
             //horizontal ship
             return this.horizontalShipSunk(lastShot);
