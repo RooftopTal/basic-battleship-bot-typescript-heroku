@@ -96,12 +96,14 @@ export class MyBot {
                         else{
                             console.log("next guess left");
                             //next guess to left
-                            let nextShot:Position =  new Position(previousShot.Position.Row, this.getLeftColumn(previousShot.Position.column));
+
+                            let nextShot:Position =  new Position(previousShot.Position.Row, this.getLeftColumn(previousShot.Position.Column));
                             if(this.alreadyMissAt(nextShot)){
                                 //sunk ***********
+                                console.log("sunk in moving left");
                                 this.state.stateHitShipButNotSunk = false;
                                 this.state.stateKnowShipDirection =false;
-                                return this.getNextTarget(gameState, nextShot);
+                                return this.getNextTarget(gameState,new Position(previousShot.Position.Row, previousShot.Position.Column));
                             }
                             return nextShot;
                         }
