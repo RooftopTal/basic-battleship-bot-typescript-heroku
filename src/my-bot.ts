@@ -273,6 +273,8 @@ export class MyBot {
             for (let j: number = i + 1; j < shipPlaces.length; j++) {
                 let ship2: Set<Position> = this.generateAdjacentSquares(this.generateShipSquares(shipPlaces[j]));
                 for (let x: number = 0; x < ship1.length; x++) {
+                    console.log(ship1);
+                    console.log(ship2.has({ Row: ship1[x].Row, Column: ship1[x].Column }));
                     if (ship2.has({ Row: ship1[x].Row, Column: ship1[x].Column })) {
                         return true;
                     }
@@ -304,7 +306,7 @@ export class MyBot {
 
     private generateAdjacentSquares(ship: Position[]): Set<Position> {
         let set: Set<Position> = new Set<Position>();
-        console.log(ship);
+        //console.log(ship);
         for (let i: number = 0; i < ship.length; i++) {
             set.add(ship[i]);
             set.add({ Row: ship[i].Row, Column: ship[i].Column + 1 });
