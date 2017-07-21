@@ -97,7 +97,11 @@ export class MyBot {
                 let snapCopy = snapshot.val();
                 if (result) {
                     snapCopy.hitmode = true;
-                    snapCopy.hitmap.push(previousShot.Position);
+                    if (snapCopy.hitmap) {
+                        snapCopy.hitmap.push(previousShot.Position);
+                    } else {
+                        snapCopy.hitmap = [previousShot.Position];
+                    }
                 }
                 if (snapCopy.hitmode) {
                     this.track(gamestate).then((decision) => {
