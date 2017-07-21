@@ -31,7 +31,7 @@ export class MyBot {
             }
             else{
                 for(let i = 1; i < gameState.MyShots.length; i ++){
-                    if(gameState.MyShots[gameState.MyShots.length].WasHit){
+                    if(gameState.MyShots[gameState.MyShots.length-i].WasHit){
                         //this is the most recent hit;
                         if(!mat.isThereUnsunkShipAt(previousShot)) return this.getNextTarget(mat);
                         else return mat.returnUnsunkShot();
