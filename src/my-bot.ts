@@ -285,14 +285,14 @@ export class MyBot {
     private generateShipSquares(shipPlace: ShipPlace): Position[] {
         let ship: Position[] = [];
         if (shipPlace.StartingSquare.Row === shipPlace.EndingSquare.Row) {
-            for (let i: number = shipPlace.StartingSquare.Column; i <= shipPlace.StartingSquare.Column; i++) {
+            for (let i: number = shipPlace.StartingSquare.Column; i <= shipPlace.EndingSquare.Column; i++) {
                 ship.push({
                     Row: shipPlace.StartingSquare.Row,
                     Column: i
                 });
             }
         } else {
-            for (let i: number = shipPlace.StartingSquare.Row.charCodeAt(0); i <= shipPlace.StartingSquare.Row.charCodeAt(0); i++) {
+            for (let i: number = shipPlace.StartingSquare.Row.charCodeAt(0); i <= shipPlace.EndingSquare.Row.charCodeAt(0); i++) {
                 ship.push({
                     Row: String.fromCharCode(i),
                     Column: shipPlace.StartingSquare.Column
