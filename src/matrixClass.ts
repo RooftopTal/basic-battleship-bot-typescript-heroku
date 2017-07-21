@@ -22,12 +22,17 @@ export class Matrix{
     public isThereUnsunkShipAt(lastShot:Position):boolean
     {
         // as a side affect add a 3 where the shot should be if true
-        console.log(lastShot);
         lastShot.print("unsunk " );
         var up = lastShot.getPositionAbove();
         var down = lastShot.getPositionDown();
         var left = lastShot.getPositionLeft();
         var right = lastShot.getPositionRight();
+        up.print("up " );
+        down.print("down " );
+        left.print("left " );
+        right.print("right " );
+
+
         if(left.Column<10 && this.alreadyHitAt(left) || right.Column>1 && this.alreadyHitAt(right)){
             //horizontal ship
             return this.horizontalShipSunk(lastShot);
