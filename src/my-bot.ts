@@ -1,5 +1,6 @@
 import {Position} from './Position'
 import {StateClass} from './stateClass'
+import {Matrix} from './matrixClass'
 
 export class MyBot {
     private state;
@@ -17,8 +18,14 @@ export class MyBot {
         return firstPos.Row > secondPos.Row || firstPos.Column < secondPos.Column;
     }
 
+    private selectNextTar(gameState){
+        var mat:Matrix = new Matrix(gameState);
+        console.log(mat.board);
+    }
+
     public selectTarget(gameState) {
         console.log("turn "+ (gameState.MyShots.length+1))
+        this.selectNextTar(gameState);
         var ispreviousShot = gameState.MyShots && gameState.MyShots[gameState.MyShots.length-1];
         if(ispreviousShot) {
             var previousShot = gameState.MyShots[gameState.MyShots.length-1];
