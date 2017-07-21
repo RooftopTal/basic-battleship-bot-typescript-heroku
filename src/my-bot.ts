@@ -273,7 +273,7 @@ export class MyBot {
             for (let j: number = i + 1; j < shipPlaces.length; j++) {
                 let ship2: Set<Position> = this.generateAdjacentSquares(this.generateShipSquares(shipPlaces[j]));
                 for (let x: number = 0; x < ship1.length; x++) {
-                    if (ship2.has(ship1[x])) {
+                    if (ship2.has({ Row: ship1[x].Row, Column: ship1[x].Column })) {
                         return true;
                     }
                 }
