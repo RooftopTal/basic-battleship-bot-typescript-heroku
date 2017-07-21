@@ -20,7 +20,8 @@ export class MyBot {
     }
 
     public selectTarget(gameState) {
-         var mat:Matrix = new Matrix(gameState);
+        console.log("turn "+ (gameState.MyShots.length+1))
+        var mat:Matrix = new Matrix(gameState);
         var ispreviousShot = gameState.MyShots && gameState.MyShots[gameState.MyShots.length-1];
         if(ispreviousShot) {
             var previousShot = gameState.MyShots[gameState.MyShots.length-1];

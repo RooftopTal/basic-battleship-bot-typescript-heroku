@@ -42,6 +42,7 @@ export class Matrix{
             return this.verticalShipSunk(lastShot);
         }
         else{
+            console.log("ship size 1")
             //ship of size one
             if(this.getRowPos(up.Row) <10 && !this.alreadyMissAt(up))this.board[this.getRowPos(up.Row)][up.Column-1] = 3;
             else if (right.Column>1 && this.alreadyHitAt(right))this.board[this.getRowPos(right.Row)][right.Column-1] = 3;
