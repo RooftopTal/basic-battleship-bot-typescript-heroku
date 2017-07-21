@@ -47,7 +47,7 @@ export class Matrix{
         var down = pos.getPositionDown();
         var left = pos.getPositionLeft();
         var right = pos.getPositionRight();
-        return !(up.Row != 'J' && this.alreadyHitAt(up)|| left.Column != 10 && this.alreadyHitAt(left) || right.Column != 1 && this.alreadyHitAt(right) || down.Row != 'A' + this.alreadyHitAt(down) ||this.alreadyHitAt(pos) ||this.alreadyMissAt(pos));
+        return !(up.Row != 'J' && this.alreadyHitAt(up)|| left.Column != 10 && this.alreadyHitAt(left) || right.Column != 1 && this.alreadyHitAt(right) || down.Row != 'A' && this.alreadyHitAt(down) ||this.alreadyHitAt(pos) ||this.alreadyMissAt(pos));
     }
 
 }
