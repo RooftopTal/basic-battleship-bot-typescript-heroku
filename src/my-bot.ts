@@ -512,7 +512,7 @@ export class MyBot {
     }
 
     private generateHitMap(shots: Shot[]): number[][] {
-        console.log(shots);
+        //console.log(shots);
         let map: number[][] = [];
         for (let i: number = 65; i < 75; i++) {
             const arr: number[] = [];
