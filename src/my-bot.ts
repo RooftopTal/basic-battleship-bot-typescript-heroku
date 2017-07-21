@@ -305,13 +305,17 @@ export class MyBot {
     private generateAdjacentSquares(ship: Position[]): Set<Position> {
         let set: Set<Position> = new Set<Position>();
         console.log(ship);
-        for (let i: number = 1; i < ship.length; i++) {
+        for (let i: number = 0; i < ship.length; i++) {
             set.add(ship[i]);
             set.add({ Row: ship[i].Row, Column: ship[i].Column + 1 });
             set.add({ Row: ship[i].Row, Column: ship[i].Column + 1 });
-            set.add({ Row: String.fromCharCode(ship[i].Row.charCodeAt(0) + 1), Column: ship[i].Column + 1 });
-            set.add({ Row: String.fromCharCode(ship[i].Row.charCodeAt(0) - 1), Column: ship[i].Column + 1 });
+            set.add({ Row: String.fromCharCode(ship[i].Row.charCodeAt(0) + 1), Column: ship[i].Column });
+            set.add({ Row: String.fromCharCode(ship[i].Row.charCodeAt(0) - 1), Column: ship[i].Column });
         }
+        set.add({ Row: String.fromCharCode(ship[0].Row.charCodeAt(0) + 1), Column: ship[0].Column + 1 });
+        set.add({ Row: String.fromCharCode(ship[0].Row.charCodeAt(0) - 1), Column: ship[0].Column + 1 });
+        set.add({ Row: String.fromCharCode(ship[0].Row.charCodeAt(0) + 1), Column: ship[0].Column - 1 });
+        set.add({ Row: String.fromCharCode(ship[0].Row.charCodeAt(0) - 1), Column: ship[0].Column - 1 });
         console.log(set);
         return set;
     }
