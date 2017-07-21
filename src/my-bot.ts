@@ -134,7 +134,7 @@ export class MyBot {
             if ((row > 'F') && (column > 6)) {
                 continue;
             }
-            if (Math.random() < 0.5) {
+            if (((Math.random() < 0.5) && (row <= 'F')) || (column > 6)) {
                 place = { StartingSquare: { Row: row, Column: column }, EndingSquare: { Row: String.fromCharCode(row.charCodeAt(0) + 4), Column: column } };
             } else {
                 place = { StartingSquare: { Row: row, Column: column }, EndingSquare: { Row: row, Column: (column + 4) } };
@@ -163,7 +163,11 @@ export class MyBot {
             if ((row > 'G') && (column > 7)) {
                 continue;
             }
-            place = { StartingSquare: { Row: row, Column: column }, EndingSquare: { Row: String.fromCharCode(row.charCodeAt(0) + 3), Column: (column + 3) } };
+            if (((Math.random() < 0.5) && (row <= 'G')) || (column > 7)) {
+                place = { StartingSquare: { Row: row, Column: column }, EndingSquare: { Row: String.fromCharCode(row.charCodeAt(0) + 3), Column: column } };
+            } else {
+                place = { StartingSquare: { Row: row, Column: column }, EndingSquare: { Row: row, Column: (column + 3) } };
+            }
             places.push(place);
             if (this.detectCollision(places)) {
                 collision = true;
@@ -188,7 +192,11 @@ export class MyBot {
             if ((row > 'H') && (column > 8)) {
                 continue;
             }
-            place = { StartingSquare: { Row: row, Column: column }, EndingSquare: { Row: String.fromCharCode(row.charCodeAt(0) + 2), Column: (column + 2) } };
+            if (((Math.random() < 0.5) && (row <= 'H')) || (column > 8)) {
+                place = { StartingSquare: { Row: row, Column: column }, EndingSquare: { Row: String.fromCharCode(row.charCodeAt(0) + 2), Column: column } };
+            } else {
+                place = { StartingSquare: { Row: row, Column: column }, EndingSquare: { Row: row, Column: (column + 2) } };
+            }
             places.push(place);
             if (this.detectCollision(places)) {
                 collision = true;
@@ -213,7 +221,11 @@ export class MyBot {
             if ((row > 'H') && (column > 8)) {
                 continue;
             }
-            place = { StartingSquare: { Row: row, Column: column }, EndingSquare: { Row: String.fromCharCode(row.charCodeAt(0) + 2), Column: (column + 2) } };
+            if (((Math.random() < 0.5) && (row <= 'H')) || (column > 8)) {
+                place = { StartingSquare: { Row: row, Column: column }, EndingSquare: { Row: String.fromCharCode(row.charCodeAt(0) + 2), Column: column } };
+            } else {
+                place = { StartingSquare: { Row: row, Column: column }, EndingSquare: { Row: row, Column: (column + 2) } };
+            }
             places.push(place);
             if (this.detectCollision(places)) {
                 collision = true;
@@ -238,7 +250,11 @@ export class MyBot {
             if ((row > 'I') && (column > 9)) {
                 continue;
             }
-            place = { StartingSquare: { Row: row, Column: column }, EndingSquare: { Row: String.fromCharCode(row.charCodeAt(0) + 1), Column: (column + 1) } };
+            if (((Math.random() < 0.5) && (row <= 'I')) || (column > 9)) {
+                place = { StartingSquare: { Row: row, Column: column }, EndingSquare: { Row: String.fromCharCode(row.charCodeAt(0) + 1), Column: column } };
+            } else {
+                place = { StartingSquare: { Row: row, Column: column }, EndingSquare: { Row: row, Column: (column + 1) } };
+            }
             places.push(place);
             if (this.detectCollision(places)) {
                 collision = true;
