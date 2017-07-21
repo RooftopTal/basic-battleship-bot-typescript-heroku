@@ -24,16 +24,17 @@ export class MyBot {
         var ispreviousShot = gameState.MyShots && gameState.MyShots[gameState.MyShots.length-1];
         if(ispreviousShot) {
             var previousShot = gameState.MyShots[gameState.MyShots.length-1];
+            var previousShotAsCorrectClass = new Position(previousShot.Position.Row, previousShot.Position.Column);
             if(previousShot.WasHit)
             {
-                if(!mat.isThereUnsunkShipAt(previousShot.Position)) return this.getNextTarget(mat);
+                if(!mat.isThereUnsunkShipAt(previousShotAsCorrectClass)) return this.getNextTarget(mat);
                 else return mat.returnUnsunkShot();
             }
             else{
                 for(let i = 1; i < gameState.MyShots.length; i ++){
                     if(gameState.MyShots[gameState.MyShots.length-i].WasHit){
                         //this is the most recent hit;
-                        if(!mat.isThereUnsunkShipAt(gameState.MyShots[gameState.MyShots.length-i].Position)) return this.getNextTarget(mat);
+                        if(!mat.isThereUnsunkShipAt(new Position(gameState.MyShots[gameState.MyShots.length-i].Position.Row, gameState.MyShots[gameState.MyShots.length-i].Position.Column))) return this.getNextTarget(mat);
                         else return mat.returnUnsunkShot();
                     }
                 }
