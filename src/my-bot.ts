@@ -103,12 +103,14 @@ export class MyBot {
                         snapCopy.hitmap = [previousShot.Position];
                     }
                 }
+                firebase.database().ref('matches/' + this.matchId.toString()).set(snapCopy);
                 if (snapCopy.hitmode) {
                     this.track(gamestate).then((decision) => {
                         target = decision;
+                        console.log(target);
                     });
                 }
-                firebase.database().ref('matches/' + this.matchId.toString()).set(snapCopy);
+                console.log(target);
                 return resolve(target);
             });
         })
