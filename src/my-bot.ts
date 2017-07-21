@@ -94,12 +94,14 @@ export class MyBot {
                             }
                         }
                         else{
+                            console.log("next guess left");
                             //next guess to left
                             let nextShot:Position =  new Position(previousShot.Position.Row, this.getLeftColumn(previousShot.Position.column));
                             if(this.alreadyMissAt(nextShot)){
                                 //sunk ***********
                                 this.state.stateHitShipButNotSunk = false;
                                 this.state.stateKnowShipDirection =false;
+                                return this.getNextTarget(gameState, nextShot);
                             }
                             return nextShot;
                         }
@@ -308,17 +310,15 @@ export class MyBot {
         //col is random value between 1 and 10;
         var row;
         if(column%2 == 0){
-            row = String.fromCharCode((Math.floor(Math.random()*5))*2+63);
+            row = String.fromCharCode((Math.floor(Math.random()*5))*2+65);
         }
         else{
-            row = String.fromCharCode((Math.floor(Math.random()*5))*2+64);
+            row = String.fromCharCode((Math.floor(Math.random()*5))*2+66);
         }
         const nextPos:Position = new Position(row, column);
         console.log(nextPos.print("trying point"));
         if(!this.alreadyHitAt(nextPos) && !this.alreadyMissAt(nextPos)) return nextPos;
         else return this.targetMethodTryRandomBlackSquare(gameState);
-
-        
     }
 
     private getDownRow(row) {
