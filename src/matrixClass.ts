@@ -20,12 +20,11 @@ export class Matrix{
         }
         for(let i = 0; i < gameState.MyShots.length; i++){
             const pos: Position = new Position(gameState.MyShots[i].Position.Row, gameState.MyShots[i].Position.Column);
-            console.log(this.getRowPos(pos.Row));
             if(gameState.MyShots[i].WasHit){
-                this.board[this.getRowPos(pos.Row)][pos.Column] = 1;
+                this.board[this.getRowPos(pos.Row)][pos.Column-1] = 1;
             }
             else{
-                this.board[this.getRowPos(pos.Row)][pos.Column] = 2;
+                this.board[this.getRowPos(pos.Row)][pos.Column-1] = 2;
             }
 
         }
@@ -36,11 +35,11 @@ export class Matrix{
     }
 
     public isHitAt(pos){
-        return this.board[this.getRowPos(pos.Row)][pos.Column] == 1;
+        return this.board[this.getRowPos(pos.Row)][pos.Column-1] == 1;
     }
 
     public isMissAt(pos){
-        return this.board[this.getRowPos(pos.Row)][pos.Column] == 2;
+        return this.board[this.getRowPos(pos.Row)][pos.Column-1] == 2;
     }
 
 }
