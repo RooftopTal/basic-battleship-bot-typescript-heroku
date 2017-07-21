@@ -211,6 +211,7 @@ export class MyBot {
 
                             if(!this.shotOnBoard(nextShot) || this.alreadyMissAt(nextShot)){
                                 //sunk
+                               console.log(nextShot.print("sunk method"));
                                 this.state.stateHitShipButNotSunk = false;
                                 this.state.stateKnowShipDirection =false;
                                 return this.getNextTarget(gameState, new Position(previousShot.Position.Row, previousShot.Position.Column));
@@ -219,6 +220,7 @@ export class MyBot {
                                 continue;
                             }
                             else{
+                                console.log(nextShot.print("ship next try at "));
                                 break;
                             }
                         }
