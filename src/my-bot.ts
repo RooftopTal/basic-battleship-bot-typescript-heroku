@@ -24,14 +24,14 @@ export class MyBot {
             var previousShot = gameState.MyShots[gameState.MyShots.length-1];
             if(previousShot.WasHit)
             {
-                console.log("last shot hit" + previousShot.Position.Column + previousShot.Position.Row)
+                console.log("last shot hit " + previousShot.Position.Column + previousShot.Position.Row)
                 if(this.state.hitArray)this.state.hitArray[this.state.hitArray.length] = new Position(previousShot.Position.Row,previousShot.Position.Column);
                 else this.state.hitArray = [new Position(previousShot.Position.Row,previousShot.Position.Column)];
 
 
                 if(this.state.stateHitShipButNotSunk  && !this.state.stateKnowShipDirection)
                 {
-                    console.log("already shot at ship")
+                    console.log("already shot at ship 1")
                     //second hit on ship so can find direction
                     let positionHitBefore:Position;
                     let onShot;
@@ -110,7 +110,7 @@ export class MyBot {
                         if(this.state.stateWalkingPositiveAxis){
                             //next guess up
                             let nextShot:Position =  new Position(this.getUpRow(previousShot.Position.Row), previousShot.Position.Column);
-                            if(this.alreadyHitAt(nextShot) || this.alreadyMissAt(nextShot) || nextShot.Column == 1){
+                            if(this.alreadyHitAt(nextShot) || this.alreadyMissAt(nextShot) || nextShot.Row.charAt(0) == 'J'){
                                 //clearly to up is a miss or not on screen so need to find next down guess
                                 nextShot =  new Position(this.getDownRow(previousShot.Position.Row), previousShot.Position.Column);
                                 this.state.stateWalkingPositiveAxis = false;
