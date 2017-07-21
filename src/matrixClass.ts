@@ -32,7 +32,7 @@ export class Matrix{
     }
 
     private getRowPos(row:string){
-        return parseInt(row.charAt(0))-parseInt(("A").charAt(0));
+        return row.charCodeAt(0)-65;
     }
 
     public isHitAt(pos){
