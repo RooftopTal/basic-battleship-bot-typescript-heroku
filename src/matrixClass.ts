@@ -283,7 +283,6 @@ export class Matrix{
         else if(this.ships[3])  largestShip =4;
         else if(this.ships[4])  largestShip = 3;
         else                    largestShip = 2;
-        let count = 0;
         let horizontal = Math.random()> 0.5;
         const linePref = Math.floor(Math.random()*10);
         for(let a = 0; a < 2; a ++){
@@ -292,7 +291,6 @@ export class Matrix{
                 let line = (linePref+b)%10;
                 for(let startPos = 0; startPos < this.board.length-largestShip; startPos ++){
                     let possible = true;
-                    count ++;
                     for(let i = 0; i < largestShip; i ++){
                         if(!horizontal && !(this.board[startPos+i][line] == 0) || horizontal && !(this.board[line][startPos+i]==0)){
                             if(!horizontal)console.log(this.board[startPos+i][line]);
@@ -315,6 +313,5 @@ export class Matrix{
                 }
             }
         }
-        console.log("issue Encountered " + count + " " + linePref); 
     }
 }
