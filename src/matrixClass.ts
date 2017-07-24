@@ -39,6 +39,9 @@ export class Matrix{
                 if(this.board[row][col] == 1)hitCount ++;
                 else if(this.board[row][col] != 1){
                     if(hitCount > 1)this.horizontalSurroundShip(row,col,hitCount);
+                    
+                    hitCount ==0 ;
+
                 }
             }
         }
@@ -52,6 +55,8 @@ export class Matrix{
                 if(this.board[row][col] == 1)hitCount ++;
                 else if(this.board[row][col]!= 1){
                     if(hitCount > 1)this.verticalSurroundShip(row,col,hitCount);
+                    
+                    hitCount ==0 ;
                 }
             }
         }
