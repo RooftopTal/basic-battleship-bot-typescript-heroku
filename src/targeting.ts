@@ -1,5 +1,6 @@
 import {Matrix} from './matrixClass';
 import {Position} from './Position';
+import {MyShips} from './myShips';
 
 export class TargetingMethods{
 
@@ -26,8 +27,9 @@ export class TargetingMethods{
 
     public static targetMethodOpponentsMostRecentMiss(mat, gameState)
     {
+        const myBoard = new MyShips(gameState.ShipPositions);
         for(let i = 1; i <= gameState.OpponentsShots.length; i ++){
-            if(!gameState.OpponentsShots[gameState.OpponentsShots.length-i].WasHit)
+            if(!myBoard.wasHit(gameState.OpponentsShots[gameState.OpponentsShots.length-i]))
             {
                 if(mat.validShotPlace(gameState.OpponentsShots[gameState.OpponentsShots.length-i].Position)){
                     return gameState.OpponentsShots[gameState.OpponentsShots.length-i].Position;
