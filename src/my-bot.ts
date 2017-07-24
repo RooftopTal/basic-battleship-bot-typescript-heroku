@@ -165,13 +165,13 @@ export class MyBot {
                 collision = true;
                 counter++;
             } else {
-                console.log(JSON.stringify(places))
+                return place;
             }
         } while((counter < 500) && (collision))
         if (counter === 500) {
             return { StartingSquare: { Row: "A", Column: -1 }, EndingSquare : { Row: "A", Column: 5 } };
         }
-        return place;
+        return { StartingSquare: { Row: "A", Column: -1 }, EndingSquare : { Row: "A", Column: 5 } };
     }
 
     private getBattleshipPlace(shipPlaces: ShipPlace[]): ShipPlace {
@@ -196,13 +196,13 @@ export class MyBot {
                 collision = true;
                 counter++;
             } else {
-                console.log(JSON.stringify(places))
+                return place
             }
         } while((counter < 500) && (collision))
         if (counter === 500) {
             return { StartingSquare: { Row: "A", Column: -1 }, EndingSquare : { Row: "A", Column: 5 } };
         }
-        return place;
+        return { StartingSquare: { Row: "A", Column: -1 }, EndingSquare : { Row: "A", Column: 5 } };
     }
 
     private getDestroyerPlace(shipPlaces: ShipPlace[]): ShipPlace {
@@ -227,13 +227,13 @@ export class MyBot {
                 collision = true;
                 counter++;
             } else {
-                console.log(JSON.stringify(places))
+                return place
             }
         } while((counter < 500) && (collision))
         if (counter === 500) {
             return { StartingSquare: { Row: "A", Column: -1 }, EndingSquare : { Row: "A", Column: 5 } };
         }
-        return place;
+        return { StartingSquare: { Row: "A", Column: -1 }, EndingSquare : { Row: "A", Column: 5 } };
     }
 
     private getSubmarinePlace(shipPlaces: ShipPlace[]): ShipPlace {
@@ -258,13 +258,13 @@ export class MyBot {
                 collision = true;
                 counter++;
             } else {
-                console.log(JSON.stringify(places))
+                return place
             }
         } while((counter < 500) && (collision))
         if (counter === 500) {
             return { StartingSquare: { Row: "A", Column: -1 }, EndingSquare : { Row: "A", Column: 5 } };
         }
-        return place;
+        return { StartingSquare: { Row: "A", Column: -1 }, EndingSquare : { Row: "A", Column: 5 } };
     }
 
     private getPatrolPlace(shipPlaces: ShipPlace[]): ShipPlace {
@@ -289,13 +289,13 @@ export class MyBot {
                 collision = true;
                 counter++;
             } else {
-                console.log(JSON.stringify(places))
+                return place
             }
         } while((counter < 500) && (collision))
         if (counter === 500) {
             return { StartingSquare: { Row: "A", Column: -1 }, EndingSquare : { Row: "A", Column: 5 } };
         }
-        return place;
+        return { StartingSquare: { Row: "A", Column: -1 }, EndingSquare : { Row: "A", Column: 5 } };
     }
 
     private detectCollision(shipPlaces: ShipPlace[]): boolean {
