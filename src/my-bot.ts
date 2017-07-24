@@ -48,7 +48,7 @@ export class MyBot {
         }
         mat.surroundHorizontalShips();
         mat.surroundVerticalShips();
-        console.log(mat.board);
+        //console.log(mat.board);
         return this.getNextTarget(mat);
     }
 
@@ -102,7 +102,7 @@ export class MyBot {
 
         }
         const nextPos:Position = new Position(row, column);
-        console.log(nextPos.print("trying point"));
+        //console.log(nextPos.print("trying point"));
         if(mat.validShotPlace(nextPos)) return nextPos;
         else return this.targetMethodTryRandomBlackSquare(mat);
     }
