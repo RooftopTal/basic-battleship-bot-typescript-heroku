@@ -83,7 +83,8 @@ export class MyBot {
     public selectTarget(gamestate): Promise<Position> {
         return new Promise((resolve, reject) => {
             if (gamestate.MyShots.length === 0) {
-                resolve(this.randomShot(gamestate));
+                //resolve(this.randomShot(gamestate));
+                resolve({ Row: 'A', Column: 4 })
             }
             const previousShot: Shot = gamestate.MyShots && gamestate.MyShots[gamestate.MyShots.length-1];
             let target: Position = this.getNextTarget(previousShot.Position);
@@ -109,7 +110,7 @@ export class MyBot {
                 } else {
                     target = this.randomShot(gamestate);
                 }
-                console.log("Target is " + target);
+                console.log("Target is " + target.Row + target.Column.toString());
                 return resolve(target);
             });
         })
@@ -480,7 +481,7 @@ export class MyBot {
                 right = false;
                 left = false;
             }
-            console.log("last hit: " + lastHit);
+            console.log("last hit: " + lastHit.Row + lastHit.Column.toString());
             console.log("Up " + up);
             console.log("Down " + down);
             console.log("Left " + left);
