@@ -37,7 +37,7 @@ export class Matrix{
             hitCount = 0;
             for(let col = 0; col < this.board.length; col ++){
                 if(this.board[row][col] == 1)hitCount ++;
-                else if(this.board[row][col] == 2){
+                else if(this.board[row][col] != 1){
                     if(hitCount > 1)this.horizontalSurroundShip(row,col,hitCount);
                 }
             }

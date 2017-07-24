@@ -29,7 +29,7 @@ export class MyBot {
             {
                 if(!mat.isThereUnsunkShipAt(previousShotAsCorrectClass)) return this.getNextTarget(mat);
                 else {
-                    console.log(mat.board);
+                    // console.log(mat.board);
                     return mat.returnUnsunkShot();
                 }
             }
@@ -39,7 +39,7 @@ export class MyBot {
                         //this is the most recent hit;
                         if(!mat.isThereUnsunkShipAt(new Position(gameState.MyShots[gameState.MyShots.length-i].Position.Row, gameState.MyShots[gameState.MyShots.length-i].Position.Column))) return this.getNextTarget(mat);
                         else{
-                            console.log(mat.board);
+                            // console.log(mat.board);
                             return mat.returnUnsunkShot();
                         }
                     }
