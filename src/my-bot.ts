@@ -407,7 +407,7 @@ export class MyBot {
                 }
                 if ((hitmap[lastHit.Row.charCodeAt(0) - boatsize][lastHit.Column] === 1) || (lastHit.Row.charCodeAt(0) - boatsize === 64)) {
                     up = false;
-                    offset = 0;
+                    offset = 1;
                     let othersize: number = 1;
                     while (hitmap[lastHit.Row.charCodeAt(0) + othersize + 1][lastHit.Column] === 2) {
                         othersize++;
@@ -445,7 +445,7 @@ export class MyBot {
                 }
                 if ((hitmap[lastHit.Row.charCodeAt(0)][lastHit.Column - boatsize] === 1) || (lastHit.Column - boatsize === 0)) {
                     left = false;
-                    offset = 0;
+                    offset = 1;
                     let othersize: number = 1;
                     while (hitmap[lastHit.Row.charCodeAt(0)][lastHit.Column + othersize + 1] === 2) {
                         othersize++;
