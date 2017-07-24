@@ -290,7 +290,7 @@ export class Matrix{
                 let line = (linePref+b)%10;
                 for(let startPos = 0; startPos < this.board.length-largestShip; startPos ++){
                     let possible = true;
-                    count ++:
+                    count ++;
                     for(let i = 0; i < largestShip; i ++){
                         if(!horizontal && !(this.board[startPos+i][line] == 0) || horizontal && !(this.board[line][startPos+i]==0)){
                             possible = false;
