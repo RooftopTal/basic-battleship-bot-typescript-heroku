@@ -420,6 +420,7 @@ export class MyBot {
                     offset = 1;
                     let othersize: number = 1;
                     while (!(lastHit.Row.charCodeAt(0) + boatsize === 75) && (hitmap[lastHit.Row.charCodeAt(0) + othersize + 1][lastHit.Column] === 2)) {
+                        console.log((lastHit.Row.charCodeAt(0) + boatsize).toString());
                         othersize++;
                         offset++;
                     }
