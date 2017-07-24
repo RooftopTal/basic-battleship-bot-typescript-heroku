@@ -7,8 +7,9 @@ export class MyBot {
     private state;
     public getShipPositions() {
         let myShips = new MyShips([]);
-        console.log(myShips);
-        return myShips.createBoard();
+        let result = myShips.createBoard();
+        console.log(result);
+        return result;
 
      
     }
