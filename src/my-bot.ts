@@ -73,8 +73,8 @@ export class MyBot {
                 continue;
             }
             done = true;
-        } while ((!done) && (counter < 1000))
-        if (counter === 1000) {
+        } while ((!done) && (counter < 10000))
+        if (counter === 10000) {
             throw new Error("Infinite loop generating ship positions");
         }
         return shipPlaces;
