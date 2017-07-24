@@ -202,6 +202,9 @@ export class MyBot {
     }
 
     private generateAdjacentSquares(ship: Position[]): Position[] {
+        if (ship === []) {
+            return []
+        }
         let squares: Position[] = [];
         for (let i: number = 0; i < ship.length; i++) {
             squares.push({ Row: ship[i].Row, Column: ship[i].Column + 1 });
