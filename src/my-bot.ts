@@ -481,10 +481,10 @@ export class MyBot {
                     right = false;
                     left = false;
                 }
-                console.log("Up " + up);
+                /*console.log("Up " + up);
                 console.log("Down " + down);
                 console.log("Left " + left);
-                console.log("Right " + right);
+                console.log("Right " + right);*/
                 console.log(offset);
                 if (up) {
                     return resolve({ Row: String.fromCharCode(lastHit.Row.charCodeAt(0) - offset), Column: lastHit.Column })
