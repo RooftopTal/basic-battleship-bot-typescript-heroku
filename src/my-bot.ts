@@ -51,6 +51,7 @@ export class MyBot {
         let done: boolean = false;
         counter = 0;
         do {
+            shipPlaces = [];
             counter++;
             shipPlaces.push(this.getAirCarrierPlace(shipPlaces));
             if (shipPlaces[0].StartingSquare.Column === -1) {
