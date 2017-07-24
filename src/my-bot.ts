@@ -109,13 +109,15 @@ export class MyBot {
                         .then((decision) => {
                             console.log(decision);
                             return resolve(decision);
-                            console.log("Something has gone wrong");
                         })
                         .catch((err) => console.log(err));
                 } else {
                     target = this.randomShot(gamestate);
                 }
                 console.log(target);
+                if (snapCopy.hitmode) {
+                    console.log("Something has gone wrong");
+                }
                 return resolve(target);
             });
         })
