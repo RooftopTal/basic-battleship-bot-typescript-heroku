@@ -110,13 +110,13 @@ export class MyBot {
                         .then((decision) => {
                             //console.log(decision);
                             target = decision;
-                            //console.log(target);
+                            console.log(target);
                         })
                         .catch((err) => console.log(err));
                 } else {
                     target = this.randomShot(gamestate);
                 }
-                //console.log(target);
+                console.log(target);
                 return resolve(target);
             });
         })
