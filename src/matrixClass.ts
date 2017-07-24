@@ -234,13 +234,6 @@ export class Matrix{
         else                    smallestShip = 5; 
 
         return (this.checkVerticalShipFits(smallestShip, pos) || this.checkHorizontalShipFits(smallestShip, pos))
-        // var up = pos.getPositionAbove();
-        // var down = pos.getPositionDown();
-        // var left = pos.getPositionLeft();
-        // var right = pos.getPositionRight();
-        // return !(up.Row != 'J' && this.alreadyHitAt(up)|| left.Column != 10 && this.alreadyHitAt(left)
-        //         || right.Column != 1 && this.alreadyHitAt(right) || down.Row != 'A' && this.alreadyHitAt(down) 
-        //         ||this.alreadyHitAt(pos) ||this.alreadyMissAt(pos));
     }
 
     private checkVerticalShipFits(size, pos):boolean{
@@ -310,5 +303,6 @@ export class Matrix{
                 }
             }
         }
+        console.log("issue Encountered"); 
     }
 }
