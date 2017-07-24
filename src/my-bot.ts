@@ -110,7 +110,6 @@ export class MyBot {
                 } else {
                     target = this.randomShot(gamestate);
                 }
-                //console.log("Target is " + target.Row + target.Column.toString());
                 return resolve(target);
             })
             .catch((err) => {console.log(err)});
@@ -342,6 +341,8 @@ export class MyBot {
         squares.push({ Row: String.fromCharCode(ship[ship.length - 1].Row.charCodeAt(0) - 1), Column: ship[ship.length - 1].Column + 1 });
         squares.push({ Row: String.fromCharCode(ship[ship.length - 1].Row.charCodeAt(0) + 1), Column: ship[ship.length - 1].Column - 1 });
         squares.push({ Row: String.fromCharCode(ship[ship.length - 1].Row.charCodeAt(0) - 1), Column: ship[ship.length - 1].Column - 1 });
+        console.log(ship.length);
+        console.log(JSON.stringify(squares));
         return squares;
     }
 
