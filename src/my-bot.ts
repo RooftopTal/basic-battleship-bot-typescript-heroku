@@ -48,9 +48,8 @@ export class MyBot {
         }
         mat.surroundHorizontalShips();
         mat.surroundVerticalShips();
-        //console.log(mat.board);
+        console.log(mat.board);
         return this.getNextTarget(mat);
-        rftghyj
     }
 
 
