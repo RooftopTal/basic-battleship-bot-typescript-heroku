@@ -375,6 +375,7 @@ export class MyBot {
                     break;
                 }
             }
+            console.log(lastHit);
             let up: boolean = true;
             let down: boolean = true;
             let left: boolean = true;
