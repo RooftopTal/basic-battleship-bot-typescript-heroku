@@ -238,7 +238,7 @@ export class Matrix{
     }
 
     private checkVerticalShipFits(size, pos):boolean{
-        let rowPos = this.getRowPos(pos);
+        let rowPos = this.getRowPos(pos.Row);
         let colPos = pos.Column-1;
 
         for(let i = 0; i < size; i ++)
@@ -257,7 +257,7 @@ export class Matrix{
     }
 
     private checkHorizontalShipFits(size, pos):boolean{
-        let rowPos = this.getRowPos(pos);
+        let rowPos = this.getRowPos(pos.Row);
         let colPos = pos.Column-1;
 
         for(let i = 0; i < size; i ++)

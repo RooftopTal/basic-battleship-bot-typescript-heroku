@@ -46,6 +46,8 @@ export class MyBot {
                 }
             }
         }
+        mat.surroundHorizontalShips();
+        mat.surroundVerticalShips();
         return this.getNextTarget(mat);
     }
 
