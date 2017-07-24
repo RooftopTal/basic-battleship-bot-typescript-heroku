@@ -88,15 +88,14 @@ export class MyBot {
             }
             const previousShot: Shot = gamestate.MyShots && gamestate.MyShots[gamestate.MyShots.length-1];
             let target: Position = this.getNextTarget(previousShot.Position);
-            let result: boolean = previousShot.WasHit;
-            if (result) {
+            if (previousShot.WasHit) {
                 let updates: any = {};
                 updates.hitmode = true;
                 firebase.database().ref('matches/' + this.matchId.toString()).update(updates);
             }
             firebase.database().ref('matches/' + this.matchId.toString()).once('value').then((snapshot) => {
                 let snapCopy = snapshot.val();
-                if (result) {
+                if (previousShot.WasHit) {
                     snapCopy.hitmode = true;
                     if (snapCopy.hitmap) {
                         snapCopy.hitmap.push(previousShot.Position);
@@ -168,14 +167,11 @@ export class MyBot {
         return { StartingSquare: { Row: "A", Column: -1 }, EndingSquare : { Row: "A", Column: -1 } };
     }
 
-    private detectCollision(shipPlaces: ShipPlace[]): boolean {
-        //console.log(JSON.stringify(shipPlaces));
+    private detectCollision(shipPlaces: ShipPlace[]): boolean { //apart from the last one, none of these for loops should be more than 5 iterations so it's not as bad as it looks
         for (let i: number = 0; i < shipPlaces.length - 1; i++) {
             let ship1: Position[] = this.generateShipSquares(shipPlaces[i]);
             for (let j: number = i + 1; j < shipPlaces.length; j++) {
                 let ship2: Position[] = this.generateAdjacentSquares(this.generateShipSquares(shipPlaces[j]));
-                //console.log("ship1: " + JSON.stringify(ship1));
-                //console.log("ship2: " + JSON.stringify(ship2));
                 for (let x: number = 0; x < ship1.length; x++) {
                     for (let y: number = 0; y < ship2.length; y++) {
                         if ((ship1[x].Row === ship2[y].Row) && (ship1[x].Column === ship2[y].Column)) {
@@ -311,7 +307,7 @@ export class MyBot {
                     if ((lastHit.Row.charCodeAt(0) + boatsize + 1 === 75) || (hitmap[lastHit.Row.charCodeAt(0) + othersize + 1][lastHit.Column] === 1)) {
                         down = false;
                     }
-                } else /*if (boatsize !== maxboatsize)*/ {
+                } else if (boatsize !== maxboatsize) {
                     return { Row: String.fromCharCode(lastHit.Row.charCodeAt(0) - offset), Column: lastHit.Column }
                 }
             } else if (down && (hitmap[lastHit.Row.charCodeAt(0) + 1][lastHit.Column] === 2)) {
@@ -326,7 +322,7 @@ export class MyBot {
                 if ((lastHit.Row.charCodeAt(0) + boatsize === 75) || (hitmap[lastHit.Row.charCodeAt(0) + boatsize][lastHit.Column] === 1)) {
                     down = false;
                     offset = 1;
-                } else /*if (boatsize !== maxboatsize)*/ {
+                } else if (boatsize !== maxboatsize) {
                     return { Row: String.fromCharCode(lastHit.Row.charCodeAt(0) + offset), Column: lastHit.Column }
                 }
             } else if (left && (hitmap[lastHit.Row.charCodeAt(0)][lastHit.Column - 1] === 2)) {
@@ -350,7 +346,7 @@ export class MyBot {
                     if (hitmap[lastHit.Row.charCodeAt(0)][lastHit.Column + othersize + 1] === 1) {
                         right = false;
                     }
-                } else /*if (boatsize !== maxboatsize)*/ {
+                } else if (boatsize !== maxboatsize) {
                     return { Row: lastHit.Row, Column: lastHit.Column - offset }
                 }
             } else if (right && (hitmap[lastHit.Row.charCodeAt(0)][lastHit.Column + 1] === 2)) {
@@ -365,22 +361,16 @@ export class MyBot {
                 if ((hitmap[lastHit.Row.charCodeAt(0)][lastHit.Column + boatsize] === 1) || (lastHit.Column + boatsize === 11)) {
                     right = false;
                     offset = 1;
-                } else /*if (boatsize !== maxboatsize)*/ {
+                } else if (boatsize !== maxboatsize) {
                     return { Row: lastHit.Row, Column: lastHit.Column + offset }
                 }
             }
-            /*if (boatsize === maxboatsize) {
+            if (boatsize === maxboatsize) {
                 up = false;
                 down = false;
                 right = false;
                 left = false;
-            }*/
-            /*console.log("last hit: " + lastHit.Row + lastHit.Column.toString());
-            console.log("Up " + up);
-            console.log("Down " + down);
-            console.log("Left " + left);
-            console.log("Right " + right);
-            console.log(offset);*/
+            }
             if (up) {
                 return { Row: String.fromCharCode(lastHit.Row.charCodeAt(0) - offset), Column: lastHit.Column }
             } else if (down) {
@@ -390,7 +380,6 @@ export class MyBot {
             } else if (right) {
                 return { Row: lastHit.Row, Column: lastHit.Column + offset }
             } else {
-                //console.log("Boatsize: " + boatsize.toString())
                 snapCopy.hitmode = false;
                 if (boatsize === 5) {
                     snapCopy.sizes.carrier = false;
