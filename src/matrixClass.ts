@@ -71,10 +71,11 @@ export class Matrix{
     private verticalSurroundShip(row:number, col:number, length)
     {
         for(let i =0; i <= length+1; i ++ ){
-            if(row-i>=0 && row-i<=9)
-            if(col-1>=0)this.board[row-i][col-1] =4;
-            this.board[row-i][col] =4;
-            if(col+1<10)this.board[row-i][col+1] =4;
+            if(row-i>=0 && row-i<=9){
+                if(col-1>=0)this.board[row-i][col-1] =4;
+                this.board[row-i][col] =4;
+                if(col+1<10)this.board[row-i][col+1] =4;
+            }
         }
     }
 
