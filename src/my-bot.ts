@@ -296,6 +296,8 @@ export class MyBot {
                 for (let x: number = 0; x < ship1.length; x++) {
                     for (let y: number = 0; y < ship2.length; y++) {
                         if ((ship1[x].Row === ship2[y].Row) && (ship1[x].Column === ship2[y].Column)) {
+                            console.log("ship1: " + JSON.stringify(ship1));
+                            console.log("ship2: " + JSON.stringify(ship2));
                             return true;
                         }
                     }
@@ -341,8 +343,6 @@ export class MyBot {
         squares.push({ Row: String.fromCharCode(ship[ship.length - 1].Row.charCodeAt(0) - 1), Column: ship[ship.length - 1].Column + 1 });
         squares.push({ Row: String.fromCharCode(ship[ship.length - 1].Row.charCodeAt(0) + 1), Column: ship[ship.length - 1].Column - 1 });
         squares.push({ Row: String.fromCharCode(ship[ship.length - 1].Row.charCodeAt(0) - 1), Column: ship[ship.length - 1].Column - 1 });
-        console.log(ship.length);
-        console.log(JSON.stringify(squares));
         return squares;
     }
 
