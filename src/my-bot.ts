@@ -433,6 +433,7 @@ export class MyBot {
                 }
                 if ((hitmap[lastHit.Row.charCodeAt(0) + boatsize][lastHit.Column] === 1) || (lastHit.Row.charCodeAt(0) + boatsize === 75)) {
                     down = false;
+                    offset = 1;
                 } else if (boatsize !== maxboatsize) {
                     return { Row: String.fromCharCode(lastHit.Row.charCodeAt(0) + offset), Column: lastHit.Column }
                 }
@@ -471,6 +472,7 @@ export class MyBot {
                 }
                 if ((hitmap[lastHit.Row.charCodeAt(0)][lastHit.Column + boatsize] === 1) || (lastHit.Column + boatsize === 11)) {
                     right = false;
+                    offset = 1;
                 } else if (boatsize !== maxboatsize) {
                     return { Row: lastHit.Row, Column: lastHit.Column + offset }
                 }
