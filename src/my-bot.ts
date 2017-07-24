@@ -417,6 +417,8 @@ export class MyBot {
                     if (hitmap[lastHit.Row.charCodeAt(0) + othersize + 1][lastHit.Column] === 1) {
                         down = false;
                     }
+                } else if (boatsize !== maxboatsize) {
+                    return { Row: String.fromCharCode(lastHit.Row.charCodeAt(0) - offset), Column: lastHit.Column }
                 }
             } else if (down && (hitmap[lastHit.Row.charCodeAt(0) + 1][lastHit.Column] === 2)) {
                 left = false;
@@ -429,6 +431,8 @@ export class MyBot {
                 }
                 if ((hitmap[lastHit.Row.charCodeAt(0) + boatsize][lastHit.Column] === 1) || (lastHit.Row.charCodeAt(0) + boatsize === 75)) {
                     down = false;
+                } else if (boatsize !== maxboatsize) {
+                    return { Row: String.fromCharCode(lastHit.Row.charCodeAt(0) + offset), Column: lastHit.Column }
                 }
             } else if (left && (hitmap[lastHit.Row.charCodeAt(0)][lastHit.Column - 1] === 2)) {
                 up = false;
@@ -451,6 +455,8 @@ export class MyBot {
                     if (hitmap[lastHit.Row.charCodeAt(0)][lastHit.Column + othersize + 1] === 1) {
                         right = false;
                     }
+                } else if (boatsize !== maxboatsize) {
+                    return { Row: lastHit.Row, Column: lastHit.Column - offset }
                 }
             } else if (right && (hitmap[lastHit.Row.charCodeAt(0)][lastHit.Column + 1] === 2)) {
                 up = false;
@@ -463,6 +469,8 @@ export class MyBot {
                 }
                 if ((hitmap[lastHit.Row.charCodeAt(0)][lastHit.Column + boatsize] === 1) || (lastHit.Column + boatsize === 11)) {
                     right = false;
+                } else if (boatsize !== maxboatsize) {
+                    return { Row: lastHit.Row, Column: lastHit.Column + offset }
                 }
             }
             if (boatsize === maxboatsize) {
