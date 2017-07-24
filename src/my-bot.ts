@@ -50,6 +50,7 @@ export class MyBot {
         mat.surroundVerticalShips();
         //console.log(mat.board);
         return this.getNextTarget(mat);
+        rftghyj
     }
 
 
