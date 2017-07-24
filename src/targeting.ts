@@ -29,11 +29,10 @@ export class TargetingMethods{
     {
         const myBoard = new MyShips(gameState.ShipPositions);
         for(let i = 1; i <= gameState.OpponentsShots.length; i ++){
-            if(!myBoard.wasHit(gameState.OpponentsShots[gameState.OpponentsShots.length-i]))
+            if(!myBoard.wasHit(gameState.OpponentsShots[gameState.OpponentsShots.length-i].Position))
             {
                 if(mat.validShotPlace(gameState.OpponentsShots[gameState.OpponentsShots.length-i].Position)){
                     return gameState.OpponentsShots[gameState.OpponentsShots.length-i].Position;
-
                 }
             }
         }
