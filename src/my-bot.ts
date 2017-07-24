@@ -83,18 +83,13 @@ export class MyBot {
 
     public selectTarget(gamestate): Promise<Position> {
         return new Promise((resolve, reject) => {
-            if (gamestate.MyShots.length === 0) {
-                resolve(this.randomShot(gamestate));
-            }
-            const previousShot: Shot = gamestate.MyShots && gamestate.MyShots[gamestate.MyShots.length-1];
-            let target: Position = this.getNextTarget(previousShot.Position);
-            if (previousShot.WasHit) {
-                let updates: any = {};
-                updates.hitmode = true;
-                firebase.database().ref('matches/' + this.matchId.toString()).update(updates);
-            }
-            firebase.database().ref('matches/' + this.matchId.toString()).once('value').then((snapshot) => {
+            firebase.database().ref('matches/' + this.matchId.toString()).once('value').then((snapshot) => { 
                 let snapCopy = snapshot.val();
+                if (gamestate.MyShots.length === 0) {
+                    resolve(this.randomShot(gamestate,snapCopy.hitmap));
+                }
+                const previousShot: Shot = gamestate.MyShots && gamestate.MyShots[gamestate.MyShots.length-1];
+                let target: Position = this.getNextTarget(previousShot.Position);
                 if (previousShot.WasHit) {
                     snapCopy.hitmode = true;
                     if (snapCopy.hitmap) {
@@ -107,7 +102,7 @@ export class MyBot {
                 if (snapCopy.hitmode) {
                     target = this.track(gamestate,snapCopy);
                 } else {
-                    target = this.randomShot(gamestate);
+                    target = this.randomShot(gamestate,snapCopy.hitmap);
                 }
                 return resolve(target);
             })
@@ -223,7 +218,8 @@ export class MyBot {
         return squares;
     }
 
-    private randomShot(gamestate): Position {
+    private randomShot(gamestate, hits): Position {
+        const useless: Position[] = this.generateAdjacentSquares(hits);
         let position: Position = { Row: 'A', Column: 1 };
         let found: boolean = false;
         do {
@@ -240,6 +236,12 @@ export class MyBot {
             found = false;
             for (let i = 0; i < gamestate.MyShots.length; i++) {
                 if ((gamestate.MyShots[i].Position.Row === position.Row) && (gamestate.MyShots[i].Position.Column === position.Column)) {
+                    found = true;
+                    break;
+                }
+            }
+            for (let i = 0; i < useless.length; i++) {
+                if ((useless[i].Row === position.Row) && (useless[i].Column === position.Column)) {
                     found = true;
                     break;
                 }
@@ -395,7 +397,7 @@ export class MyBot {
                     snapCopy.sizes.patrol = false;
                 }
                 firebase.database().ref('matches/' + this.matchId.toString()).set(snapCopy);
-                return this.randomShot(gamestate)
+                return this.randomShot(gamestate,snapCopy.hitmap)
             }        
     }
 
