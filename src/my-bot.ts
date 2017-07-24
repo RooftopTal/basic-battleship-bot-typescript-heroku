@@ -88,7 +88,7 @@ export class MyBot {
                 //resolve(this.randomShot(gamestate));
             }
             if (gamestate.MyShots.length === 1) {
-                resolve({ Row: 'C', Column: 3 })
+                resolve({ Row: 'C', Column: 1 })
             }
             const previousShot: Shot = gamestate.MyShots && gamestate.MyShots[gamestate.MyShots.length-1];
             let target: Position = this.getNextTarget(previousShot.Position);
