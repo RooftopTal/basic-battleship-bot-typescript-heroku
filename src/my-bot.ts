@@ -105,24 +105,12 @@ export class MyBot {
                 }
                 firebase.database().ref('matches/' + this.matchId.toString()).set(snapCopy);
                 if (snapCopy.hitmode) {
-                    this.track(gamestate)
-                        .then((decision) => {
-                            console.log("Targeting chose: " + decision.Row + decision.Column.toString());
-                            resolve(decision);
-                        })
-                        .catch((err) => console.log(err));
+                    target = this.track(gamestate,snapCopy);
                 } else {
                     target = this.randomShot(gamestate);
                 }
-                console.log("But I'm going to shoot at: " + target.Row + target.Column.toString());
-                if (snapCopy.hitmode) {
-                    console.log("Something has gone wrong");
-                }
                 return resolve(target);
-            })
-            .then((decision) => {
-                return resolve(decision);
-            })
+            });
         })
         
         
@@ -368,8 +356,7 @@ export class MyBot {
         return position
     }
 
-    private track(gamestate): Promise<Position> {
-        return new Promise<Position>((resolve, reject) => {
+    private track(gamestate, snapCopy): Position {
             const hitmap: number[][] = this.generateHitMap(gamestate.MyShots);
             let lastHit: Position = null;
             let shot: Position = null;
@@ -397,129 +384,124 @@ export class MyBot {
             if ((lastHit.Row === 'J') || (hitmap[lastHit.Row.charCodeAt(0) + 1][lastHit.Column] === 1)) {
                 down = false;
             }
-            firebase.database().ref('matches/' + this.matchId.toString()).once('value').then((snapshot) => {
-                let maxboatsize: number = 5;
-                if (snapshot.val().sizes.carrier) {
-                    maxboatsize = 5;
-                } else if (snapshot.val().sizes.battleship) {
-                    maxboatsize = 4;
-                } else if (snapshot.val().sizes.destroyer || snapshot.val().sizes.submarine) {
-                    maxboatsize = 3;
-                } else {
-                    maxboatsize = 2;
+            let maxboatsize: number = 5;
+            if (snapCopy.sizes.carrier) {
+                maxboatsize = 5;
+            } else if (snapCopy.sizes.battleship) {
+                maxboatsize = 4;
+            } else if (snapCopy.sizes.destroyer || snapCopy.sizes.submarine) {
+                maxboatsize = 3;
+            } else {
+                maxboatsize = 2;
+            }
+            let boatsize: number = 1;
+            let offset: number = 1;
+            if (up && (hitmap[lastHit.Row.charCodeAt(0) - 1][lastHit.Column] === 2)) {
+                left = false;
+                right = false;
+                boatsize++;
+                offset++;
+                while (hitmap[lastHit.Row.charCodeAt(0) - boatsize][lastHit.Column] === 2) {
+                    boatsize++;
+                    offset++;
                 }
-                let boatsize: number = 1;
-                let offset: number = 1;
-                if (up && (hitmap[lastHit.Row.charCodeAt(0) - 1][lastHit.Column] === 2)) {
-                    left = false;
-                    right = false;
-                    boatsize++;
-                    offset++;
-                    while (hitmap[lastHit.Row.charCodeAt(0) - boatsize][lastHit.Column] === 2) {
-                        boatsize++;
+                if ((hitmap[lastHit.Row.charCodeAt(0) - boatsize][lastHit.Column] === 1) || (lastHit.Row.charCodeAt(0) - boatsize === 64)) {
+                    up = false;
+                    offset = 0;
+                    let othersize: number = 1;
+                    while (hitmap[lastHit.Row.charCodeAt(0) + othersize + 1][lastHit.Column] === 2) {
+                        othersize++;
                         offset++;
                     }
-                    if ((hitmap[lastHit.Row.charCodeAt(0) - boatsize][lastHit.Column] === 1) || (lastHit.Row.charCodeAt(0) - boatsize === 64)) {
-                        up = false;
-                        offset = 0;
-                        let othersize: number = 1;
-                        while (hitmap[lastHit.Row.charCodeAt(0) + othersize + 1][lastHit.Column] === 2) {
-                            othersize++;
-                            offset++;
-                        }
-                        boatsize += othersize;
-                        if (hitmap[lastHit.Row.charCodeAt(0) + othersize + 1][lastHit.Column] === 1) {
-                            down = false;
-                        }
-                    }
-                } else if (down && (hitmap[lastHit.Row.charCodeAt(0) + 1][lastHit.Column] === 2)) {
-                    left = false;
-                    right = false;
-                    boatsize++;
-                    offset++;
-                    while (hitmap[lastHit.Row.charCodeAt(0) + boatsize][lastHit.Column] === 2) {
-                        boatsize++;
-                        offset++;
-                    }
-                    if ((hitmap[lastHit.Row.charCodeAt(0) + boatsize][lastHit.Column] === 1) || (lastHit.Row.charCodeAt(0) + boatsize === 75)) {
+                    boatsize += othersize;
+                    if (hitmap[lastHit.Row.charCodeAt(0) + othersize + 1][lastHit.Column] === 1) {
                         down = false;
                     }
-                } else if (left && (hitmap[lastHit.Row.charCodeAt(0)][lastHit.Column - 1] === 2)) {
-                    up = false;
-                    down = false;
+                }
+            } else if (down && (hitmap[lastHit.Row.charCodeAt(0) + 1][lastHit.Column] === 2)) {
+                left = false;
+                right = false;
+                boatsize++;
+                offset++;
+                while (hitmap[lastHit.Row.charCodeAt(0) + boatsize][lastHit.Column] === 2) {
                     boatsize++;
                     offset++;
-                    while (hitmap[lastHit.Row.charCodeAt(0)][lastHit.Column - boatsize] === 2) {
-                        boatsize++;
-                        offset++;
-                    }
-                    if ((hitmap[lastHit.Row.charCodeAt(0)][lastHit.Column - boatsize] === 1) || (lastHit.Column - boatsize === 0)) {
-                        left = false;
-                        offset = 0;
-                        let othersize: number = 1;
-                        while (hitmap[lastHit.Row.charCodeAt(0)][lastHit.Column + othersize + 1] === 2) {
-                            othersize++;
-                            offset++;
-                        }
-                        boatsize += othersize;
-                        if (hitmap[lastHit.Row.charCodeAt(0)][lastHit.Column + othersize + 1] === 1) {
-                            right = false;
-                        }
-                    }
-                } else if (right && (hitmap[lastHit.Row.charCodeAt(0)][lastHit.Column + 1] === 2)) {
-                    up = false;
+                }
+                if ((hitmap[lastHit.Row.charCodeAt(0) + boatsize][lastHit.Column] === 1) || (lastHit.Row.charCodeAt(0) + boatsize === 75)) {
                     down = false;
+                }
+            } else if (left && (hitmap[lastHit.Row.charCodeAt(0)][lastHit.Column - 1] === 2)) {
+                up = false;
+                down = false;
+                boatsize++;
+                offset++;
+                while (hitmap[lastHit.Row.charCodeAt(0)][lastHit.Column - boatsize] === 2) {
                     boatsize++;
                     offset++;
-                    while (hitmap[lastHit.Row.charCodeAt(0)][lastHit.Column + boatsize] === 2) {
-                        boatsize++;
+                }
+                if ((hitmap[lastHit.Row.charCodeAt(0)][lastHit.Column - boatsize] === 1) || (lastHit.Column - boatsize === 0)) {
+                    left = false;
+                    offset = 0;
+                    let othersize: number = 1;
+                    while (hitmap[lastHit.Row.charCodeAt(0)][lastHit.Column + othersize + 1] === 2) {
+                        othersize++;
                         offset++;
                     }
-                    if ((hitmap[lastHit.Row.charCodeAt(0)][lastHit.Column + boatsize] === 1) || (lastHit.Column + boatsize === 11)) {
+                    boatsize += othersize;
+                    if (hitmap[lastHit.Row.charCodeAt(0)][lastHit.Column + othersize + 1] === 1) {
                         right = false;
                     }
                 }
-                if (boatsize === maxboatsize) {
-                    up = false;
-                    down = false;
+            } else if (right && (hitmap[lastHit.Row.charCodeAt(0)][lastHit.Column + 1] === 2)) {
+                up = false;
+                down = false;
+                boatsize++;
+                offset++;
+                while (hitmap[lastHit.Row.charCodeAt(0)][lastHit.Column + boatsize] === 2) {
+                    boatsize++;
+                    offset++;
+                }
+                if ((hitmap[lastHit.Row.charCodeAt(0)][lastHit.Column + boatsize] === 1) || (lastHit.Column + boatsize === 11)) {
                     right = false;
-                    left = false;
                 }
-                /*console.log("Up " + up);
-                console.log("Down " + down);
-                console.log("Left " + left);
-                console.log("Right " + right);
-                console.log(offset);*/
-                if (up) {
-                    return resolve({ Row: String.fromCharCode(lastHit.Row.charCodeAt(0) - offset), Column: lastHit.Column })
-                } else if (down) {
-                    return resolve({ Row: String.fromCharCode(lastHit.Row.charCodeAt(0) + offset), Column: lastHit.Column })
-                } else if (left) {
-                    return resolve({ Row: lastHit.Row, Column: lastHit.Column - offset })
-                } else if (right) {
-                    return resolve({ Row: lastHit.Row, Column: lastHit.Column + offset })
-                } else {
-                    let snapCopy = snapshot.val();
-                    snapCopy.hitmode = false;
-                    if (boatsize === 5) {
-                        snapCopy.sizes.carrier = false;
-                    } else if (boatsize === 4) {
-                        snapCopy.sizes.battleship = false;
-                    } else if (boatsize === 3) {
-                        if (snapCopy.sizes.destroyer) {
-                            snapCopy.sizes.destroyer = false;
-                        } else {
-                            snapCopy.sizes.submarine = false;
-                        }
+            }
+            if (boatsize === maxboatsize) {
+                up = false;
+                down = false;
+                right = false;
+                left = false;
+            }
+            /*console.log("Up " + up);
+            console.log("Down " + down);
+            console.log("Left " + left);
+            console.log("Right " + right);
+            console.log(offset);*/
+            if (up) {
+                return { Row: String.fromCharCode(lastHit.Row.charCodeAt(0) - offset), Column: lastHit.Column }
+            } else if (down) {
+                return { Row: String.fromCharCode(lastHit.Row.charCodeAt(0) + offset), Column: lastHit.Column }
+            } else if (left) {
+                return { Row: lastHit.Row, Column: lastHit.Column - offset }
+            } else if (right) {
+                return { Row: lastHit.Row, Column: lastHit.Column + offset }
+            } else {
+                snapCopy.hitmode = false;
+                if (boatsize === 5) {
+                    snapCopy.sizes.carrier = false;
+                } else if (boatsize === 4) {
+                    snapCopy.sizes.battleship = false;
+                } else if (boatsize === 3) {
+                    if (snapCopy.sizes.destroyer) {
+                        snapCopy.sizes.destroyer = false;
                     } else {
-                        snapCopy.sizes.patrol = false;
+                        snapCopy.sizes.submarine = false;
                     }
-                    firebase.database().ref('matches/' + this.matchId.toString()).set(snapCopy);
-                    return resolve(this.randomShot(gamestate))
+                } else {
+                    snapCopy.sizes.patrol = false;
                 }
-            });
-        })
-        
+                firebase.database().ref('matches/' + this.matchId.toString()).set(snapCopy);
+                return this.randomShot(gamestate)
+            }        
     }
 
     private generateHitMap(shots: Shot[]): number[][] {
