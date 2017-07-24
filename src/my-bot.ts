@@ -86,7 +86,7 @@ export class MyBot {
             firebase.database().ref('matches/' + this.matchId.toString()).once('value').then((snapshot) => { 
                 let snapCopy = snapshot.val();
                 if (gamestate.MyShots.length === 0) {
-                    resolve(this.randomShot(gamestate,snapCopy.hitmap));
+                    resolve(this.randomShot(gamestate));
                 }
                 const previousShot: Shot = gamestate.MyShots && gamestate.MyShots[gamestate.MyShots.length-1];
                 let target: Position = this.getNextTarget(previousShot.Position);
@@ -101,8 +101,10 @@ export class MyBot {
                 firebase.database().ref('matches/' + this.matchId.toString()).set(snapCopy);
                 if (snapCopy.hitmode) {
                     target = this.track(gamestate,snapCopy);
-                } else {
+                } else if (snapCopy.hitmap) {
                     target = this.randomShot(gamestate,snapCopy.hitmap);
+                } else {
+                    target = this.randomShot(gamestate);
                 }
                 return resolve(target);
             })
@@ -218,7 +220,7 @@ export class MyBot {
         return squares;
     }
 
-    private randomShot(gamestate, hits): Position {
+    private randomShot(gamestate, hits: Position[] = []): Position {
         const useless: Position[] = this.generateAdjacentSquares(hits);
         let position: Position = { Row: 'A', Column: 1 };
         let found: boolean = false;
