@@ -109,6 +109,7 @@ export class MyBot {
                 } else {
                     target = this.randomShot(gamestate);
                 }
+                console.log("Target is " + target);
                 return resolve(target);
             });
         })
@@ -479,7 +480,7 @@ export class MyBot {
                 right = false;
                 left = false;
             }
-            console.log(lastHit);
+            console.log("last hit: " + lastHit);
             console.log("Up " + up);
             console.log("Down " + down);
             console.log("Left " + left);
