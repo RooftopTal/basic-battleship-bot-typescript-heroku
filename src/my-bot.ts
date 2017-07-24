@@ -164,6 +164,8 @@ export class MyBot {
             if (this.detectCollision(places)) {
                 collision = true;
                 counter++;
+            } else {
+                console.log(JSON.stringify(places))
             }
         } while((counter < 500) && (collision))
         if (counter === 500) {
@@ -193,6 +195,8 @@ export class MyBot {
             if (this.detectCollision(places)) {
                 collision = true;
                 counter++;
+            } else {
+                console.log(JSON.stringify(places))
             }
         } while((counter < 500) && (collision))
         if (counter === 500) {
@@ -222,6 +226,8 @@ export class MyBot {
             if (this.detectCollision(places)) {
                 collision = true;
                 counter++;
+            } else {
+                console.log(JSON.stringify(places))
             }
         } while((counter < 500) && (collision))
         if (counter === 500) {
@@ -251,6 +257,8 @@ export class MyBot {
             if (this.detectCollision(places)) {
                 collision = true;
                 counter++;
+            } else {
+                console.log(JSON.stringify(places))
             }
         } while((counter < 500) && (collision))
         if (counter === 500) {
@@ -280,6 +288,8 @@ export class MyBot {
             if (this.detectCollision(places)) {
                 collision = true;
                 counter++;
+            } else {
+                console.log(JSON.stringify(places))
             }
         } while((counter < 500) && (collision))
         if (counter === 500) {
@@ -289,7 +299,7 @@ export class MyBot {
     }
 
     private detectCollision(shipPlaces: ShipPlace[]): boolean {
-        console.log(JSON.stringify(shipPlaces));
+        //console.log(JSON.stringify(shipPlaces));
         for (let i: number = 0; i < shipPlaces.length - 1; i++) {
             let ship1: Position[] = this.generateShipSquares(shipPlaces[i]);
             for (let j: number = i + 1; j < shipPlaces.length; j++) {
