@@ -54,6 +54,7 @@ export class MyBot {
         mat.surroundHorizontalShips();
         mat.surroundVerticalShips();
         console.log(mat.board);
+        console.log(mat.ships);
         return this.targetMethodPlaceLargestShip(mat);
     }
 
