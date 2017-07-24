@@ -304,12 +304,12 @@ export class Matrix{
                     if(possible)
                     {
                         if(horizontal){
-                            if(line%2 == 1) return this.positionFromCoords(line,startPos+Math.floor(largestShip/2));
-                            else return this.positionFromCoords(line,startPos+Math.ceil(largestShip/2));
+                            if(line%2 == (startPos+Math.floor(largestShip/2))%2) return this.positionFromCoords(line,startPos+Math.floor(largestShip/2));
+                            return this.positionFromCoords(line,startPos+Math.floor(largestShip/2)+1);
                         }
                         else{
-                            if (line %2 == 1)return this.positionFromCoords(startPos+Math.floor(largestShip/2), line);
-                            else return this.positionFromCoords(startPos+Math.ceil(largestShip/2), line);
+                            if (line %2 == (startPos+Math.floor(largestShip/2))%2)return this.positionFromCoords(startPos+Math.floor(largestShip/2), line);
+                            else return this.positionFromCoords(startPos+Math.floor(largestShip/2)+1, line);
                         }
                     }
                 }
