@@ -1,5 +1,6 @@
 import {Position} from './Position'
 import {Matrix} from './matrixClass'
+import {TargetingMethods} from './targeting'
 
 export class MyBot {
     private state;
@@ -55,45 +56,9 @@ export class MyBot {
         mat.surroundVerticalShips();
         console.log(mat.board);
         console.log(mat.ships);
-        // if(mat.ships[4] || mat.ships[5])return this.targetMethodPlaceLargestShip(mat);
-        // else return this.targetMethodTryRandomBlackSquare(mat);
-        return this.targetMethodOpponentsMostRecentMiss(mat, gameState);
-    }
-
-
-    private targetMethodTryRandomBlackSquare(mat:Matrix):Position{
-        var column = (Math.floor(Math.random()*10)+1);
-        //col is random value between 1 and 10;
-        var row;
-        if(column%2 == 0){
-            row = String.fromCharCode((Math.floor(Math.random()*5)+1)*2+64);
-        }
-        else{
-            row = String.fromCharCode((Math.floor(Math.random()*5))*2+65);
-
-        }
-        const nextPos:Position = new Position(row, column);
-        //console.log(nextPos.print("trying point"));
-        if(mat.validShotPlace(nextPos)) return nextPos;
-        else return this.targetMethodTryRandomBlackSquare(mat);
-    }
-
-    private targetMethodPlaceLargestShip(mat):Position{
-        return mat.placeLargestShip();
-    }
-
-    private targetMethodOpponentsMostRecentMiss(mat, gameState)
-    {
-        for(let i = 1; i <= gameState.OpponentsShots.length; i ++){
-            if(!gameState.OpponentsShots[gameState.OpponentsShots.length-i].WasHit)
-            {
-                if(mat.validShotPlace(gameState.OpponentsShots[gameState.OpponentsShots.length-i].Position)){
-                    return gameState.OpponentsShots[gameState.OpponentsShots.length-i].Position;
-
-                }
-            }
-        }
-        return this.targetMethodTryRandomBlackSquare(mat);
+        if(mat.ships[4] || mat.ships[5])return TargetingMethods.targetMethodPlaceLargestShip(mat);
+        else return TargetingMethods.targetMethodTryRandomBlackSquare(mat);
+        //return TargetingMethods.targetMethodOpponentsMostRecentMiss(mat, gameState);
     }
 }
 
