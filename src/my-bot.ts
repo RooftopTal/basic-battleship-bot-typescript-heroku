@@ -165,8 +165,8 @@ export class MyBot {
                 collision = true;
                 counter++;
             }
-        } while((counter < 50) && (collision))
-        if (counter === 50) {
+        } while((counter < 500) && (collision))
+        if (counter === 500) {
             return { StartingSquare: { Row: "A", Column: -1 }, EndingSquare : { Row: "A", Column: 5 } };
         }
         return place;
@@ -194,8 +194,8 @@ export class MyBot {
                 collision = true;
                 counter++;
             }
-        } while((counter < 50) && (collision))
-        if (counter === 50) {
+        } while((counter < 500) && (collision))
+        if (counter === 500) {
             return { StartingSquare: { Row: "A", Column: -1 }, EndingSquare : { Row: "A", Column: 5 } };
         }
         return place;
@@ -223,8 +223,8 @@ export class MyBot {
                 collision = true;
                 counter++;
             }
-        } while((counter < 50) && (collision))
-        if (counter === 50) {
+        } while((counter < 500) && (collision))
+        if (counter === 500) {
             return { StartingSquare: { Row: "A", Column: -1 }, EndingSquare : { Row: "A", Column: 5 } };
         }
         return place;
@@ -252,8 +252,8 @@ export class MyBot {
                 collision = true;
                 counter++;
             }
-        } while((counter < 50) && (collision))
-        if (counter === 50) {
+        } while((counter < 500) && (collision))
+        if (counter === 500) {
             return { StartingSquare: { Row: "A", Column: -1 }, EndingSquare : { Row: "A", Column: 5 } };
         }
         return place;
@@ -281,8 +281,8 @@ export class MyBot {
                 collision = true;
                 counter++;
             }
-        } while((counter < 50) && (collision))
-        if (counter === 50) {
+        } while((counter < 500) && (collision))
+        if (counter === 500) {
             return { StartingSquare: { Row: "A", Column: -1 }, EndingSquare : { Row: "A", Column: 5 } };
         }
         return place;
@@ -295,9 +295,9 @@ export class MyBot {
                 let ship2: Position[] = this.generateAdjacentSquares(this.generateShipSquares(shipPlaces[j]));
                 for (let x: number = 0; x < ship1.length; x++) {
                     for (let y: number = 0; y < ship2.length; y++) {
+                        console.log("ship1: " + JSON.stringify(ship1));
+                        console.log("ship2: " + JSON.stringify(ship2));
                         if ((ship1[x].Row === ship2[y].Row) && (ship1[x].Column === ship2[y].Column)) {
-                            console.log("ship1: " + JSON.stringify(ship1));
-                            console.log("ship2: " + JSON.stringify(ship2));
                             return true;
                         }
                     }
