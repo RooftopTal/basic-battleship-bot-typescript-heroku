@@ -53,23 +53,23 @@ export class MyBot {
         do {
             shipPlaces = [];
             counter++;
-            shipPlaces[0] = this.getAirCarrierPlace(shipPlaces);
+            shipPlaces[0] = this.getShipPlace(shipPlaces,5);
             if (shipPlaces[0].StartingSquare.Column === -1) {
                 continue;
             }
-            shipPlaces[1] = this.getBattleshipPlace(shipPlaces);
+            shipPlaces[1] = this.getShipPlace(shipPlaces,4);
             if (shipPlaces[1].StartingSquare.Column === -1) {
                 continue;
             }
-            shipPlaces[2] = this.getDestroyerPlace(shipPlaces);
+            shipPlaces[2] = this.getShipPlace(shipPlaces,3);
             if (shipPlaces[2].StartingSquare.Column === -1) {
                 continue;
             }
-            shipPlaces[3] = this.getSubmarinePlace(shipPlaces);
+            shipPlaces[3] = this.getShipPlace(shipPlaces,3);
             if (shipPlaces[3].StartingSquare.Column === -1) {
                 continue;
             }
-            shipPlaces[4] = this.getPatrolPlace(shipPlaces);
+            shipPlaces[4] = this.getShipPlace(shipPlaces,2);
             if (shipPlaces[4].StartingSquare.Column === -1) {
                 continue;
             }
@@ -143,159 +143,29 @@ export class MyBot {
         );
     }
 
-    private getAirCarrierPlace(shipPlaces: ShipPlace[]): ShipPlace {
+    private getShipPlace(shipPlaces: ShipPlace[], size: number): ShipPlace {
         let counter:number = 0;
-        let place: ShipPlace = { StartingSquare: { Row: "A", Column: 1 }, EndingSquare : { Row: "A", Column: 5 } };
-        let collision: boolean = false;
+        let place: ShipPlace = { StartingSquare: { Row: "A", Column: 1 }, EndingSquare : { Row: "A", Column: size } };
         do {
             let places: ShipPlace[] = shipPlaces.slice(0);
-            collision = false;
             const row: string = String.fromCharCode(Math.floor(Math.random() * 10) + 65);
             const column: number = Math.floor(Math.random() * 10) + 1;
-            if ((row > 'F') && (column > 6)) {
+            if ((row.charCodeAt(0) > 75 - size) && (column > 11 - size)) {
                 continue;
             }
-            if (((Math.random() < 0.5) && (row <= 'F')) || (column > 6)) {
-                place = { StartingSquare: { Row: row, Column: column }, EndingSquare: { Row: String.fromCharCode(row.charCodeAt(0) + 4), Column: column } };
+            if (((Math.random() < 0.5) && (row.charCodeAt(0) <= 75 - size)) || (column > 11 - size)) {
+                place = { StartingSquare: { Row: row, Column: column }, EndingSquare: { Row: String.fromCharCode(row.charCodeAt(0) + size - 1), Column: column } };
             } else {
-                place = { StartingSquare: { Row: row, Column: column }, EndingSquare: { Row: row, Column: (column + 4) } };
+                place = { StartingSquare: { Row: row, Column: column }, EndingSquare: { Row: row, Column: (column + size - 1) } };
             }
             places.push(place);
             if (this.detectCollision(places)) {
-                collision = true;
-                counter++;
-            } else {
-                return place;
-            }
-        } while((counter < 500) && (collision))
-        if (counter === 500) {
-            return { StartingSquare: { Row: "A", Column: -1 }, EndingSquare : { Row: "A", Column: 5 } };
-        }
-        return { StartingSquare: { Row: "A", Column: -1 }, EndingSquare : { Row: "A", Column: 5 } };
-    }
-
-    private getBattleshipPlace(shipPlaces: ShipPlace[]): ShipPlace {
-        let counter:number = 0;
-        let place: ShipPlace = { StartingSquare: { Row: "C", Column: 1 }, EndingSquare : { Row: "C", Column: 4 } };
-        let collision: boolean = false;
-        do {
-            let places: ShipPlace[] = shipPlaces.slice(0);
-            collision = false;
-            const row: string = String.fromCharCode(Math.floor(Math.random() * 10) + 65);
-            const column: number = Math.floor(Math.random() * 10) + 1;
-            if ((row > 'G') && (column > 7)) {
-                continue;
-            }
-            if (((Math.random() < 0.5) && (row <= 'G')) || (column > 7)) {
-                place = { StartingSquare: { Row: row, Column: column }, EndingSquare: { Row: String.fromCharCode(row.charCodeAt(0) + 3), Column: column } };
-            } else {
-                place = { StartingSquare: { Row: row, Column: column }, EndingSquare: { Row: row, Column: (column + 3) } };
-            }
-            places.push(place);
-            if (this.detectCollision(places)) {
-                collision = true;
                 counter++;
             } else {
                 return place
             }
-        } while((counter < 500) && (collision))
-        if (counter === 500) {
-            return { StartingSquare: { Row: "A", Column: -1 }, EndingSquare : { Row: "A", Column: 5 } };
-        }
-        return { StartingSquare: { Row: "A", Column: -1 }, EndingSquare : { Row: "A", Column: 5 } };
-    }
-
-    private getDestroyerPlace(shipPlaces: ShipPlace[]): ShipPlace {
-        let counter:number = 0;
-        let place: ShipPlace = { StartingSquare: { Row: "E", Column: 1 }, EndingSquare : { Row: "E", Column: 3 } };
-        let collision: boolean = false;
-        do {
-            let places: ShipPlace[] = shipPlaces.slice(0);
-            collision = false;
-            const row: string = String.fromCharCode(Math.floor(Math.random() * 10) + 65);
-            const column: number = Math.floor(Math.random() * 10) + 1;
-            if ((row > 'H') && (column > 8)) {
-                continue;
-            }
-            if (((Math.random() < 0.5) && (row <= 'H')) || (column > 8)) {
-                place = { StartingSquare: { Row: row, Column: column }, EndingSquare: { Row: String.fromCharCode(row.charCodeAt(0) + 2), Column: column } };
-            } else {
-                place = { StartingSquare: { Row: row, Column: column }, EndingSquare: { Row: row, Column: (column + 2) } };
-            }
-            places.push(place);
-            if (this.detectCollision(places)) {
-                collision = true;
-                counter++;
-            } else {
-                return place
-            }
-        } while((counter < 500) && (collision))
-        if (counter === 500) {
-            return { StartingSquare: { Row: "A", Column: -1 }, EndingSquare : { Row: "A", Column: 5 } };
-        }
-        return { StartingSquare: { Row: "A", Column: -1 }, EndingSquare : { Row: "A", Column: 5 } };
-    }
-
-    private getSubmarinePlace(shipPlaces: ShipPlace[]): ShipPlace {
-        let counter:number = 0;
-        let place: ShipPlace = { StartingSquare: { Row: "G", Column: 1 }, EndingSquare : { Row: "G", Column: 3 } };
-        let collision: boolean = false;
-        do {
-            let places: ShipPlace[] = shipPlaces.slice(0);
-            collision = false;
-            const row: string = String.fromCharCode(Math.floor(Math.random() * 10) + 65);
-            const column: number = Math.floor(Math.random() * 10) + 1;
-            if ((row > 'H') && (column > 8)) {
-                continue;
-            }
-            if (((Math.random() < 0.5) && (row <= 'H')) || (column > 8)) {
-                place = { StartingSquare: { Row: row, Column: column }, EndingSquare: { Row: String.fromCharCode(row.charCodeAt(0) + 2), Column: column } };
-            } else {
-                place = { StartingSquare: { Row: row, Column: column }, EndingSquare: { Row: row, Column: (column + 2) } };
-            }
-            places.push(place);
-            if (this.detectCollision(places)) {
-                collision = true;
-                counter++;
-            } else {
-                return place
-            }
-        } while((counter < 500) && (collision))
-        if (counter === 500) {
-            return { StartingSquare: { Row: "A", Column: -1 }, EndingSquare : { Row: "A", Column: 5 } };
-        }
-        return { StartingSquare: { Row: "A", Column: -1 }, EndingSquare : { Row: "A", Column: 5 } };
-    }
-
-    private getPatrolPlace(shipPlaces: ShipPlace[]): ShipPlace {
-        let counter:number = 0;
-        let place: ShipPlace = { StartingSquare: { Row: "I", Column: 1 }, EndingSquare : { Row: "I", Column: 2 } };
-        let collision: boolean = false;
-        do {
-            let places: ShipPlace[] = shipPlaces.slice(0);
-            collision = false;
-            const row: string = String.fromCharCode(Math.floor(Math.random() * 10) + 65);
-            const column: number = Math.floor(Math.random() * 10) + 1;
-            if ((row > 'I') && (column > 9)) {
-                continue;
-            }
-            if (((Math.random() < 0.5) && (row <= 'I')) || (column > 9)) {
-                place = { StartingSquare: { Row: row, Column: column }, EndingSquare: { Row: String.fromCharCode(row.charCodeAt(0) + 1), Column: column } };
-            } else {
-                place = { StartingSquare: { Row: row, Column: column }, EndingSquare: { Row: row, Column: (column + 1) } };
-            }
-            places.push(place);
-            if (this.detectCollision(places)) {
-                collision = true;
-                counter++;
-            } else {
-                return place
-            }
-        } while((counter < 500) && (collision))
-        if (counter === 500) {
-            return { StartingSquare: { Row: "A", Column: -1 }, EndingSquare : { Row: "A", Column: 5 } };
-        }
-        return { StartingSquare: { Row: "A", Column: -1 }, EndingSquare : { Row: "A", Column: 5 } };
+        } while(counter < 500)
+        return { StartingSquare: { Row: "A", Column: -1 }, EndingSquare : { Row: "A", Column: -1 } };
     }
 
     private detectCollision(shipPlaces: ShipPlace[]): boolean {
