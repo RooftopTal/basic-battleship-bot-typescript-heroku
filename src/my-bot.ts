@@ -55,7 +55,8 @@ export class MyBot {
         mat.surroundVerticalShips();
         console.log(mat.board);
         console.log(mat.ships);
-        return this.targetMethodPlaceLargestShip(mat);
+        if(mat.ships[4] || mat.ships[5])return this.targetMethodPlaceLargestShip(mat);
+        else return this.targetMethodTryRandomBlackSquare(mat);
     }
 
 
