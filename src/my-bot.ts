@@ -344,8 +344,8 @@ export class MyBot {
         let position: Position = { Row: 'A', Column: 1 };
         let found: boolean = false;
         do {
-            const row: string = String.fromCharCode(Math.floor(Math.random() * 10) + 65);
-            const column: number = Math.floor(Math.random() * 10) + 1;
+            const row: string = String.fromCharCode(Math.floor(Math.random() * 5) * 2 + 65);
+            const column: number = Math.floor(Math.random() * 5) * 2 + 1;
             position = { Row: row, Column: column};
             found = false;
             for (let i = 0; i < gamestate.MyShots.length; i++) {
