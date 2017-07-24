@@ -112,7 +112,8 @@ export class MyBot {
                 }
                 //console.log("Target is " + target.Row + target.Column.toString());
                 return resolve(target);
-            });
+            })
+            .catch((err) => {console.log(err)});
         })
         
         
@@ -124,7 +125,7 @@ export class MyBot {
         return { Row: row, Column: column }
     }
 
-    private getNextRow(row) {
+    private getNextRow(row): string {
         var newRow = row.charCodeAt(0) + 1;
         if(newRow > 'J'.charCodeAt(0)) {
             return 'A';
@@ -132,7 +133,7 @@ export class MyBot {
         return String.fromCharCode(newRow);
     }
 
-    private getNextColumn(column) {
+    private getNextColumn(column): number {
         return column % 10 + 1;
     }
 
