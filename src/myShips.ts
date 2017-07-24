@@ -95,9 +95,9 @@ export class MyShips{
                         }
                     }
                 }
-                returnList;
             }
         }
+        return returnList;
     }
 
     private createHorizontalShip(pos, len)
