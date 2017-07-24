@@ -40,6 +40,18 @@ export class Matrix{
                 else if(this.board[row][col] != 1){
                     if(hitCount > 1)this.horizontalSurroundShip(row,col,hitCount);
                     
+                    if(hitCount == 2){
+                        this.ships[0] = false;
+                    }
+                    else if(hitCount == 3){
+                        if(this.ships[1])this.ships[1] = false;
+                        else this.ships[2] = false;
+                    }
+                    else if(hitCount == 4) this.ships[3] = false;
+                    else if(hitCount == 5) this.ships[4] = false;
+
+
+
                     hitCount = 0 ;
                 }
             }
@@ -55,6 +67,16 @@ export class Matrix{
                 else if(this.board[row][col]!= 1){
                     if(hitCount > 1)this.verticalSurroundShip(row,col,hitCount);
                     
+                    if(hitCount == 2){
+                        this.ships[0] = false;
+                    }
+                    else if(hitCount == 3){
+                        if(this.ships[1])this.ships[1] = false;
+                        else this.ships[2] = false;
+                    }
+                    else if(hitCount == 4) this.ships[3] = false;
+                    else if(hitCount == 5) this.ships[4] = false;
+
                     hitCount = 0 ;
                 }
             }
@@ -138,18 +160,6 @@ export class Matrix{
             }
         }
 
-        //this indicates in ship array that the ship is sunk
-        if(count >= 3){
-            this.ships[count-1] = false;
-        }
-        else if(count == 1){
-            this.ships[0] = false;
-        }
-        else{
-            if(this.ships[1])this.ships[1] = false;
-            else this.ships[2] = false;
-        }
-
         return false;
     }
 
@@ -177,18 +187,6 @@ export class Matrix{
                 this.board[this.getRowPos(curPos.Row)][curPos.Column-1] = 3;
                 return true;  
             }
-        }
-
-                //this indicates in ship array that the ship is sunk
-        if(count >= 3){
-            this.ships[count-1] = false;
-        }
-        else if(count == 1){
-            this.ships[0] = false;
-        }
-        else{
-            if(this.ships[1])this.ships[1] = false;
-            else this.ships[2] = false;
         }
 
         return false;
