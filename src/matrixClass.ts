@@ -283,7 +283,7 @@ export class Matrix{
         else                    largestShip = 2;
         let count = 0;
         let horizontal = Math.random()> 0.5;
-        let linePref = Math.floor(Math.random()*10);
+        const linePref = Math.floor(Math.random()*10);
         for(let a = 0; a < 2; a ++){
             horizontal = !horizontal;
             for(let b = 0; b<10; b ++){
@@ -305,6 +305,6 @@ export class Matrix{
                 }
             }
         }
-        console.log("issue Encountered " + count); 
+        console.log("issue Encountered " + count + " " + linePref); 
     }
 }
