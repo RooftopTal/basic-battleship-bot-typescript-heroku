@@ -344,8 +344,15 @@ export class MyBot {
         let position: Position = { Row: 'A', Column: 1 };
         let found: boolean = false;
         do {
-            const row: string = String.fromCharCode(Math.floor(Math.random() * 5) * 2 + 65);
-            const column: number = Math.floor(Math.random() * 5) * 2 + 1;
+            let row: string = ""
+            let column: number = 0;
+            if (Math.random() < 0.5) {
+                row = String.fromCharCode(Math.floor(Math.random() * 5) * 2 + 65);
+                column = Math.floor(Math.random() * 5) * 2 + 1;
+            } else {
+                row = String.fromCharCode(Math.floor(Math.random() * 5) * 2 + 66);
+                column = Math.floor(Math.random() * 5) * 2 + 2;
+            }
             position = { Row: row, Column: column};
             found = false;
             for (let i = 0; i < gamestate.MyShots.length; i++) {
@@ -498,7 +505,7 @@ export class MyBot {
             } else if (right) {
                 return { Row: lastHit.Row, Column: lastHit.Column + offset }
             } else {
-                console.log("Boatsize: " + boatsize.toString())
+                //console.log("Boatsize: " + boatsize.toString())
                 snapCopy.hitmode = false;
                 if (boatsize === 5) {
                     snapCopy.sizes.carrier = false;
