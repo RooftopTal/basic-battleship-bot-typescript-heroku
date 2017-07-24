@@ -413,7 +413,7 @@ export class MyBot {
                 right = false;
                 boatsize++;
                 offset++;
-                while (hitmap[lastHit.Row.charCodeAt(0) - boatsize][lastHit.Column] === 2) {
+                while (!(lastHit.Row.charCodeAt(0) - boatsize === 64) && (hitmap[lastHit.Row.charCodeAt(0) - boatsize][lastHit.Column] === 2)) {
                     boatsize++;
                     offset++;
                 }
