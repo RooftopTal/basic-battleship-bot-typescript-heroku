@@ -108,7 +108,7 @@ export class MyBot {
                     this.track(gamestate)
                         .then((decision) => {
                             console.log("Targeting chose: " + decision.Row + decision.Column.toString());
-                            return resolve(decision);
+                            resolve(decision);
                         })
                         .catch((err) => console.log(err));
                 } else {
@@ -119,7 +119,10 @@ export class MyBot {
                     console.log("Something has gone wrong");
                 }
                 return resolve(target);
-            });
+            })
+            .then((decision) => {
+                return resolve(decision);
+            })
         })
         
         
