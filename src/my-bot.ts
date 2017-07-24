@@ -415,16 +415,16 @@ export class MyBot {
                     boatsize++;
                     offset++;
                 }
-                if ((hitmap[lastHit.Row.charCodeAt(0) - boatsize][lastHit.Column] === 1) || (lastHit.Row.charCodeAt(0) - boatsize === 64)) {
+                if ((lastHit.Row.charCodeAt(0) - boatsize === 64) || (hitmap[lastHit.Row.charCodeAt(0) - boatsize][lastHit.Column] === 1)) {
                     up = false;
                     offset = 1;
                     let othersize: number = 1;
-                    while (hitmap[lastHit.Row.charCodeAt(0) + othersize + 1][lastHit.Column] === 2) {
+                    while (!(lastHit.Row.charCodeAt(0) + boatsize === 75) && (hitmap[lastHit.Row.charCodeAt(0) + othersize + 1][lastHit.Column] === 2)) {
                         othersize++;
                         offset++;
                     }
                     boatsize += othersize;
-                    if (hitmap[lastHit.Row.charCodeAt(0) + othersize + 1][lastHit.Column] === 1) {
+                    if ((lastHit.Row.charCodeAt(0) + boatsize === 75) || (hitmap[lastHit.Row.charCodeAt(0) + othersize + 1][lastHit.Column] === 1)) {
                         down = false;
                     }
                 } else /*if (boatsize !== maxboatsize)*/ {
@@ -439,7 +439,7 @@ export class MyBot {
                     boatsize++;
                     offset++;
                 }
-                if ((hitmap[lastHit.Row.charCodeAt(0) + boatsize][lastHit.Column] === 1) || (lastHit.Row.charCodeAt(0) + boatsize === 75)) {
+                if ((lastHit.Row.charCodeAt(0) + boatsize === 75) || (hitmap[lastHit.Row.charCodeAt(0) + boatsize][lastHit.Column] === 1)) {
                     down = false;
                     offset = 1;
                 } else /*if (boatsize !== maxboatsize)*/ {
