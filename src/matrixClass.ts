@@ -60,18 +60,21 @@ export class Matrix{
     private horizontalSurroundShip(row:number, col:number, length)
     {
         for(let i =0; i <= length+1; i ++ ){
-            this.board[row-1][col-i] =4;
-            this.board[row][col-i] =4;
-            this.board[row+1][col-i] =4;
+            if(col-i >= 0 && col-i<=9){
+                if(row-1>= 0)this.board[row-1][col-i] =4;
+                this.board[row][col-i] =4;
+                if(row+1<10)this.board[row+1][col-i] =4;
+            }
         }
     }
 
        private verticalSurroundShip(row:number, col:number, length)
     {
         for(let i =0; i <= length+1; i ++ ){
-            this.board[row-i][col-1] =4;
+            if(row-i>=0 && row-i<=9)
+            if(col-1>=0)this.board[row-i][col-1] =4;
             this.board[row-i][col] =4;
-            this.board[row-i][col+1] =4;
+            if(col+1<10)this.board[row-i][col+1] =4;
         }
     }
 
