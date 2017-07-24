@@ -60,8 +60,8 @@ export class MyShips{
         return this.board[pos[0]][pos[1]] == 1;
     }
 
-    public createBoard(){
-        let returnList: ShipPlacement;
+    public createBoard():ShipPlacement[]{
+        let returnList: ShipPlacement[];
         let shipLength:number[] = [5,4,3,3,2];
         for(let i = 0; i<shipLength.length; i ++){
             let horizontal = Math.random()> 0.5;
