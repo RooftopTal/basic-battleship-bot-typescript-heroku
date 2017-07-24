@@ -13,11 +13,6 @@ export class MyBot {
         ]
     }
 
-    private walkingPositive(firstPos:Position, secondPos:Position){
-        return firstPos.Row > secondPos.Row || firstPos.Column < secondPos.Column;
-        
-    }
-
     public selectTarget(gameState) {
         console.log("turn "+ (gameState.MyShots.length+1))
         var mat:Matrix = new Matrix(gameState);
@@ -49,43 +44,10 @@ export class MyBot {
         return this.getNextTarget(mat);
     }
 
-
-    private shotOnBoard(pos:Position){
-        return (pos.Row.charAt(0)>= 'A' && pos.Row.charAt(0) <= 'J' && pos.Column>=1 && pos.Column <= 10);
-    }
-
-
-    private hitButUnknownDirection(mat:Matrix, hitPosition:Position):Position{
-        hitPosition.print("orig ");
-        var nextShot =new Position(this.getUpRow(hitPosition.Row), hitPosition.Column);
-        nextShot.print("pos1 ");
-        if(mat.alreadyMissAt(nextShot) || mat.alreadyHitAt(nextShot) || hitPosition.Row == 'A'){
-            nextShot = new Position(hitPosition.Row, this.getRightColumn(hitPosition.Column));
-            nextShot.print("pos2 ");
-
-            if(mat.alreadyMissAt(nextShot) || mat.alreadyHitAt(nextShot)|| hitPosition.Column == 10){
-                nextShot =new Position(this.getDownRow(hitPosition.Row), hitPosition.Column);
-                nextShot.print("pos3 ");
-                if(mat.alreadyMissAt(nextShot) || mat.alreadyHitAt(nextShot) || hitPosition.Row == 'J'){
-                    nextShot = new Position(hitPosition.Row, this.getLeftColumn(hitPosition.Column));
-                }
-            }
-        }
-        return nextShot;
-    }
-
-
-    private shipHorizontal(shot1:Position, shot2:Position){
-        if(shot1.Row == shot2.Row){
-            return true;
-        }
-        return false;
-    }
-
     private getNextTarget(mat:Matrix):Position {
         mat.surroundHorizontalShips();
         mat.surroundVerticalShips();
-        return this.targetMethodTryRandomBlackSquare(mat);
+        return this.targetMethodPlaceLargestShip(mat);
     }
 
 
@@ -106,29 +68,9 @@ export class MyBot {
         else return this.targetMethodTryRandomBlackSquare(mat);
     }
 
-    private getDownRow(row) {
-        var newRow = row.charCodeAt(0) + 1;
-        if(newRow > 'J'.charCodeAt(0)) {
-            return 'A';
-        }
-        return String.fromCharCode(newRow);
+    private targetMethodPlaceLargestShip(mat):Position{
+        return mat.placeLargestShip();
     }
 
-    private getUpRow(row) {
-        var newRow = row.charCodeAt(0) - 1;
-        if(newRow < 'A'.charCodeAt(0)) {
-            return 'J';
-        }
-        return String.fromCharCode(newRow);
-    }
-
-    private getRightColumn(column) {
-        return column % 10 + 1;
-    }
-
-    private getLeftColumn(column) {
-        if(column != 1)return (column+9)%10;
-        else return 10;
-    }
 }
 

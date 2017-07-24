@@ -68,7 +68,7 @@ export class Matrix{
         }
     }
 
-       private verticalSurroundShip(row:number, col:number, length)
+    private verticalSurroundShip(row:number, col:number, length)
     {
         for(let i =0; i <= length+1; i ++ ){
             if(row-i>=0 && row-i<=9)
@@ -281,4 +281,34 @@ export class Matrix{
         return false;
     }
 
+    public placeLargestShip(){
+        let largestShip;
+        if(this.ships[4])       largestShip = 5;
+        else if(this.ships[3])  largestShip =4;
+        else if(this.ships[4])  largestShip = 3;
+        else                    largestShip = 2;
+
+        let horizontal = Math.random()> 0.5;
+        let linePref = Math.floor(Math.random()*10);
+        for(let a = 0; a < 2; a ++){
+            horizontal = !horizontal;
+            for(let b = 0; b<10; b ++){
+                let line = (linePref+b)%10;
+                for(let startPos = 0; startPos < this.board.length-largestShip; startPos ++){
+                    let possible = true;
+                    for(let i = 0; i < largestShip; i ++){
+                        if(!horizontal && !(this.board[startPos+i][line] == 0) || horizontal && !(this.board[line][startPos+i]==0)){
+                            possible = false;
+                            break;
+                        }
+                    }
+                    if(possible)
+                    {
+                        if(horizontal)return this.positionFromCoords(line,startPos+Math.floor(largestShip/2));
+                        else return this.positionFromCoords(startPos+Math.floor(largestShip/2), line);
+                    }
+                }
+            }
+        }
+    }
 }
