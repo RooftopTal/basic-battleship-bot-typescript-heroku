@@ -1,7 +1,7 @@
 import {Position} from './Position'
 import {Matrix} from './matrixClass'
 import {TargetingMethods} from './targeting'
-import {MyShips} from './MyShips'
+import {MyShips} from './myShips'
 
 export class MyBot {
     private state;
