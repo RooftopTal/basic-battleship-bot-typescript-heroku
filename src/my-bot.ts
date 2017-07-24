@@ -56,8 +56,9 @@ export class MyBot {
         mat.surroundVerticalShips();
         console.log(mat.board);
         console.log(mat.ships);
-        if(gameState.MyShots.length< 20)return TargetingMethods.targetMethodOpponentsMostRecentMiss(mat, gameState);
-        else if(mat.ships[4] || mat.ships[5])return TargetingMethods.targetMethodPlaceLargestShip(mat);
+        //if(gameState.MyShots.length< 20)return TargetingMethods.targetMethodOpponentsMostRecentMiss(mat, gameState);
+        //else
+        if(mat.ships[4] || mat.ships[5])return TargetingMethods.targetMethodPlaceLargestShip(mat);
         else return TargetingMethods.targetMethodTryRandomBlackSquare(mat);
     }
 }
