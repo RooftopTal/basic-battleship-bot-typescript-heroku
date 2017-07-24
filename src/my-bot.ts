@@ -46,13 +46,6 @@ export class MyBot {
                 }
             }
         }
-        console.log("from");
-        console.log(mat.board)
-
-        mat.surroundHorizontalShips();
-        mat.surroundVerticalShips();
-        console.log("to");
-        console.log(mat.board);
         return this.getNextTarget(mat);
     }
 
@@ -90,6 +83,8 @@ export class MyBot {
     }
 
     private getNextTarget(mat:Matrix):Position {
+        mat.surroundHorizontalShips();
+        mat.surroundVerticalShips();
         return this.targetMethodTryRandomBlackSquare(mat);
     }
 
