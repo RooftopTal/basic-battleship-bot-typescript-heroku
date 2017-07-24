@@ -108,7 +108,7 @@ export class Matrix{
     private verticalShipSunk(lastShot:Position):boolean{
         let count = 0;
         let curPos = lastShot;
-        for(let i =1; i<=4; i ++){
+        for(let i =1; i<=5; i ++){
             curPos = curPos.getPositionAbove();
             if(this.alreadyMissAt(curPos) || this.getRowPos(curPos.Row) ==9)          break;
             else if(this.alreadyHitAt(curPos))                          count++;
@@ -119,7 +119,7 @@ export class Matrix{
         }
 
         curPos = lastShot;
-        for(let i=1; i <= 4-count; i ++){
+        for(let i=1; i <= 5-count; i ++){
             curPos = curPos.getPositionDown();
             if(this.alreadyMissAt(curPos) || this.getRowPos(curPos.Row) ==0)          break;
             else if(this.alreadyHitAt(curPos))                          count++;
