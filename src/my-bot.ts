@@ -5,11 +5,11 @@ export class MyBot {
     private state;
     public getShipPositions() {
         return [
-            { StartingSquare: { Row: "A", Column: 1 }, EndingSquare : { Row: "A", Column: 5 } },
+            { StartingSquare: { Row: "J", Column: 1 }, EndingSquare : { Row: "J", Column: 5 } },
             { StartingSquare: { Row: "C", Column: 1 }, EndingSquare : { Row: "C", Column: 4 } },
-            { StartingSquare: { Row: "E", Column: 1 }, EndingSquare : { Row: "E", Column: 3 } },
-            { StartingSquare: { Row: "G", Column: 1 }, EndingSquare : { Row: "G", Column: 3 } },
-            { StartingSquare: { Row: "I", Column: 8 }, EndingSquare : { Row: "I", Column: 9 } },
+            { StartingSquare: { Row: "E", Column: 5 }, EndingSquare : { Row: "E", Column: 7 } },
+            { StartingSquare: { Row: "H", Column: 1 }, EndingSquare : { Row: "H", Column: 3 } },
+            { StartingSquare: { Row: "J", Column: 8 }, EndingSquare : { Row: "J", Column: 9 } },
         ]
     }
 
@@ -34,7 +34,7 @@ export class MyBot {
                 }
             }
             else{
-                for(let i = 1; i < gameState.MyShots.length; i ++){
+                for(let i = 1; i <= gameState.MyShots.length; i ++){
                     if(gameState.MyShots[gameState.MyShots.length-i].WasHit){
                         //this is the most recent hit;
                         if(!mat.isThereUnsunkShipAt(new Position(gameState.MyShots[gameState.MyShots.length-i].Position.Row, gameState.MyShots[gameState.MyShots.length-i].Position.Column))) return this.getNextTarget(mat);
