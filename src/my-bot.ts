@@ -108,7 +108,7 @@ export class MyBot {
                 if (snapCopy.hitmode) {
                     this.track(gamestate)
                         .then((decision) => {
-                            console.log(decision);
+                            //console.log(decision);
                             target = decision;
                             //console.log(target);
                         })
@@ -375,8 +375,8 @@ export class MyBot {
                     break;
                 }
             }
-            console.log(gamestate.MyShots);
-            console.log(lastHit);
+            //console.log(gamestate.MyShots);
+            //console.log(lastHit);
             let up: boolean = true;
             let down: boolean = true;
             let left: boolean = true;
@@ -481,6 +481,11 @@ export class MyBot {
                     right = false;
                     left = false;
                 }
+                console.log("Up " + up);
+                console.log("Down " + down);
+                console.log("Left " + left);
+                console.log("Right " + right);
+                console.log(offset);
                 if (up) {
                     return resolve({ Row: String.fromCharCode(lastHit.Row.charCodeAt(0) - offset), Column: lastHit.Column })
                 } else if (down) {
