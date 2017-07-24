@@ -108,7 +108,7 @@ export class MyBot {
                     this.track(gamestate)
                         .then((decision) => {
                             console.log(decision);
-                            return resolve(decision);
+                            return decision;
                         })
                         .catch((err) => console.log(err));
                 } else {
