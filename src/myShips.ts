@@ -61,7 +61,7 @@ export class MyShips{
     }
 
     public createBoard():ShipPlacement[]{
-        let returnList: ShipPlacement[];
+        let returnList: ShipPlacement[] = [];
         let shipLength:number[] = [5,4,3,3,2];
         for(let i = 0; i<shipLength.length; i ++){
             let horizontal = Math.random()> 0.5;
