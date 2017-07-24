@@ -1,7 +1,8 @@
 import {Matrix} from './matrixClass';
 import {Position} from './Position';
 
-export default class TargetingMethods{
+export class TargetingMethods{
+
         public static targetMethodTryRandomBlackSquare(mat:Matrix):Position{
         var column = (Math.floor(Math.random()*10)+1);
         //col is random value between 1 and 10;
