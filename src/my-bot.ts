@@ -104,11 +104,12 @@ export class MyBot {
                     }
                 }
                 firebase.database().ref('matches/' + this.matchId.toString()).set(snapCopy);
-                //console.log(snapCopy);
                 if (snapCopy.hitmode) {
                     this.track(gamestate)
                         .then((decision) => {
+                            console.log(decision);
                             return resolve(decision);
+                            console.log("Something has gone wrong");
                         })
                         .catch((err) => console.log(err));
                 } else {
