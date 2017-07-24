@@ -46,11 +46,13 @@ export class MyBot {
                 }
             }
         }
-        console.log("from " + mat.board)
+        console.log("from");
+        console.log(mat.board)
 
         mat.surroundHorizontalShips();
         mat.surroundVerticalShips();
-        console.log("to " + mat.board);
+        console.log("to");
+        console.log(mat.board);
         return this.getNextTarget(mat);
     }
 

@@ -32,7 +32,6 @@ export class Matrix{
     }
 
     public surroundHorizontalShips(){
-        console.log("from " + this.board)
         let hitCount;
         for(let row =0; row < this.board.length; row ++){
             hitCount = 0;
@@ -43,8 +42,6 @@ export class Matrix{
                 }
             }
         }
-                console.log("to " + this.board)
-
     }
 
         public surroundVerticalShips(){
