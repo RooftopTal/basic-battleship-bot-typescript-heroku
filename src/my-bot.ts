@@ -380,8 +380,6 @@ export class MyBot {
                     break;
                 }
             }
-            //console.log(gamestate.MyShots);
-            //console.log(lastHit);
             let up: boolean = true;
             let down: boolean = true;
             let left: boolean = true;
@@ -422,7 +420,7 @@ export class MyBot {
                 if ((lastHit.Row.charCodeAt(0) - boatsize === 64) || (hitmap[lastHit.Row.charCodeAt(0) - boatsize][lastHit.Column] === 1)) {
                     up = false;
                     offset = 1;
-                    let othersize: number = 1;
+                    let othersize: number = 0;
                     while (!(lastHit.Row.charCodeAt(0) + boatsize + 1 === 75) && (hitmap[lastHit.Row.charCodeAt(0) + othersize + 1][lastHit.Column] === 2)) {
                         othersize++;
                         offset++;
@@ -461,7 +459,7 @@ export class MyBot {
                 if ((hitmap[lastHit.Row.charCodeAt(0)][lastHit.Column - boatsize] === 1) || (lastHit.Column - boatsize === 0)) {
                     left = false;
                     offset = 1;
-                    let othersize: number = 1;
+                    let othersize: number = 0;
                     while (hitmap[lastHit.Row.charCodeAt(0)][lastHit.Column + othersize + 1] === 2) {
                         othersize++;
                         offset++;
