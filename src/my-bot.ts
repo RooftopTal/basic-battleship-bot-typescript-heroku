@@ -211,15 +211,11 @@ export class MyBot {
             squares.push({ Row: ship[i].Row, Column: ship[i].Column - 1 });
             squares.push({ Row: String.fromCharCode(ship[i].Row.charCodeAt(0) + 1), Column: ship[i].Column });
             squares.push({ Row: String.fromCharCode(ship[i].Row.charCodeAt(0) - 1), Column: ship[i].Column });
+            squares.push({ Row: String.fromCharCode(ship[i].Row.charCodeAt(0) + 1), Column: ship[i].Column + 1 });
+            squares.push({ Row: String.fromCharCode(ship[i].Row.charCodeAt(0) - 1), Column: ship[i].Column + 1 });
+            squares.push({ Row: String.fromCharCode(ship[i].Row.charCodeAt(0) + 1), Column: ship[i].Column - 1 });
+            squares.push({ Row: String.fromCharCode(ship[i].Row.charCodeAt(0) - 1), Column: ship[i].Column - 1 });
         }
-        squares.push({ Row: String.fromCharCode(ship[0].Row.charCodeAt(0) + 1), Column: ship[0].Column + 1 });
-        squares.push({ Row: String.fromCharCode(ship[0].Row.charCodeAt(0) - 1), Column: ship[0].Column + 1 });
-        squares.push({ Row: String.fromCharCode(ship[0].Row.charCodeAt(0) + 1), Column: ship[0].Column - 1 });
-        squares.push({ Row: String.fromCharCode(ship[0].Row.charCodeAt(0) - 1), Column: ship[0].Column - 1 });
-        squares.push({ Row: String.fromCharCode(ship[ship.length - 1].Row.charCodeAt(0) + 1), Column: ship[ship.length - 1].Column + 1 });
-        squares.push({ Row: String.fromCharCode(ship[ship.length - 1].Row.charCodeAt(0) - 1), Column: ship[ship.length - 1].Column + 1 });
-        squares.push({ Row: String.fromCharCode(ship[ship.length - 1].Row.charCodeAt(0) + 1), Column: ship[ship.length - 1].Column - 1 });
-        squares.push({ Row: String.fromCharCode(ship[ship.length - 1].Row.charCodeAt(0) - 1), Column: ship[ship.length - 1].Column - 1 });
         return squares;
     }
 
