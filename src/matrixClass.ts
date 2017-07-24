@@ -303,8 +303,14 @@ export class Matrix{
                     }
                     if(possible)
                     {
-                        if(horizontal)return this.positionFromCoords(line,startPos+Math.floor(largestShip/2));
-                        else return this.positionFromCoords(startPos+Math.floor(largestShip/2), line);
+                        if(horizontal){
+                            if(line%2 == 1) return this.positionFromCoords(line,startPos+Math.floor(largestShip/2));
+                            else return this.positionFromCoords(line,startPos+Math.ceil(largestShip/2));
+                        }
+                        else{
+                            if (line %2 == 1)return this.positionFromCoords(startPos+Math.floor(largestShip/2), line);
+                            else return this.positionFromCoords(startPos+Math.ceil(largestShip/2), line);
+                        }
                     }
                 }
             }
