@@ -53,23 +53,23 @@ export class MyBot {
         do {
             shipPlaces = [];
             counter++;
-            shipPlaces.push(this.getAirCarrierPlace(shipPlaces));
+            shipPlaces[0] = this.getAirCarrierPlace(shipPlaces);
             if (shipPlaces[0].StartingSquare.Column === -1) {
                 continue;
             }
-            shipPlaces.push(this.getBattleshipPlace(shipPlaces));
+            shipPlaces[1] = this.getBattleshipPlace(shipPlaces);
             if (shipPlaces[1].StartingSquare.Column === -1) {
                 continue;
             }
-            shipPlaces.push(this.getDestroyerPlace(shipPlaces));
+            shipPlaces[2] = this.getDestroyerPlace(shipPlaces);
             if (shipPlaces[2].StartingSquare.Column === -1) {
                 continue;
             }
-            shipPlaces.push(this.getSubmarinePlace(shipPlaces));
+            shipPlaces[3] = this.getSubmarinePlace(shipPlaces);
             if (shipPlaces[3].StartingSquare.Column === -1) {
                 continue;
             }
-            shipPlaces.push(this.getPatrolPlace(shipPlaces));
+            shipPlaces[4] = this.getPatrolPlace(shipPlaces);
             if (shipPlaces[4].StartingSquare.Column === -1) {
                 continue;
             }
