@@ -84,8 +84,7 @@ export class MyBot {
     public selectTarget(gamestate): Promise<Position> {
         return new Promise((resolve, reject) => {
             if (gamestate.MyShots.length === 0) {
-                //resolve(this.randomShot(gamestate));
-                resolve({ Row: 'A', Column: 5 })
+                resolve(this.randomShot(gamestate));
             }
             const previousShot: Shot = gamestate.MyShots && gamestate.MyShots[gamestate.MyShots.length-1];
             let target: Position = this.getNextTarget(previousShot.Position);
@@ -331,7 +330,7 @@ export class MyBot {
         let squares: Position[] = [];
         for (let i: number = 0; i < ship.length; i++) {
             squares.push({ Row: ship[i].Row, Column: ship[i].Column + 1 });
-            squares.push({ Row: ship[i].Row, Column: ship[i].Column + 1 });
+            squares.push({ Row: ship[i].Row, Column: ship[i].Column - 1 });
             squares.push({ Row: String.fromCharCode(ship[i].Row.charCodeAt(0) + 1), Column: ship[i].Column });
             squares.push({ Row: String.fromCharCode(ship[i].Row.charCodeAt(0) - 1), Column: ship[i].Column });
         }
