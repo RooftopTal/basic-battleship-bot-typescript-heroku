@@ -1,17 +1,15 @@
 import {Position} from './Position'
 import {Matrix} from './matrixClass'
 import {TargetingMethods} from './targeting'
+import {MyShips} from './MyShips'
 
 export class MyBot {
     private state;
     public getShipPositions() {
-        return [
-            { StartingSquare: { Row: "J", Column: 1 }, EndingSquare : { Row: "J", Column: 5 } },
-            { StartingSquare: { Row: "C", Column: 3 }, EndingSquare : { Row: "F", Column: 3 } },
-            { StartingSquare: { Row: "A", Column: 1 }, EndingSquare : { Row: "C", Column: 1 } },
-            { StartingSquare: { Row: "H", Column: 1 }, EndingSquare : { Row: "H", Column: 3 } },
-            { StartingSquare: { Row: "J", Column: 9 }, EndingSquare : { Row: "J", Column: 10 } },
-        ]
+        let myShips = new MyShips([]);
+        return myShips.createBoard();
+
+     
     }
 
     public selectTarget(gameState) {
