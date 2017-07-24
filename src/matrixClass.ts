@@ -50,7 +50,7 @@ export class Matrix{
             hitCount = 0;
             for(let row = 0; row < this.board.length; row ++){
                 if(this.board[row][col] == 1)hitCount ++;
-                else if(this.board[row][col] == 2){
+                else if(this.board[row][col]!= 1){
                     if(hitCount > 1)this.verticalSurroundShip(row,col,hitCount);
                 }
             }
