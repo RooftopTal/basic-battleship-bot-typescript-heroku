@@ -293,6 +293,7 @@ export class Matrix{
                     count ++;
                     for(let i = 0; i < largestShip; i ++){
                         if(!horizontal && !(this.board[startPos+i][line] == 0) || horizontal && !(this.board[line][startPos+i]==0)){
+                            console.log(horizontal);
                             possible = false;
                             break;
                         }
