@@ -89,7 +89,7 @@ export class MyBot {
                     resolve(this.randomShot(gamestate));
                 }
                 const previousShot: Shot = gamestate.MyShots && gamestate.MyShots[gamestate.MyShots.length-1];
-                let target: Position = this.getNextTarget(previousShot.Position);
+                let target: Position = { Row: 'A', Column: 1 };
                 if (previousShot.WasHit) {
                     snapCopy.hitmode = true;
                     if (snapCopy.hitmap) {
