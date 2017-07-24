@@ -419,7 +419,7 @@ export class MyBot {
                     if (hitmap[lastHit.Row.charCodeAt(0) + othersize + 1][lastHit.Column] === 1) {
                         down = false;
                     }
-                } else if (boatsize !== maxboatsize) {
+                } else /*if (boatsize !== maxboatsize)*/ {
                     return { Row: String.fromCharCode(lastHit.Row.charCodeAt(0) - offset), Column: lastHit.Column }
                 }
             } else if (down && (hitmap[lastHit.Row.charCodeAt(0) + 1][lastHit.Column] === 2)) {
@@ -434,7 +434,7 @@ export class MyBot {
                 if ((hitmap[lastHit.Row.charCodeAt(0) + boatsize][lastHit.Column] === 1) || (lastHit.Row.charCodeAt(0) + boatsize === 75)) {
                     down = false;
                     offset = 1;
-                } else if (boatsize !== maxboatsize) {
+                } else /*if (boatsize !== maxboatsize)*/ {
                     return { Row: String.fromCharCode(lastHit.Row.charCodeAt(0) + offset), Column: lastHit.Column }
                 }
             } else if (left && (hitmap[lastHit.Row.charCodeAt(0)][lastHit.Column - 1] === 2)) {
@@ -458,7 +458,7 @@ export class MyBot {
                     if (hitmap[lastHit.Row.charCodeAt(0)][lastHit.Column + othersize + 1] === 1) {
                         right = false;
                     }
-                } else if (boatsize !== maxboatsize) {
+                } else /*if (boatsize !== maxboatsize)*/ {
                     return { Row: lastHit.Row, Column: lastHit.Column - offset }
                 }
             } else if (right && (hitmap[lastHit.Row.charCodeAt(0)][lastHit.Column + 1] === 2)) {
@@ -473,16 +473,16 @@ export class MyBot {
                 if ((hitmap[lastHit.Row.charCodeAt(0)][lastHit.Column + boatsize] === 1) || (lastHit.Column + boatsize === 11)) {
                     right = false;
                     offset = 1;
-                } else if (boatsize !== maxboatsize) {
+                } else /*if (boatsize !== maxboatsize)*/ {
                     return { Row: lastHit.Row, Column: lastHit.Column + offset }
                 }
             }
-            if (boatsize === maxboatsize) {
+            /*if (boatsize === maxboatsize) {
                 up = false;
                 down = false;
                 right = false;
                 left = false;
-            }
+            }*/
             /*console.log("last hit: " + lastHit.Row + lastHit.Column.toString());
             console.log("Up " + up);
             console.log("Down " + down);
