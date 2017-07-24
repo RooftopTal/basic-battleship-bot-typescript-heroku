@@ -375,6 +375,7 @@ export class MyBot {
                     break;
                 }
             }
+            console.log(gamestate.MyShots);
             console.log(lastHit);
             let up: boolean = true;
             let down: boolean = true;
