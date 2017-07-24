@@ -338,6 +338,10 @@ export class MyBot {
         squares.push({ Row: String.fromCharCode(ship[0].Row.charCodeAt(0) - 1), Column: ship[0].Column + 1 });
         squares.push({ Row: String.fromCharCode(ship[0].Row.charCodeAt(0) + 1), Column: ship[0].Column - 1 });
         squares.push({ Row: String.fromCharCode(ship[0].Row.charCodeAt(0) - 1), Column: ship[0].Column - 1 });
+        squares.push({ Row: String.fromCharCode(ship[1].Row.charCodeAt(0) + 1), Column: ship[1].Column + 1 });
+        squares.push({ Row: String.fromCharCode(ship[1].Row.charCodeAt(0) - 1), Column: ship[1].Column + 1 });
+        squares.push({ Row: String.fromCharCode(ship[1].Row.charCodeAt(0) + 1), Column: ship[1].Column - 1 });
+        squares.push({ Row: String.fromCharCode(ship[1].Row.charCodeAt(0) - 1), Column: ship[1].Column - 1 });
         return squares;
     }
 
