@@ -14,34 +14,40 @@ export class MyBot {
     }
 
     public selectTarget(gameState) {
-        console.log("turn "+ (gameState.MyShots.length+1))
-        var mat:Matrix = new Matrix(gameState);
-        var ispreviousShot = gameState.MyShots && gameState.MyShots[gameState.MyShots.length-1];
-        if(ispreviousShot) {
-            var previousShot = gameState.MyShots[gameState.MyShots.length-1];
-            var previousShotAsCorrectClass = new Position(previousShot.Position.Row, previousShot.Position.Column);
-            if(previousShot.WasHit)
-            {
-                if(!mat.isThereUnsunkShipAt(previousShotAsCorrectClass)) return this.getNextTarget(mat);
-                else {
-                    // console.log(mat.board);
-                    return mat.returnUnsunkShot();
+        try{
+            console.log("turn "+ (gameState.MyShots.length+1))
+            var mat:Matrix = new Matrix(gameState);
+            var ispreviousShot = gameState.MyShots && gameState.MyShots[gameState.MyShots.length-1];
+            if(ispreviousShot) {
+                var previousShot = gameState.MyShots[gameState.MyShots.length-1];
+                var previousShotAsCorrectClass = new Position(previousShot.Position.Row, previousShot.Position.Column);
+                if(previousShot.WasHit)
+                {
+                    if(!mat.isThereUnsunkShipAt(previousShotAsCorrectClass)) return this.getNextTarget(mat);
+                    else {
+                        // console.log(mat.board);
+                        return mat.returnUnsunkShot();
+                    }
                 }
-            }
-            else{
-                for(let i = 1; i <= gameState.MyShots.length; i ++){
-                    if(gameState.MyShots[gameState.MyShots.length-i].WasHit){
-                        //this is the most recent hit;
-                        if(!mat.isThereUnsunkShipAt(new Position(gameState.MyShots[gameState.MyShots.length-i].Position.Row, gameState.MyShots[gameState.MyShots.length-i].Position.Column))) return this.getNextTarget(mat);
-                        else{
-                            // console.log(mat.board);
-                            return mat.returnUnsunkShot();
+                else{
+                    for(let i = 1; i <= gameState.MyShots.length; i ++){
+                        if(gameState.MyShots[gameState.MyShots.length-i].WasHit){
+                            //this is the most recent hit;
+                            if(!mat.isThereUnsunkShipAt(new Position(gameState.MyShots[gameState.MyShots.length-i].Position.Row, gameState.MyShots[gameState.MyShots.length-i].Position.Column))) return this.getNextTarget(mat);
+                            else{
+                                // console.log(mat.board);
+                                return mat.returnUnsunkShot();
+                            }
                         }
                     }
                 }
             }
+            return this.getNextTarget(mat);
+
         }
-        return this.getNextTarget(mat);
+        catch(err){
+            console.log(err);
+        }
     }
 
     private getNextTarget(mat:Matrix):Position {
