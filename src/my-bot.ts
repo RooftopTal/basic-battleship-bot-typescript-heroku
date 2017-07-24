@@ -293,10 +293,10 @@ export class MyBot {
             let ship1: Position[] = this.generateShipSquares(shipPlaces[i]);
             for (let j: number = i + 1; j < shipPlaces.length; j++) {
                 let ship2: Position[] = this.generateAdjacentSquares(this.generateShipSquares(shipPlaces[j]));
+                console.log("ship1: " + JSON.stringify(ship1));
+                console.log("ship2: " + JSON.stringify(ship2));
                 for (let x: number = 0; x < ship1.length; x++) {
                     for (let y: number = 0; y < ship2.length; y++) {
-                        console.log("ship1: " + JSON.stringify(ship1));
-                        console.log("ship2: " + JSON.stringify(ship2));
                         if ((ship1[x].Row === ship2[y].Row) && (ship1[x].Column === ship2[y].Column)) {
                             return true;
                         }
