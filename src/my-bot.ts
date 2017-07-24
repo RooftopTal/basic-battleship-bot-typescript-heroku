@@ -110,7 +110,7 @@ export class MyBot {
                 } else {
                     target = this.randomShot(gamestate);
                 }
-                console.log("Target is " + target.Row + target.Column.toString());
+                //console.log("Target is " + target.Row + target.Column.toString());
                 return resolve(target);
             });
         })
@@ -483,12 +483,12 @@ export class MyBot {
                 right = false;
                 left = false;
             }
-            console.log("last hit: " + lastHit.Row + lastHit.Column.toString());
+            /*console.log("last hit: " + lastHit.Row + lastHit.Column.toString());
             console.log("Up " + up);
             console.log("Down " + down);
             console.log("Left " + left);
             console.log("Right " + right);
-            console.log(offset);
+            console.log(offset);*/
             if (up) {
                 return { Row: String.fromCharCode(lastHit.Row.charCodeAt(0) - offset), Column: lastHit.Column }
             } else if (down) {
@@ -498,6 +498,7 @@ export class MyBot {
             } else if (right) {
                 return { Row: lastHit.Row, Column: lastHit.Column + offset }
             } else {
+                console.log("Boatsize: " + boatsize.toString())
                 snapCopy.hitmode = false;
                 if (boatsize === 5) {
                     snapCopy.sizes.carrier = false;
