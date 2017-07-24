@@ -53,6 +53,7 @@ export class MyBot {
     private getNextTarget(mat:Matrix):Position {
         mat.surroundHorizontalShips();
         mat.surroundVerticalShips();
+        console.log(mat.board);
         return this.targetMethodPlaceLargestShip(mat);
     }
 
