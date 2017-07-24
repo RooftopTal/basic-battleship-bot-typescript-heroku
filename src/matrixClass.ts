@@ -38,10 +38,10 @@ export class Matrix{
             for(let col = 0; col < this.board.length; col ++){
                 if(this.board[row][col] == 1)hitCount ++;
                 else if(this.board[row][col] != 1){
+                    console.log("horizontal" + row + " " + col + " = " + hitCount);
                     if(hitCount > 1)this.horizontalSurroundShip(row,col,hitCount);
                     
                     hitCount ==0 ;
-
                 }
             }
         }
