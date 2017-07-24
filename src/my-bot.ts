@@ -6,10 +6,10 @@ export class MyBot {
     public getShipPositions() {
         return [
             { StartingSquare: { Row: "J", Column: 1 }, EndingSquare : { Row: "J", Column: 5 } },
-            { StartingSquare: { Row: "C", Column: 1 }, EndingSquare : { Row: "C", Column: 4 } },
-            { StartingSquare: { Row: "E", Column: 5 }, EndingSquare : { Row: "E", Column: 7 } },
+            { StartingSquare: { Row: "C", Column: 3 }, EndingSquare : { Row: "F", Column: 3 } },
+            { StartingSquare: { Row: "A", Column: 1 }, EndingSquare : { Row: "C", Column: 1 } },
             { StartingSquare: { Row: "H", Column: 1 }, EndingSquare : { Row: "H", Column: 3 } },
-            { StartingSquare: { Row: "J", Column: 8 }, EndingSquare : { Row: "J", Column: 9 } },
+            { StartingSquare: { Row: "J", Column: 9 }, EndingSquare : { Row: "J", Column: 10 } },
         ]
     }
 
@@ -23,7 +23,7 @@ export class MyBot {
                 var previousShotAsCorrectClass = new Position(previousShot.Position.Row, previousShot.Position.Column);
                 if(previousShot.WasHit)
                 {
-                    if(!mat.isThereUnsunkShipAt(previousShotAsCorrectClass)) return this.getNextTarget(mat);
+                    if(!mat.isThereUnsunkShipAt(previousShotAsCorrectClass)) return this.getNextTarget(mat, gameState);
                     else {
                         // console.log(mat.board);
                         return mat.returnUnsunkShot();
@@ -33,7 +33,7 @@ export class MyBot {
                     for(let i = 1; i <= gameState.MyShots.length; i ++){
                         if(gameState.MyShots[gameState.MyShots.length-i].WasHit){
                             //this is the most recent hit;
-                            if(!mat.isThereUnsunkShipAt(new Position(gameState.MyShots[gameState.MyShots.length-i].Position.Row, gameState.MyShots[gameState.MyShots.length-i].Position.Column))) return this.getNextTarget(mat);
+                            if(!mat.isThereUnsunkShipAt(new Position(gameState.MyShots[gameState.MyShots.length-i].Position.Row, gameState.MyShots[gameState.MyShots.length-i].Position.Column))) return this.getNextTarget(mat, gameState);
                             else{
                                 // console.log(mat.board);
                                 return mat.returnUnsunkShot();
@@ -42,7 +42,7 @@ export class MyBot {
                     }
                 }
             }
-            return this.getNextTarget(mat);
+            return this.getNextTarget(mat, gameState);
 
         }
         catch(err){
@@ -50,13 +50,14 @@ export class MyBot {
         }
     }
 
-    private getNextTarget(mat:Matrix):Position {
+    private getNextTarget(mat:Matrix, gameState):Position {
         mat.surroundHorizontalShips();
         mat.surroundVerticalShips();
         console.log(mat.board);
         console.log(mat.ships);
-        if(mat.ships[4] || mat.ships[5])return this.targetMethodPlaceLargestShip(mat);
-        else return this.targetMethodTryRandomBlackSquare(mat);
+        // if(mat.ships[4] || mat.ships[5])return this.targetMethodPlaceLargestShip(mat);
+        // else return this.targetMethodTryRandomBlackSquare(mat);
+        return this.targetMethodOpponentsMostRecentMiss(mat, gameState);
     }
 
 
@@ -81,5 +82,18 @@ export class MyBot {
         return mat.placeLargestShip();
     }
 
+    private targetMethodOpponentsMostRecentMiss(mat, gameState)
+    {
+        for(let i = 1; i <= gameState.OpponentsShots.length; i ++){
+            if(!gameState.OpponentsShots[gameState.OpponentsShots.length-i].WasHit)
+            {
+                if(mat.validShotPlace(gameState.OpponentsShots[gameState.OpponentsShots.length-i].Position)){
+                    return gameState.OpponentsShots[gameState.OpponentsShots.length-i].Position;
+
+                }
+            }
+        }
+        return this.targetMethodTryRandomBlackSquare(mat);
+    }
 }
 
