@@ -6,8 +6,21 @@ export class Matrix{
     0 = uncharted
     1 = hit
     2 = miss
-
+    3 = suggested target
+    4 = blocked out no ship area
     */
+    public ships:boolean[] = [true,true,true,true,true];
+    /*
+    index = length
+    0 = 2
+    1 = 3
+    2 = 3
+    3 = 4
+    4 = 5
+     */
+
+
+    
     public returnUnsunkShot(){
         for(let row =0; row < this.board.length; row ++){
             for(let col = 0; col < this.board.length; col ++){
@@ -18,10 +31,54 @@ export class Matrix{
         console.log("never logged");
     }
 
+    public surroundHorizontalShips(){
+        let hitCount;
+        for(let row =0; row < this.board.length; row ++){
+            hitCount = 0;
+            for(let col = 0; col < this.board.length; col ++){
+                if(this.board[row][col] == 1)hitCount ++;
+                else if(this.board[row][col] == 2){
+                    if(hitCount > 1)this.horizontalSurroundShip(row,col,hitCount);
+                }
+            }
+        }
+    }
+
+        public surroundVerticalShips(){
+        let hitCount;
+        for(let col =0; col < this.board.length; col ++){
+            hitCount = 0;
+            for(let row = 0; row < this.board.length; row ++){
+                if(this.board[row][col] == 1)hitCount ++;
+                else if(this.board[row][col] == 2){
+                    if(hitCount > 1)this.horizontalSurroundShip(row,col,hitCount);
+                }
+            }
+        }
+    }
+
+    private horizontalSurroundShip(row:number, col:number, length)
+    {
+        for(let i =0; i <= length+1; i ++ ){
+            this.board[row-1][col-i] =4;
+            this.board[row][col-i] =4;
+            this.board[row+1][col-i] =4;
+        }
+    }
+
+       private verticalSurroundShip(row:number, col:number, length)
+    {
+        for(let i =0; i <= length+1; i ++ ){
+            this.board[row-i][col-1] =4;
+            this.board[row-i][col] =4;
+            this.board[row-i][col+1] =4;
+        }
+    }
+
 
     public isThereUnsunkShipAt(lastShot:Position):boolean
     {
-        // as a side affect add a 3 where the shot should be if true
+        // as a side affect add a 3 where the shot should be if trued
         lastShot.print("unsunk " );
         var up = lastShot.getPositionAbove();
         var down = lastShot.getPositionDown();
@@ -71,6 +128,19 @@ export class Matrix{
                 return true;  
             }
         }
+
+        //this indicates in ship array that the ship is sunk
+        if(count <= 3){
+            this.ships[count-1] = false;
+        }
+        else if(count = 1){
+            this.ships[0] = false;
+        }
+        else{
+            if(this.ships[1])this.ships[1] = false;
+            else this.ships[2] = false;
+        }
+
         return false;
     }
 
@@ -97,6 +167,19 @@ export class Matrix{
                 return true;  
             }
         }
+
+                //this indicates in ship array that the ship is sunk
+        if(count <= 3){
+            this.ships[count-1] = false;
+        }
+        else if(count = 1){
+            this.ships[0] = false;
+        }
+        else{
+            if(this.ships[1])this.ships[1] = false;
+            else this.ships[2] = false;
+        }
+
         return false;
     }
     
@@ -138,11 +221,58 @@ export class Matrix{
     }
 
     public validShotPlace(pos:Position){
-        var up = pos.getPositionAbove();
-        var down = pos.getPositionDown();
-        var left = pos.getPositionLeft();
-        var right = pos.getPositionRight();
-        return !(up.Row != 'J' && this.alreadyHitAt(up)|| left.Column != 10 && this.alreadyHitAt(left) || right.Column != 1 && this.alreadyHitAt(right) || down.Row != 'A' && this.alreadyHitAt(down) ||this.alreadyHitAt(pos) ||this.alreadyMissAt(pos));
+        let smallestShip
+        if(this.ships[0])       smallestShip = 2; 
+        else if(this.ships[2])  smallestShip = 3;
+        else if(this.ships[3])  smallestShip = 4;
+        else                    smallestShip = 5; 
+
+        return (this.checkVerticalShipFits(smallestShip, pos) || this.checkHorizontalShipFits(smallestShip, pos))
+        // var up = pos.getPositionAbove();
+        // var down = pos.getPositionDown();
+        // var left = pos.getPositionLeft();
+        // var right = pos.getPositionRight();
+        // return !(up.Row != 'J' && this.alreadyHitAt(up)|| left.Column != 10 && this.alreadyHitAt(left)
+        //         || right.Column != 1 && this.alreadyHitAt(right) || down.Row != 'A' && this.alreadyHitAt(down) 
+        //         ||this.alreadyHitAt(pos) ||this.alreadyMissAt(pos));
+    }
+
+    private checkVerticalShipFits(size, pos):boolean{
+        let rowPos = this.getRowPos(pos);
+        let colPos = pos.Column-1;
+
+        for(let i = 0; i < size; i ++)
+        {
+            let row = rowPos-i;
+            let possible = true;
+            for(let j = 0; j < size; j ++){
+                if(row + j> 9 || row +j < 0 || this.board[row+j][colPos] != 0){
+                    possible = false;
+                    break;
+                }
+            }
+            if(possible) return true;
+        }
+        return false;
+    }
+
+    private checkHorizontalShipFits(size, pos):boolean{
+        let rowPos = this.getRowPos(pos);
+        let colPos = pos.Column-1;
+
+        for(let i = 0; i < size; i ++)
+        {
+            let col = colPos-i;
+            let possible = true;
+            for(let j = 0; j < size; j ++){
+                if(col + j> 9 || col + j<0 || this.board[rowPos][col+j] != 0){
+                    possible = false;
+                    break;
+                }
+            }
+            if(possible) return true;
+        }
+        return false;
     }
 
 }
