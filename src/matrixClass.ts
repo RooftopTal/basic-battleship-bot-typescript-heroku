@@ -51,7 +51,7 @@ export class Matrix{
             for(let row = 0; row < this.board.length; row ++){
                 if(this.board[row][col] == 1)hitCount ++;
                 else if(this.board[row][col] == 2){
-                    if(hitCount > 1)this.horizontalSurroundShip(row,col,hitCount);
+                    if(hitCount > 1)this.verticalSurroundShip(row,col,hitCount);
                 }
             }
         }
@@ -119,7 +119,8 @@ export class Matrix{
         }
 
         curPos = lastShot;
-        for(let i=1; i <= 5-count; i ++){
+        const startCount = count;
+        for(let i=1; i <= 5-startCount; i ++){
             curPos = curPos.getPositionDown();
             if(this.alreadyMissAt(curPos) || this.getRowPos(curPos.Row) ==0)          break;
             else if(this.alreadyHitAt(curPos))                          count++;
@@ -157,8 +158,10 @@ export class Matrix{
             }
         }
 
+        const startCount = count;
+
         curPos = lastShot;
-        for(let i=1; i <= 4-count; i ++){
+        for(let i=1; i <= 4-startCount; i ++){
             curPos = curPos.getPositionRight();
             if(this.alreadyMissAt(curPos) || curPos.Column== 1)          break;
             else if(this.alreadyHitAt(curPos))                          count++;
