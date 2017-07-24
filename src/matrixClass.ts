@@ -84,12 +84,12 @@ export class Matrix{
         var down = lastShot.getPositionDown();
         var left = lastShot.getPositionLeft();
         var right = lastShot.getPositionRight();
-        if(left.Column<10 && this.alreadyHitAt(left) || right.Column>1 && this.alreadyHitAt(right)){
+        if(left.Column<9 && this.alreadyHitAt(left) || right.Column>0 && this.alreadyHitAt(right)){
             //horizontal ship
             console.log("HORIZONTAL ")
             return this.horizontalShipSunk(lastShot);
         }
-        else if (this.getRowPos(up.Row) <10  && this.alreadyHitAt(up) || (this.getRowPos(down.Row)>1 && this.alreadyHitAt(down))){
+        else if (this.getRowPos(up.Row) <9  && this.alreadyHitAt(up) || (this.getRowPos(down.Row)>0 && this.alreadyHitAt(down))){
             //vert ship
             console.log("vertical ")
             return this.verticalShipSunk(lastShot);
@@ -97,7 +97,7 @@ export class Matrix{
         else{
             console.log("ship size 1")
             //ship of size one
-            if(this.getRowPos(up.Row) <10 && !this.alreadyMissAt(up))this.board[this.getRowPos(up.Row)][up.Column-1] = 3;
+            if(this.getRowPos(up.Row) <9 && !this.alreadyMissAt(up))this.board[this.getRowPos(up.Row)][up.Column-1] = 3;
             else if (right.Column>1 && !this.alreadyMissAt(right))this.board[this.getRowPos(right.Row)][right.Column-1] = 3;
             else if (this.getRowPos(down.Row)>1 && !this.alreadyMissAt(down))this.board[this.getRowPos(down.Row)][down.Column-1] = 3;
             else this.board[this.getRowPos(left.Row)][left.Column-1] = 3;
