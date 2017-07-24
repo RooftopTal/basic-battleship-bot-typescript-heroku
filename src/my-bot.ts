@@ -419,13 +419,12 @@ export class MyBot {
                     up = false;
                     offset = 1;
                     let othersize: number = 1;
-                    while (!(lastHit.Row.charCodeAt(0) + boatsize === 75) && (hitmap[lastHit.Row.charCodeAt(0) + othersize + 1][lastHit.Column] === 2)) {
-                        console.log((lastHit.Row.charCodeAt(0) + boatsize).toString());
+                    while (!(lastHit.Row.charCodeAt(0) + boatsize + 1 === 75) && (hitmap[lastHit.Row.charCodeAt(0) + othersize + 1][lastHit.Column] === 2)) {
                         othersize++;
                         offset++;
                     }
                     boatsize += othersize;
-                    if ((lastHit.Row.charCodeAt(0) + boatsize === 75) || (hitmap[lastHit.Row.charCodeAt(0) + othersize + 1][lastHit.Column] === 1)) {
+                    if ((lastHit.Row.charCodeAt(0) + boatsize + 1 === 75) || (hitmap[lastHit.Row.charCodeAt(0) + othersize + 1][lastHit.Column] === 1)) {
                         down = false;
                     }
                 } else /*if (boatsize !== maxboatsize)*/ {
