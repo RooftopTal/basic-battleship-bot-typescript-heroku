@@ -107,14 +107,14 @@ export class MyBot {
                 if (snapCopy.hitmode) {
                     this.track(gamestate)
                         .then((decision) => {
-                            console.log("Targeting chose: " + decision);
+                            console.log("Targeting chose: " + decision.Row + decision.Column.toString());
                             return resolve(decision);
                         })
                         .catch((err) => console.log(err));
                 } else {
                     target = this.randomShot(gamestate);
                 }
-                console.log("But I'm going to shoot at: " + target);
+                console.log("But I'm going to shoot at: " + target.Row + target.Column.toString());
                 if (snapCopy.hitmode) {
                     console.log("Something has gone wrong");
                 }
