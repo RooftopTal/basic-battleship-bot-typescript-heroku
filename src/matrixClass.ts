@@ -98,8 +98,8 @@ export class Matrix{
             console.log("ship size 1")
             //ship of size one
             if(this.getRowPos(up.Row) <9 && !this.alreadyMissAt(up))this.board[this.getRowPos(up.Row)][up.Column-1] = 3;
-            else if (right.Column>1 && !this.alreadyMissAt(right))this.board[this.getRowPos(right.Row)][right.Column-1] = 3;
-            else if (this.getRowPos(down.Row)>1 && !this.alreadyMissAt(down))this.board[this.getRowPos(down.Row)][down.Column-1] = 3;
+            else if (right.Column>0 && !this.alreadyMissAt(right))this.board[this.getRowPos(right.Row)][right.Column-1] = 3;
+            else if (this.getRowPos(down.Row)>0 && !this.alreadyMissAt(down))this.board[this.getRowPos(down.Row)][down.Column-1] = 3;
             else this.board[this.getRowPos(left.Row)][left.Column-1] = 3;
             return true;
         }
