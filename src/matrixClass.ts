@@ -139,10 +139,10 @@ export class Matrix{
         }
 
         //this indicates in ship array that the ship is sunk
-        if(count <= 3){
+        if(count >= 3){
             this.ships[count-1] = false;
         }
-        else if(count = 1){
+        else if(count == 1){
             this.ships[0] = false;
         }
         else{
@@ -180,10 +180,10 @@ export class Matrix{
         }
 
                 //this indicates in ship array that the ship is sunk
-        if(count <= 3){
+        if(count >= 3){
             this.ships[count-1] = false;
         }
-        else if(count = 1){
+        else if(count == 1){
             this.ships[0] = false;
         }
         else{
