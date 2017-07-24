@@ -369,9 +369,9 @@ export class MyBot {
             const hitmap: number[][] = this.generateHitMap(gamestate.MyShots);
             let lastHit: Position = null;
             let shot: Position = null;
-            for (let i: number = 0; i < gamestate.MyShots.length; i++) {
+            for (let i: number = gamestate.MyShots.length - 1; i >= 0; i--) {
                 if (gamestate.MyShots[i].WasHit) {
-                    lastHit = gamestate.MyShots.Position;
+                    lastHit = gamestate.MyShots[i].Position;
                     break;
                 }
             }
