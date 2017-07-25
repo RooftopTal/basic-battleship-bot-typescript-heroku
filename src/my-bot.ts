@@ -2,20 +2,16 @@ import * as firebase from 'firebase';
 import { Position } from './interfaces/position';
 import { ShipPlace } from './interfaces/shipPlace';
 import { Shot } from './interfaces/shot';
+import { Gamestate } from './interfaces/gamestate';
+import { Database } from './database';
 
 export class MyBot {
 
-    private config = {
-        apiKey: "AIzaSyD6ACQdu7gK-BgtJs-3Hu1Lkczk8fp0Abo",
-        authDomain: "brokenbot-battleships.firebaseapp.com",
-        databaseURL: "https://brokenbot-battleships.firebaseio.com",
-        storageBucket: "brokenbot-battleships.appspot.com"
-    };
     private matchId: number;
+    private database: Database;
 
     constructor() {
-        firebase.initializeApp(this.config);
-        this.authenticate();        
+        this.database = new Database();
     }
     
     public getShipPositions(): ShipPlace[] {
@@ -23,19 +19,13 @@ export class MyBot {
         let counter: number = 0;        
         do {
             this.matchId = Math.floor(Math.random() * 10000) + 1;
-            firebase.database().ref('matches/' + this.matchId.toString()).once('value').then((snapshot) => {
-                if (snapshot.val()) {
-                    exists = true;
-                } else {
-                    exists = false;
-                }
-            });
+            exists = this.findExistingSnapshot(this.matchId);
             counter++;
             if (counter > 10000) {
                 throw new Error("Infinite loop when constructing bot");
             }
         } while (exists)
-        firebase.database().ref('matches/' + this.matchId.toString()).set({
+        this.database.setData(this.matchId,{
             started: true,
             hitmode: false,
             sizes: {
@@ -81,62 +71,51 @@ export class MyBot {
         return shipPlaces;
     }
 
-    public selectTarget(gamestate): Promise<Position> {
+    public selectTarget(gamestate: Gamestate): Promise<Position> {
         return new Promise((resolve, reject) => {
-            firebase.database().ref('matches/' + this.matchId.toString()).once('value').then((snapshot) => { 
-                let snapCopy = snapshot.val();
-                if (gamestate.MyShots.length === 0) {
-                    resolve(this.randomShot(gamestate));
-                }
-                const previousShot: Shot = gamestate.MyShots && gamestate.MyShots[gamestate.MyShots.length-1];
-                let target: Position = { Row: 'A', Column: 1 };
-                if (previousShot.WasHit) {
-                    snapCopy.hitmode = true;
-                    if (snapCopy.hitmap) {
-                        snapCopy.hitmap.push(previousShot.Position);
-                    } else {
-                        snapCopy.hitmap = [previousShot.Position];
+            this.database.getSnapshot(this.matchId)
+                .then((snapshot) => { 
+                    let snapCopy = snapshot.val();
+                    if (gamestate.MyShots.length === 0) {
+                        resolve(this.randomShot(gamestate));
                     }
-                }
-                firebase.database().ref('matches/' + this.matchId.toString()).set(snapCopy);
-                if (snapCopy.hitmode) {
-                    target = this.track(gamestate,snapCopy);
-                } else if (snapCopy.hitmap) {
-                    target = this.randomShot(gamestate,snapCopy.hitmap);
-                } else {
-                    target = this.randomShot(gamestate);
-                }
-                return resolve(target);
-            })
-            .catch((err) => {console.log(err)});
+                    const previousShot: Shot = gamestate.MyShots && gamestate.MyShots[gamestate.MyShots.length-1];
+                    let target: Position = { Row: 'A', Column: 1 };
+                    if (previousShot.WasHit) {
+                        snapCopy.hitmode = true;
+                        if (snapCopy.hitmap) {
+                            snapCopy.hitmap.push(previousShot.Position);
+                        } else {
+                            snapCopy.hitmap = [previousShot.Position];
+                        }
+                    }
+                    this.database.setData(this.matchId,snapCopy);
+                    if (snapCopy.hitmode) {
+                        target = this.track(gamestate,snapCopy);
+                    } else if (snapCopy.hitmap) {
+                        target = this.randomShot(gamestate,snapCopy.hitmap);
+                    } else {
+                        target = this.randomShot(gamestate);
+                    }
+                    return resolve(target);
+                })
+                .catch((err) => {reject(err)});
         })
         
         
     }
 
-    private getNextTarget(position: Position): Position {
-        var column = this.getNextColumn(position.Column);
-        var row = column === 1 ? this.getNextRow(position.Row) : position.Row;
-        return { Row: row, Column: column }
-    }
-
-    private getNextRow(row): string {
-        var newRow = row.charCodeAt(0) + 1;
-        if(newRow > 'J'.charCodeAt(0)) {
-            return 'A';
-        }
-        return String.fromCharCode(newRow);
-    }
-
-    private getNextColumn(column): number {
-        return column % 10 + 1;
-    }
-
-    private authenticate(): void {
-        firebase.auth().signInWithEmailAndPassword(
-            "david.may-miller@softwire.com",
-            "securePassword3"
-        );
+    private findExistingSnapshot(matchId: number): boolean {
+        const snapshotPromise: firebase.Promise<any> = this.database.getSnapshot(this.matchId)
+            .then((snapshot) => {
+                if (snapshot.val()) {
+                    return true;
+                } else {
+                    return false;
+                }
+            })
+            .catch((err) => {throw err});
+        return true;
     }
 
     private getShipPlace(shipPlaces: ShipPlace[], size: number): ShipPlace {
@@ -164,7 +143,7 @@ export class MyBot {
         return { StartingSquare: { Row: "A", Column: -1 }, EndingSquare : { Row: "A", Column: -1 } };
     }
 
-    private detectCollision(shipPlaces: ShipPlace[]): boolean { //apart from the last one, none of these for loops should be more than 5 iterations so it's not as bad as it looks
+    private detectCollision(shipPlaces: ShipPlace[]): boolean {
         for (let i: number = 0; i < shipPlaces.length - 1; i++) {
             let ship1: Position[] = this.generateShipSquares(shipPlaces[i]);
             for (let j: number = i + 1; j < shipPlaces.length; j++) {
@@ -219,8 +198,8 @@ export class MyBot {
         return squares;
     }
 
-    private randomShot(gamestate, hits: Position[] = []): Position {
-        const useless: Position[] = this.generateAdjacentSquares(hits);
+    private randomShot(gamestate: Gamestate, hits: Position[] = []): Position {
+        const knownEmpty: Position[] = this.generateAdjacentSquares(hits);
         let position: Position = { Row: 'A', Column: 1 };
         let found: boolean = false;
         do {
@@ -241,8 +220,8 @@ export class MyBot {
                     break;
                 }
             }
-            for (let i = 0; i < useless.length; i++) {
-                if ((useless[i].Row === position.Row) && (useless[i].Column === position.Column)) {
+            for (let i = 0; i < knownEmpty.length; i++) {
+                if ((knownEmpty[i].Row === position.Row) && (knownEmpty[i].Column === position.Column)) {
                     found = true;
                     break;
                 }
@@ -251,7 +230,7 @@ export class MyBot {
         return position
     }
 
-    private track(gamestate, snapCopy): Position {
+    private track(gamestate: Gamestate, snapCopy: any): Position {
             const hitmap: number[][] = this.generateHitMap(gamestate.MyShots);
             let lastHit: Position = null;
             let shot: Position = null;
@@ -397,13 +376,12 @@ export class MyBot {
                 } else {
                     snapCopy.sizes.patrol = false;
                 }
-                firebase.database().ref('matches/' + this.matchId.toString()).set(snapCopy);
+                this.database.setData(this.matchId,snapCopy);
                 return this.randomShot(gamestate,snapCopy.hitmap)
             }        
     }
 
     private generateHitMap(shots: Shot[]): number[][] {
-        //console.log(shots);
         let map: number[][] = [];
         for (let i: number = 65; i < 75; i++) {
             const arr: number[] = [];
