@@ -19,7 +19,7 @@ export class MyBot {
         idPromise
             .then((matchId) => {
                 this.matchId = matchId;
-                this.database.setData(this.matchId,{
+                this.database.setData(matchId,{
                     started: true,
                     hitmode: false,
                     sizes: {
@@ -32,7 +32,7 @@ export class MyBot {
                     hitmap: []
                 });
             }) 
-            .catch((err) => {throw err});      
+            .catch((err) => {console.log(err)});      
         let shipPlaces: ShipPlace[] = [];
         let done: boolean = false;
         let counter: number = 0;
