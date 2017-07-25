@@ -32,7 +32,7 @@ export class MyBot {
                     hitmap: []
                 });
             }) 
-            .catch((err) => {console.log(err)});      
+            .catch((err) => {throw err});      
         let shipPlaces: ShipPlace[] = [];
         let done: boolean = false;
         let counter: number = 0;
@@ -108,7 +108,7 @@ export class MyBot {
         return new Promise<number> ((resolve, reject) => {
             do {
                 matchId = Math.floor(Math.random() * 10000) + 1;
-                const snapshotPromise: firebase.Promise<any> = this.database.getSnapshot(this.matchId)
+                const snapshotPromise: firebase.Promise<any> = this.database.getSnapshot(matchId)
                     .then((snapshot) => {
                         if (snapshot.val()) {
                             exists = true;
