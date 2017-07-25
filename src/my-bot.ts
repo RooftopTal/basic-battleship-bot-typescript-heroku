@@ -15,16 +15,7 @@ export class MyBot {
     }
     
     public getShipPositions(): ShipPlace[] {
-        let exists: boolean = false;
-        let counter: number = 0;        
-        do {
-            this.matchId = Math.floor(Math.random() * 10000) + 1;
-            exists = this.findExistingSnapshot(this.matchId);
-            counter++;
-            if (counter > 10000) {
-                throw new Error("Infinite loop when constructing bot");
-            }
-        } while (exists)
+        this.matchId = this.findFreeId();       
         this.database.setData(this.matchId,{
             started: true,
             hitmode: false,
@@ -39,7 +30,7 @@ export class MyBot {
         });
         let shipPlaces: ShipPlace[] = [];
         let done: boolean = false;
-        counter = 0;
+        let counter: number = 0;
         do {
             shipPlaces = [];
             counter++;
@@ -105,17 +96,27 @@ export class MyBot {
         
     }
 
-    private findExistingSnapshot(matchId: number): boolean {
-        const snapshotPromise: firebase.Promise<any> = this.database.getSnapshot(this.matchId)
-            .then((snapshot) => {
-                if (snapshot.val()) {
-                    return true;
-                } else {
-                    return false;
-                }
-            })
-            .catch((err) => {throw err});
-        return true;
+    private findFreeId(): number {
+        let matchId: number = 0;
+        let counter = 0;
+        let exists:boolean = false;
+        do {
+            matchId = Math.floor(Math.random() * 10000) + 1;
+            const snapshotPromise: firebase.Promise<any> = this.database.getSnapshot(this.matchId)
+                .then((snapshot) => {
+                    if (snapshot.val()) {
+                        exists = true;
+                    } else {
+                        exists = false;
+                    }
+                })
+                .catch((err) => {throw err});
+            counter++;
+            if (counter > 10000) {
+                throw new Error("Infinite loop when constructing bot");
+            }
+        } while (exists)
+        return matchId
     }
 
     private getShipPlace(shipPlaces: ShipPlace[], size: number): ShipPlace {
