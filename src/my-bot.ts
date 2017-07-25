@@ -15,19 +15,24 @@ export class MyBot {
     }
     
     public getShipPositions(): ShipPlace[] {
-        this.matchId = this.findFreeId();       
-        this.database.setData(this.matchId,{
-            started: true,
-            hitmode: false,
-            sizes: {
-                patrol: true,
-                submarine: true,
-                destroyer: true,
-                battleship: true,
-                carrier: true
-            },
-            hitmap: []
-        });
+        const idPromise: Promise<number> = this.findFreeId();
+        idPromise
+            .then((matchId) => {
+                this.matchId = matchId;
+                this.database.setData(this.matchId,{
+                    started: true,
+                    hitmode: false,
+                    sizes: {
+                        patrol: true,
+                        submarine: true,
+                        destroyer: true,
+                        battleship: true,
+                        carrier: true
+                    },
+                    hitmap: []
+                });
+            }) 
+            .catch((err) => {throw err});      
         let shipPlaces: ShipPlace[] = [];
         let done: boolean = false;
         let counter: number = 0;
@@ -96,27 +101,29 @@ export class MyBot {
         
     }
 
-    private findFreeId(): number {
+    private findFreeId(): Promise<number> {
         let matchId: number = 0;
         let counter = 0;
         let exists:boolean = false;
-        do {
-            matchId = Math.floor(Math.random() * 10000) + 1;
-            const snapshotPromise: firebase.Promise<any> = this.database.getSnapshot(this.matchId)
-                .then((snapshot) => {
-                    if (snapshot.val()) {
-                        exists = true;
-                    } else {
-                        exists = false;
-                    }
-                })
-                .catch((err) => {throw err});
-            counter++;
-            if (counter > 10000) {
-                throw new Error("Infinite loop when constructing bot");
-            }
-        } while (exists)
-        return matchId
+        return new Promise<number> ((resolve, reject) => {
+            do {
+                matchId = Math.floor(Math.random() * 10000) + 1;
+                const snapshotPromise: firebase.Promise<any> = this.database.getSnapshot(this.matchId)
+                    .then((snapshot) => {
+                        if (snapshot.val()) {
+                            exists = true;
+                        } else {
+                            exists = false;
+                        }
+                    })
+                    .catch((err) => {reject(err)});
+                counter++;
+                if (counter > 10000) {
+                    reject(new Error("Infinite loop when constructing bot"));
+                }
+            } while (exists)
+            resolve(matchId);
+        });
     }
 
     private getShipPlace(shipPlaces: ShipPlace[], size: number): ShipPlace {
